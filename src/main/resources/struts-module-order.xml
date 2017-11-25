@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+
+	<package name="bfkjs-order" namespace="/order" extends="struts-default">
+
+		<global-results>
+			<result name="loginError" type="redirectAction">loginInit</result>
+		</global-results>
+
+		<action name="OrderListInit"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.OrderListInit">
+			<result name="success">/WEB-INF/order/orderList.jsp
+			</result>
+		</action>
+
+
+		<action name="DeleteOrder"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.DeleteOrderAjax"
+			method="execute">
+		</action>
+
+
+
+
+
+		<action name="GetSns"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.GetSnsAjax"
+			method="execute">
+		</action>
+		<action name="DeiliverNewCleanTemp"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.DeiliverNewCleanTempAjax"
+			method="execute">
+		</action>
+		<action name="GetDeliverSN"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.GetDeliverSNAjax"
+			method="execute">
+		</action>
+
+
+
+
+
+
+
+		<action name="ReturnOrderDialogInit"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.ReturnOrderDialogInitAjax"
+			method="execute">
+		</action>
+		<action name="ReturnOrder"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.ReturnOrderAjax"
+			method="execute">
+		</action>
+		<action name="ChangeExpress"
+			class="com.cqqyd2014.bfkjs.order.orderlist.action.ajax.ChangeExpressAjax"
+			method="execute">
+		</action>
+
+
+		<action name="*">
+			<result>/WEB-INF/order/{1}.jsp</result>
+		</action>
+	</package>
+</struts>    

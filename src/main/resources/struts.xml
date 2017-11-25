@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+<!-- 设置该应用使用的解码集 -->
+     <constant name="struts.i18n.encoding" value="utf-8"/>
+      <!-- 上传的全部文件的最大限制-->
+     <constant name="struts.multipart.maxSize" value="1024102400"/>
+     <!-- 设置存放临时文件的文件夹 -->
+    <constant name="struts.multipart.saveDir" value="/tmp"></constant>
+	<constant name="struts.action.extension" value="action" />
+	<constant name="struts.locale" value="zh_CN" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.ui.theme" value="simple" />
+
+
+
+
+
+
+
+
+	<include file="struts-module-print.xml"></include>
+
+
+</struts>

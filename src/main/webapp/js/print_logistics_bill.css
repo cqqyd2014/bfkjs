@@ -1,0 +1,40 @@
+@CHARSET "UTF-8";
+.logistics_bill{
+	border: 1px solid #CCC;
+	
+	
+}
+.logistics_bill dl dt {
+	height: 150px;
+	width: 200px;
+	padding: 0px;
+	margin: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+
+}
+
+.logistics_bill dl {
+	
+	width: 200px;
+	border: 1px solid #CCC;
+	margin: 10px;
+	padding: 0px;
+	box-shadow: 10px 10px 5px #888888;
+	cursor:pointer;
+}
+
+.logistics_bill dl dd {
+	height: 30px;
+	width: 200px;
+	margin: 0px;
+	padding: 0px;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	border: thin none #CCC;
+	text-align: center;
+	 background-color:#FFFFCC;
+}
