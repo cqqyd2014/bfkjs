@@ -6,11 +6,11 @@ import org.hibernate.Session;
 public class VGoodsInfoDAO {
 	
 	
-	public java.util.LinkedHashMap<String, String> getGoodsInfosMapInUse(Session session,String com_id) throws Exception{
+	public java.util.LinkedHashMap<String, String> getGoodsInfosMapInUse(Session session,String com_id) {
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VGoodsInfo> vgis=getViewByInUse(session, com_id);
 		
 		java.util.ArrayList<com.cqqyd2014.wh.model.GoodsInfo> gs=com.cqqyd2014.wh.logic.GoodsInfoLogic.getArrayModelFromArrayEntityV(vgis);
-		return com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(gs.toArray(), "getGoods_id", "getGoods_name");
+		return com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(gs, "getGoods_id", "getGoods_name");
 	}
 	
 	public com.cqqyd2014.hibernate.entities.VGoodsInfo getGoodsInfoByBarcode(Session session,String com_id,String barcode){
@@ -30,6 +30,7 @@ public class VGoodsInfoDAO {
 		Query query = session.createQuery(hqlString);
 		
 		query.setParameter("com_id", com_id);
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VGoodsInfo> gis = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.VGoodsInfo>)query.list();
 		return gis;
 	}

@@ -35,7 +35,7 @@ public class GetGoodsSumAction   extends ActionSupport {
 	}
 	@Action(value = "get_goods_sum", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_goods_sum() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
@@ -47,10 +47,11 @@ public class GetGoodsSumAction   extends ActionSupport {
 		
 		try {
 
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.wh.model.Goods > odis = (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 					.get("temp_move_goods");
 			
-			java.util.ArrayList<com.cqqyd2014.util.hashmap.ListItemStringN>  list=com.cqqyd2014.util.HashMapTools.conertToArrayListStringN( com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(odis.toArray(), "getGoods_id"));
+			java.util.ArrayList<com.cqqyd2014.util.hashmap.ListItemStringN>  list=com.cqqyd2014.util.HashMapTools.conertToArrayListStringN( com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(odis, "getGoods_id"));
 			
 			
 			

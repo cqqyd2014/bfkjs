@@ -1,6 +1,6 @@
 package com.cqqyd2014.frame.action;
 
-import java.util.Map;
+
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
@@ -12,14 +12,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
 
 @Scope("prototype")//支持多例  
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/mainframe") //表示当前Action所在命名空间  
-public class HomePageFrameAction {
+public class HomePageFrameAction extends UserLoginedAction{
 	@Actions({     
 	    
 		 @Action( //表示请求的Action及处理方法  
@@ -31,16 +32,11 @@ public class HomePageFrameAction {
 		    )    
 	  
 	  }) 
-	public String home_page_frame() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		if (user==null){
-			return "loginError";
-		}
+	@Authority(module="homepageframe", privilege="*",error_url="") 
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();

@@ -37,7 +37,7 @@ public class GetUnpaidAction   extends ActionSupport {
 	}
 	@Action(value = "get_unpaid", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_unpaid() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

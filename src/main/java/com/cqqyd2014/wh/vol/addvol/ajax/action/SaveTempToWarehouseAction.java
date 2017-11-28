@@ -91,7 +91,7 @@ public class SaveTempToWarehouseAction   extends ActionSupport {
 	}
 	@Action(value = "save_temp_to_warehouse", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String save_temp_to_warehouse() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
@@ -137,7 +137,7 @@ com.cqqyd2014.hibernate.dao.ContractMDAO cmdao=new com.cqqyd2014.hibernate.dao.C
 					.get("temp_add_vol_barcode");
 			
 			//将odis按照商品分类，并放入map中
-			java.util.LinkedHashMap<String, java.math.BigDecimal> goods_in_session_map=com.cqqyd2014.util.ArrayListTools.getKeyCount(odis.toArray(), "getGoods_id");
+			java.util.LinkedHashMap<String, java.math.BigDecimal> goods_in_session_map=com.cqqyd2014.util.ArrayListTools.getKeyCount(odis, "getGoods_id");
 			//需要发出的商品列表
 			
 			com.cqqyd2014.hibernate.dao.VContractDDAO cddao=new com.cqqyd2014.hibernate.dao.VContractDDAO();

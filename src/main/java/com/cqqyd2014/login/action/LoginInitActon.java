@@ -25,7 +25,11 @@ import com.opensymphony.xwork2.ActionSupport;
 public class LoginInitActon  extends ActionSupport {
 	
 
-	   String com_code;
+	   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	String com_code;
 	   String com_name;
 	public String getCom_code() {
 		return com_code;
@@ -55,7 +59,7 @@ public class LoginInitActon  extends ActionSupport {
 
 	public String login_init() throws Exception {
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 
 		com_name = (String) session_http.get("com_name");

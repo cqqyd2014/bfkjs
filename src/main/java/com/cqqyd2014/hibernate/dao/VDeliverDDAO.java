@@ -144,6 +144,7 @@ public class VDeliverDDAO {
 		q.setParameter("com_id", com_id);
 		
 		q.setParameter("goods_barcode", goods_barcode);
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD>)q.list();
 		return vdds;
 	}
@@ -153,11 +154,12 @@ public class VDeliverDDAO {
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds=getArrayListViewByOrderNoSended(session,orderNo,com_id);
 		
 		java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(vdds);
-		java.util.LinkedHashMap<String, java.math.BigDecimal> map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(dbds.toArray(), "getGoods_id");
+		java.util.LinkedHashMap<String, java.math.BigDecimal> map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(dbds, "getGoods_id");
 		return map;
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> getArrayListViewByOrderNoSeq(Session session,String com_id,String order_no,String seq){
 		String hql="from VDeliverD where id.orderNo=:order_no and id.comId=:com_id and id.seq=:seq";
 		Query q = session.createQuery(hql);

@@ -53,7 +53,7 @@ public class ViewDeliverBillInitAction extends ActionSupport {
 	@Action(value = "view_deliver_bill_init", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String new_deliver_bill_init() throws Exception {
 
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String com_id = (String) session_http.get("com_code");
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();

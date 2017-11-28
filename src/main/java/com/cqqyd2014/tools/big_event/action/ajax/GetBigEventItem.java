@@ -16,6 +16,10 @@ import com.opensymphony.xwork2.ActionSupport;
 import net.sf.json.JSONArray;
 
 public class GetBigEventItem extends ActionSupport implements  SessionAware{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map<String, Object> session;
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -37,11 +41,11 @@ public class GetBigEventItem extends ActionSupport implements  SessionAware{
 		// TODO Auto-generated method stub
 
 		
-		String user_name=(String)this.session.get("USER_NAME");
+		//String user_name=(String)this.session.get("USER_NAME");
 		String com_id=(String)this.session.get("com_code");
 		Session session = HibernateSessionFactory.getSession();
 		
-		String user_id=(String)this.session.get("USER_ID");
+		//String user_id=(String)this.session.get("USER_ID");
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
 		try {
 			com.cqqyd2014.hibernate.dao.BigEventDAO bedao=new com.cqqyd2014.hibernate.dao.BigEventDAO();

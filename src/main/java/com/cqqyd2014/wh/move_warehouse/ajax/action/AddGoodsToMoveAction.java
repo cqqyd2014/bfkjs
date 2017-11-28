@@ -36,11 +36,11 @@ public class AddGoodsToMoveAction   extends ActionSupport {
 	}
 	@Action(value = "add_goods_to_move", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String add_goods_to_move() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String userid = (String) session_http.get("USER_ID");
+		//String user = (String) session_http.get("USER");
+		//String user_name = (String) session_http.get("USER_NAME");
+		//String userid = (String) session_http.get("USER_ID");
 		String com_id = (String) session_http.get("com_code");
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
 		Session session = HibernateSessionFactory.getSession();

@@ -43,7 +43,7 @@ public class ProvinceAndCityAjaxAction extends ActionSupport {
 	private String id;
 	@Action(value = "province_and_city", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String province_and_city() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

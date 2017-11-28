@@ -56,7 +56,7 @@ public class DelUserPriceAction      extends ActionSupport {
 	public String del_user_price() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		String com_id = (String) session_http.get("com_code");

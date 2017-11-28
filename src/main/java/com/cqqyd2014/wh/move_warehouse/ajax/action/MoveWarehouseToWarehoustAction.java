@@ -39,7 +39,7 @@ public class MoveWarehouseToWarehoustAction   extends ActionSupport {
 	}
 	@Action(value = "move_warehouse_to_warehouse", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String move_warehouse_to_warehouse() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
@@ -53,6 +53,7 @@ public class MoveWarehouseToWarehoustAction   extends ActionSupport {
 
 
 			
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.wh.model.Goods > odis = (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 					.get("temp_move_goods");
 			java.util.Date now=com.cqqyd2014.util.DateUtil.FullStringToJDate(move_date);

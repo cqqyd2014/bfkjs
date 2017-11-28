@@ -5,16 +5,7 @@ import org.hibernate.Session;
 public class DeliverDLogic {
 	
 	
-	public static java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> getArrayListModelFromArrayListObject(java.util.ArrayList<Object> os){
-		java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=new java.util.ArrayList<>();
-		for (int i=0;i<os.size();i++) {
-			Object o=os.get(i);
-			com.cqqyd2014.order.model.DeliverBillDetail dbd=(com.cqqyd2014.order.model.DeliverBillDetail)o;
-			dbds.add(dbd);
-		}
-		return dbds;
-	}
-	
+
 
 	
 	public static java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> getArrayModelFromArrayEntityView(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverSeq> vdss){

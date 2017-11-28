@@ -51,7 +51,7 @@ public class AddGoodsToTempAction   extends ActionSupport {
 	}
 	@Action(value = "add_goods_to_temp", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String add_goods_to_temp() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
@@ -66,6 +66,7 @@ public class AddGoodsToTempAction   extends ActionSupport {
 			com.cqqyd2014.hibernate.dao.GoodsDAO swd=new com.cqqyd2014.hibernate.dao.GoodsDAO();
 			
 			
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.wh.model.Goods > odis = (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 					.get("temp_add_prepackage_barcode");
 			
@@ -92,10 +93,10 @@ public class AddGoodsToTempAction   extends ActionSupport {
 			
 			odis.add(g);
 			
-			com.cqqyd2014.util.ArrayListTools alt=new com.cqqyd2014.util.ArrayListTools();
 			
 			
-			java.math.BigDecimal weight=alt.convertFieldsSumBigDecimal(odis.toArray(), "getPackage_weight");
+			
+			java.math.BigDecimal weight=com.cqqyd2014.util.ArrayListTools.sumFields(odis, "getPackage_weight");
 			session_http.put("temp_add_prepackage_barcode", odis);
 			sm.setO(odis);
 			sm.setO2(weight);

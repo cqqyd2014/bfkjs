@@ -26,6 +26,10 @@ import com.opensymphony.xwork2.ActionSupport;
 	 
     @Result(name = "error", location = "/error.jsp") }) 
 public class ManualInitAction extends ActionSupport {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	java.util.HashMap<String, String> coms_map;
 
 
@@ -33,7 +37,7 @@ public class ManualInitAction extends ActionSupport {
 	public String manual_init() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		
@@ -43,7 +47,7 @@ public class ManualInitAction extends ActionSupport {
 		try {
 			com.cqqyd2014.hibernate.dao.ComInfoDAO cidao=new com.cqqyd2014.hibernate.dao.ComInfoDAO();
 			ArrayList<ComInfo> cis=cidao.getList(session);
-			coms_map=HashMapTools.convertArrayToHashMap(cis.toArray(), "getCId", "getCName");
+			coms_map=HashMapTools.convertArrayListToHashMap(cis, "getCId", "getCName");
 			
 			
 			

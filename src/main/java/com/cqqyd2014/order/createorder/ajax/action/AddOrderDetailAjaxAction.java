@@ -89,6 +89,7 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 		String userid = (String) session_http.get("USER_ID");
 		String com_id = (String) session_http.get("com_code");
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 				.get("temp_order_detail");
 		Session session = HibernateSessionFactory.getSession();
@@ -108,8 +109,10 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 		// 先看看这个goods_id是否在订单明细中是否存在
 		if (odis_map.get(goods_id)!=null) {
 			//存在，更新数量
-			Object[] od_array=com.cqqyd2014.util.ArrayListTools.searchStringField(odis.toArray(), "getGoods_id", goods_id);
-			com.cqqyd2014.order.model.OrderDetail od=(com.cqqyd2014.order.model.OrderDetail)od_array[0];
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods_by_goodsid=(java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>)
+					com.cqqyd2014.util.ArrayListTools.searchStringField(odis, "getGoods_id", goods_id);
+			com.cqqyd2014.order.model.OrderDetail od=ods_by_goodsid.get(0);
 			od.setNum(c_count);
 			od.setTotal1(c_price.multiply(c_count));
 			java.math.BigDecimal goods_finace_price=od.getPrice2();

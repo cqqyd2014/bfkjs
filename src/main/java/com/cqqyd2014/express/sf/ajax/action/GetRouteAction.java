@@ -24,6 +24,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
 	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
 public class GetRouteAction      extends ActionSupport {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -58,7 +62,7 @@ public class GetRouteAction      extends ActionSupport {
 	public String get_sf_elec_bill() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		String com_id = (String) session_http.get("com_code");

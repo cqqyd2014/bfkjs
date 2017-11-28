@@ -39,7 +39,7 @@ public class GoodsInfoLogic {
 	
 	public static java.util.HashMap<String, String> getHashMap(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VGoodsInfo> vgis) throws Exception{
 		java.util.ArrayList<com.cqqyd2014.wh.model.GoodsInfo> gis=getArrayModelFromArrayEntityV(vgis);
-		return com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(gis.toArray(), "getGoods_id", "getGoods_name");
+		return com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(gis, "getGoods_id", "getGoods_name");
 	}
 
 	

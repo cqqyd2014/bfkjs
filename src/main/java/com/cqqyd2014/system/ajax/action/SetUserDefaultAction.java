@@ -51,7 +51,7 @@ public class SetUserDefaultAction {
 	}
 	@Action(value = "set_user_default", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String set_user_default() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
 		
 		

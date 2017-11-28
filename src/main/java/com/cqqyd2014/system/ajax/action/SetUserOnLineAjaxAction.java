@@ -41,7 +41,7 @@ public class SetUserOnLineAjaxAction {
 	}
 	@Action(value = "set_user_online", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String set_user_online() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
 		
 		if (session_http.get("USER")==null) {

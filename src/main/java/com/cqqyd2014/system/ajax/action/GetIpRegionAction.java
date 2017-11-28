@@ -33,7 +33,7 @@ public class GetIpRegionAction {
 	@Action(value = "get_ip_region", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_ip_region() {
 		String url="http://int.dpool.sina.com.cn/iplookup/iplookup.php";
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

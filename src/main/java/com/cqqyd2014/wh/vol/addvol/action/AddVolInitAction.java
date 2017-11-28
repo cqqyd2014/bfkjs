@@ -23,6 +23,11 @@ public class AddVolInitAction  extends ActionSupport {
 	
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	java.util.LinkedHashMap<String,String> type_map;
 
 	java.util.LinkedHashMap<String,String> contract_map;
@@ -93,7 +98,7 @@ public class AddVolInitAction  extends ActionSupport {
 
 	public String add_vol_init() throws Exception {
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 
 		
@@ -121,7 +126,7 @@ public class AddVolInitAction  extends ActionSupport {
 			
 			java.util.ArrayList<com.cqqyd2014.wh.model.WareHouse> whs=com.cqqyd2014.wh.logic.WareHouseLogic.getArrayListModelFromArrayListEntity(whs_h);
 			
-			wh_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(whs.toArray(), "getWh_id", "getWh_name");
+			wh_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(whs, "getWh_id", "getWh_name");
 			
 			
 			com.cqqyd2014.hibernate.dao.ContractMDAO cmdao=new com.cqqyd2014.hibernate.dao.ContractMDAO();
@@ -129,7 +134,7 @@ public class AddVolInitAction  extends ActionSupport {
 			
 			java.util.ArrayList<com.cqqyd2014.contract.model.ContractM> cms=com.cqqyd2014.contract.logic.ContractMLogic.getArrayListModelFromArrayListEntity(cms_h);
 			
-			contract_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(cms.toArray(), "getContract_no", "getContract_no");
+			contract_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(cms, "getContract_no", "getContract_no");
 			
 			
 			com.cqqyd2014.hibernate.dao.SysCodeDAO scdao = new com.cqqyd2014.hibernate.dao.SysCodeDAO();

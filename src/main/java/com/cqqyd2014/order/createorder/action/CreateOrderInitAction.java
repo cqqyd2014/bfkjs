@@ -12,16 +12,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.order.model.OrderFrom;
+
 import com.cqqyd2014.order.model.OrderFromUser;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
 
 @Scope("prototype")//支持多例  
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/order") //表示当前Action所在命名空间  
-public class CreateOrderInitAction extends ActionSupport {
+public class CreateOrderInitAction extends UserLoginedAction {
 	String logistics;
 	
 	String vehicle;
@@ -69,34 +70,10 @@ public class CreateOrderInitAction extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	String user;
-	String user_name;
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public String getUser_name() {
-		return user_name;
-	}
-
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
-	}
 
 
 
-	public String getCom_id() {
-		return com_id;
-	}
 
-	public void setCom_id(String com_id) {
-		this.com_id = com_id;
-	}
 	public String order_time;
 
 	public String getOrder_time() {
@@ -106,7 +83,7 @@ public class CreateOrderInitAction extends ActionSupport {
 	public void setOrder_time(String order_time) {
 		this.order_time = order_time;
 	}
-	String com_id;
+
 	String discount;
 	String ship_fee;
 	String card_pay;
@@ -145,20 +122,14 @@ public class CreateOrderInitAction extends ActionSupport {
 	
 
 
-	public String create_order_init() throws Exception {
-		
-		
-		Map session_http = ActionContext.getContext().getSession();
-
-		user = (String) session_http.get("USER");
-		user_name = (String) session_http.get("USER_NAME");
-		String userid = (String) session_http.get("USER_ID");
-		com_id = (String) session_http.get("com_code");
-		
+	@Authority(module="mainframe", privilege="[00010001]",error_url="login") 
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
 		order_time=com.cqqyd2014.util.DateUtil.JDateToFullString(new java.util.Date());
-		if (user_name==null){
-			return "loginError";
-		}
+
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>)
 				session_http.get("temp_order_detail");
 		if (odis == null) {
@@ -171,7 +142,7 @@ public class CreateOrderInitAction extends ActionSupport {
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			com.cqqyd2014.hibernate.dao.UserParDAO cpcdao=new com.cqqyd2014.hibernate.dao.UserParDAO();
+			//com.cqqyd2014.hibernate.dao.UserParDAO cpcdao=new com.cqqyd2014.hibernate.dao.UserParDAO();
 			
 			com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO lcdao=new com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO();
 			logistics_map=lcdao.getNameMap(session);
@@ -183,11 +154,11 @@ public class CreateOrderInitAction extends ActionSupport {
 			
 			com.cqqyd2014.hibernate.dao.VOrderFromUserDAO vfdao=new com.cqqyd2014.hibernate.dao.VOrderFromUserDAO();
 			
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUser> vofus=vfdao.getArrayViewByUserID(session, com_id, userid);
+		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUser> vofus=vfdao.getArrayViewByUserID(session, com_id, user_id);
 		ofus= com.cqqyd2014.order.logic.OrderFromUserLogic.getArrayModelFromArrayEntityView(vofus);
 		com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO vfldao=new com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO();
 		
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUserLen> vofuls=vfldao.getArrayViewByUserID(session, com_id, userid);
+		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUserLen> vofuls=vfldao.getArrayViewByUserID(session, com_id, user_id);
 		otls=com.cqqyd2014.order.logic.OrderTypeLenLogic.getArrayModelArraryEntityView(vofuls);
 		
 		
@@ -198,35 +169,27 @@ public class CreateOrderInitAction extends ActionSupport {
 		
 		provinces=rdao.getProvince(session);
 		rdao=null;
-		/*
-		com.cqqyd2014.bfkjs.DAO.SysUserDAO sudao=new com.cqqyd2014.bfkjs.DAO.SysUserDAO();
-		ifWx=sudao.ifWx(session, user_id);
-		sudao=null;
-		*/
-		com.cqqyd2014.hibernate.dao.ComInfoDAO cidao=new com.cqqyd2014.hibernate.dao.ComInfoDAO();
 		
-		
-		cidao=null;;
 
 		
 
-		com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new com.cqqyd2014.hibernate.dao.SysCodeDAO();
+		//com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new com.cqqyd2014.hibernate.dao.SysCodeDAO();
 		
 		
 			
 		com.cqqyd2014.hibernate.dao.UserParDAO updao=new com.cqqyd2014.hibernate.dao.UserParDAO();
 		
-		orderFrom=updao.getValue(session, userid, com_id, "default_order_from");
-		logistics=updao.getValue(session, userid, com_id, "default_logistics_com");
+		orderFrom=updao.getValue(session, user_id, com_id, "default_order_from");
+		logistics=updao.getValue(session, user_id, com_id, "default_logistics_com");
 		com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO lvdao=new com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO();
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.LogisticsVehicle> lvs=lvdao.getArrayEntities(session);
 		
 		
 		
-		vehicle_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(lvs.toArray(), "getVehicleId", "getVehicleName");
+		vehicle_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(lvs, "getVehicleId", "getVehicleName");
 		
 		
-		vehicle=updao.getValue(session, userid, com_id, "default_logistics_vehicle");
+		vehicle=updao.getValue(session, user_id, com_id, "default_logistics_vehicle");
 		
 
 		tx.commit();

@@ -47,10 +47,10 @@ public class LoginAjaxAction extends ActionSupport {
 	@Action(value = "login", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String login() {
 		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
-		String result = "";
+		
 		Session session = HibernateSessionFactory.getSession();
 		com.cqqyd2014.hibernate.entities.SysUser b = null;
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		String com_id = (String) session_http.get("com_code");
@@ -76,9 +76,19 @@ public class LoginAjaxAction extends ActionSupport {
 			}
 			
 				// System.out.println("设置信息");
-				session_http.put("USER_NAME", b.getName());
-				session_http.put("USER", b.getUserLogin());
-				session_http.put("USER_ID", b.getId());
+				session_http.put("user_name", b.getName());
+				session_http.put("user_login", b.getUserLogin());
+				session_http.put("user_id", b.getId());
+				//设置权限
+				com.cqqyd2014.hibernate.dao.MenuDDAO mddao=new com.cqqyd2014.hibernate.dao.MenuDDAO();
+				java.util.ArrayList<com.cqqyd2014.system.model.MenuD> menuds=mddao.getMenuDAll(session, com_id,b.getId());
+				java.util.ArrayList<String> menu_array=new java.util.ArrayList<String>();
+				for (int i=0;i<menuds.size();i++) {
+					menu_array.add(menuds.get(i).getM_id()+menuds.get(i).getM_d_id());
+				}
+				
+				
+				session_http.put("menu_array", menu_array);
 				sudao.setOnline(session, b.getId(), com_id);
 
 				HttpServletRequest request = ServletActionContext.getRequest();

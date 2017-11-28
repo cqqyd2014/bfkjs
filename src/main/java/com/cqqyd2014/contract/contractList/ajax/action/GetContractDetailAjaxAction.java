@@ -45,7 +45,7 @@ public class GetContractDetailAjaxAction  extends ActionSupport {
 	public String get_contract_detail() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

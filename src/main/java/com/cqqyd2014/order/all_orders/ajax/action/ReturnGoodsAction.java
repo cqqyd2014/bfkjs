@@ -164,7 +164,7 @@ public class ReturnGoodsAction extends ActionSupport {
 			java.util.LinkedHashMap<String, java.math.BigDecimal> order_detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getNum");
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds_return=dddao.getArrayListViewByOrderNoReturned(session, com_id, order_no);
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> order_reurn=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(vdds_return);
-			java.util.LinkedHashMap<String , java.math.BigDecimal> order_reurn_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(order_reurn.toArray(), "getGoods_id");
+			java.util.LinkedHashMap<String , java.math.BigDecimal> order_reurn_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(order_reurn, "getGoods_id");
 			
 			HashMapToolsCompareResult rs1=com.cqqyd2014.util.HashMapTools.compare(order_detail_map, order_reurn_map);
 			if (rs1.isFlag()) {
@@ -176,9 +176,10 @@ public class ReturnGoodsAction extends ActionSupport {
 			//处理运单标志
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> delivers=dddao.getArrayListViewByOrderNoSeq(session, com_id, order_no, seq) ;
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(delivers);
-			java.util.LinkedHashMap<String, java.math.BigDecimal> deliver_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(dbds.toArray(), "getGoods_id");
-			Object[] deliver_return_array=com.cqqyd2014.util.ArrayListTools.getArraySearchBooleanField(dbds.toArray(), "isReturned", true);
-			java.util.LinkedHashMap<String, java.math.BigDecimal> deliver_return_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(deliver_return_array, "getGoods_id");
+			java.util.LinkedHashMap<String, java.math.BigDecimal> deliver_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(dbds, "getGoods_id");
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> deliver_return_array=(java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail>)com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(dbds, "isReturned", true);
+			java.util.LinkedHashMap<String, java.math.BigDecimal> deliver_return_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(deliver_return_array, "getGoods_id");
 			HashMapToolsCompareResult rs2=com.cqqyd2014.util.HashMapTools.compare(deliver_map, deliver_return_map);
 			if (rs1.isFlag()) {
 				//所有商品都退货了

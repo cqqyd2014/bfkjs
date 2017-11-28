@@ -37,7 +37,7 @@ public class GetAttentionAction   extends ActionSupport {
 	}
 	@Action(value = "get_attention", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_attention() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

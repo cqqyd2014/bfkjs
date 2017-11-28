@@ -50,7 +50,7 @@ public class UserParDAO {
 			return rs.get(0);
 		}
 		else{
-			System.out.println("不能得到用户："+",参数："+par_code+"的值");
+			System.out.println("不能得到用户："+",参数："+par_code+"的值,输入参数user_id="+user_id+"&com_id="+com_id);
 			return null;
 		}
 	}

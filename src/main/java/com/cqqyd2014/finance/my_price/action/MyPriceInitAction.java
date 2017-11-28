@@ -48,7 +48,7 @@ public class MyPriceInitAction  extends ActionSupport {
 
 	public String my_price_init() throws Exception {
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 
 		

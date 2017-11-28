@@ -47,7 +47,7 @@ public class NewPrepackageBarcodeAction  extends ActionSupport {
 
 	@Action(value = "make_new_prepackage_barcode", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String make_new_prepackage_barcode() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

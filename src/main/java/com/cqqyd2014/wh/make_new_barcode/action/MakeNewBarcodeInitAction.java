@@ -19,6 +19,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/wh") //表示当前Action所在命名空间  
 public class MakeNewBarcodeInitAction extends ActionSupport {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -49,7 +53,7 @@ public class MakeNewBarcodeInitAction extends ActionSupport {
 	public String make_new_barcode_init() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

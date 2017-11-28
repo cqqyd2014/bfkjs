@@ -32,7 +32,8 @@ public class GetPickedBarcodeAction extends ActionSupport {
 	@Action(value = "get_picked_barcode", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_picked_barcode() throws Exception {
 
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.wh.model.Goods> odis = (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 				.get("temp_deliver_picked_sn");
 		

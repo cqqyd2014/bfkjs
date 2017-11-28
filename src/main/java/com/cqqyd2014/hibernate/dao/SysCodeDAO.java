@@ -10,6 +10,7 @@ public class SysCodeDAO {
 		Query q = session.createQuery(hql);
 		q.setParameter("s_id", s_id);
 		q.setParameter("s_code", s_code);
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode> rs = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode>) q
 				.list();
 
@@ -28,23 +29,24 @@ public class SysCodeDAO {
 		Query q = session.createQuery(hql);
 		q.setParameter("s_id", s_id);
 
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode> rs = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode>) q
 				.list();
 		return rs;
 	}
 	
-	public java.util.LinkedHashMap getValuesMap(Session session,String s_id){
+	public java.util.LinkedHashMap<String,String> getValuesMap(Session session,String s_id){
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode> list=getValues(session,s_id);
-		java.util.LinkedHashMap map=new java.util.LinkedHashMap();
+		java.util.LinkedHashMap<String,String> map=new java.util.LinkedHashMap<String,String>();
 		for (int i=0;i<list.size();i++){
 			com.cqqyd2014.hibernate.entities.SysCode sc=list.get(i);
 			map.put(sc.getId().getSCode(), sc.getId().getSCode()+"|"+sc.getSValue());
 		}
 		return map;
 	}
-	public java.util.LinkedHashMap getValuesMap2(Session session,String s_id){
+	public java.util.LinkedHashMap<String,String> getValuesMap2(Session session,String s_id){
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysCode> list=getValues(session,s_id);
-		java.util.LinkedHashMap map=new java.util.LinkedHashMap();
+		java.util.LinkedHashMap<String,String> map=new java.util.LinkedHashMap<String,String>();
 		for (int i=0;i<list.size();i++){
 			com.cqqyd2014.hibernate.entities.SysCode sc=list.get(i);
 			map.put(sc.getId().getSCode(), sc.getSValue());

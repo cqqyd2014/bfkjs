@@ -1,6 +1,6 @@
 package com.cqqyd2014.frame.action;
 
-import java.util.Map;
+
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
@@ -12,14 +12,15 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
 
 @Scope("prototype")//支持多例  
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/mainframe") //表示当前Action所在命名空间  
-public class TopFrameAction  extends ActionSupport  {
+public class TopFrameAction  extends UserLoginedAction {
 	int interval_time;
 	String chineseDate;
 	public int getInterval_time() {
@@ -34,28 +35,7 @@ public class TopFrameAction  extends ActionSupport  {
 	public void setChineseDate(String chineseDate) {
 		this.chineseDate = chineseDate;
 	}
-	String user;
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	String user_name;
-	String user_id;
-	String com_id;
-	public String getUser_id() {
-		return user_id;
-	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-	public String getCom_id() {
-		return com_id;
-	}
-	public void setCom_id(String com_id) {
-		this.com_id = com_id;
-	}
+	
 	@Actions({     
 	    
 		 @Action( //表示请求的Action及处理方法  
@@ -67,16 +47,11 @@ public class TopFrameAction  extends ActionSupport  {
 		    )    
 	   
 	   }) 
-	public String top_frame() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
-
-		user = (String) session_http.get("USER");
-		user_name = (String) session_http.get("USER_NAME");
-		user_id = (String) session_http.get("USER_ID");
-		com_id = (String) session_http.get("com_code");
-		if (user==null){
-			return "loginError";
-		}
+	@Authority(module="topframe", privilege="*",error_url="") 
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
 		chineseDate=com.cqqyd2014.util.DateUtil.getLocalFullString(new java.util.Date());
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();

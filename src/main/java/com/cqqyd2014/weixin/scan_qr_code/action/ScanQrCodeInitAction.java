@@ -63,7 +63,7 @@ public class ScanQrCodeInitAction extends ActionSupport {
 	public String ScanQrCodeInit() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		

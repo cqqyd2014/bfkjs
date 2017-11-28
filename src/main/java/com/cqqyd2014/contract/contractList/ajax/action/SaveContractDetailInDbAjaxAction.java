@@ -63,7 +63,7 @@ public class SaveContractDetailInDbAjaxAction  extends ActionSupport {
 	public String save_contract_detail_in_db() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

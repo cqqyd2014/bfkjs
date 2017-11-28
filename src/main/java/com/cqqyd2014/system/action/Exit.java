@@ -37,7 +37,7 @@ public class Exit extends ActionSupport {
 	   })  
 	public String exit() throws Exception {
 
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		
 		
 		String user = (String) session_http.get("USER");

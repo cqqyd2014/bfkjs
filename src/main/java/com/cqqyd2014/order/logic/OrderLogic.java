@@ -1,7 +1,7 @@
 package com.cqqyd2014.order.logic;
 
 import java.lang.reflect.InvocationTargetException;
-import java.math.RoundingMode;
+
 import java.util.Map;
 
 
@@ -14,7 +14,7 @@ import com.cqqyd2014.hibernate.dao.VDeliverYueDAO;
 import com.cqqyd2014.hibernate.entities.VDeliverM;
 import com.cqqyd2014.order.model.Order;
 import com.cqqyd2014.quota.logic.QuotaTransLogic;
-import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
+
 import com.cqqyd2014.util.hashmap.HashMapToolsCompareResult;
 
 
@@ -26,7 +26,7 @@ public class OrderLogic {
 		//订单总商品金额
 		java.math.BigDecimal goods_total=order.getActual_amount().subtract(order.getShip_fee());
 		//明细总金额
-		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ods.toArray(), "getTotal1");
+		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.sumFields(ods, "getTotal1");
 		//该商品的金额
 		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getPrice");
 		String goods_id=com.cqqyd2014.wh.logic.GoodsLogic.getGoodsIdByBarcode(session, goods_barcode, com_id);
@@ -39,7 +39,7 @@ public class OrderLogic {
 		//订单总商品金额
 		java.math.BigDecimal goods_total=order.getActual_amount().subtract(order.getShip_fee());
 		//明细总金额
-		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ods.toArray(), "getTotal1");
+		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.sumFields(ods, "getTotal1");
 		//该商品的金额
 		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getPrice");
 		

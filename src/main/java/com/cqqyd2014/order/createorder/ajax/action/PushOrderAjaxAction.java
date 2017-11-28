@@ -79,7 +79,7 @@ public class PushOrderAjaxAction extends ActionSupport {
 	@Action(value = "push_order", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String push_order() {
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		//String user_name = (String) session_http.get("USER_NAME");

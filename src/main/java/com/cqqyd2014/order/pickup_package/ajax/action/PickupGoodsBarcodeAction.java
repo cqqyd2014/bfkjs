@@ -1,6 +1,6 @@
 package com.cqqyd2014.order.pickup_package.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -101,7 +101,7 @@ public class PickupGoodsBarcodeAction extends ActionSupport{
 public String pickup_goodsbarcode() throws Exception  {
 		
 
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
 		String user_id = (String) session_http.get("USER_ID");
@@ -110,6 +110,7 @@ public String pickup_goodsbarcode() throws Exception  {
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.wh.model.Goods> odis= (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 				.get("temp_deliver_picked_sn");
 		try {
@@ -142,12 +143,12 @@ public String pickup_goodsbarcode() throws Exception  {
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VPrepackageD> ppds_h=ppddao.getViewByPrepackageBarcode(session, pickup_barcode, com_id);
 				
 				java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageD> ppds=com.cqqyd2014.wh.logic.PrePackageDLogic.getArrayListModelFromArrayListView(ppds_h);
-				java.util.LinkedHashMap<String, java.math.BigDecimal> prepackage_map=com.cqqyd2014.util.ArrayListTools.getKeyCount(ppds.toArray(), "getGoods_id");
+				java.util.LinkedHashMap<String, java.math.BigDecimal> prepackage_map=com.cqqyd2014.util.ArrayListTools.getKeyCount(ppds, "getGoods_id");
 				
 				//订单剩余发货，是否大于等于包裹
 				if (com.cqqyd2014.util.HashMapTools.check_if_contains(order_map,prepackage_map)) {
 					//开始处理发货，不再单独调用发货的save
-					//ppm.setActualWeight(com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ppds.toArray(), "getPackage_weight"));
+					//ppm.setActualWeight(com.cqqyd2014.util.ArrayListTools.sumFields(ppds.toArray(), "getPackage_weight"));
 					ppm.setSendDat(new java.util.Date());
 					ppm.setSended(true);
 					ppm.setWhId(wh_id);
@@ -208,7 +209,7 @@ public String pickup_goodsbarcode() throws Exception  {
 					db.setOrder_no(order_no);
 					db.setPackage_dat(new java.util.Date());
 					db.setPackage_userid(user_id);
-					db.setPackage_weight(com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ppds.toArray(), "getPackage_weight"));
+					db.setPackage_weight(com.cqqyd2014.util.ArrayListTools.sumFields(ppds, "getPackage_weight"));
 					db.setPre_package_barcode(pickup_barcode);
 					db.setSend_dat(new java.util.Date());
 					db.setSend_user_assgin_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
@@ -286,7 +287,7 @@ public String pickup_goodsbarcode() throws Exception  {
 					
 					//对比已经发货和待发的
 					
-					java.util.LinkedHashMap<String, java.math.BigDecimal> odis_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMapCount(odis.toArray(), "getGoods_id");
+					java.util.LinkedHashMap<String, java.math.BigDecimal> odis_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(odis, "getGoods_id");
 					HashMapToolsCompareResult rs=com.cqqyd2014.util.HashMapTools.compare(order_map, odis_map);
 					
 					sm.setSuccess(true);

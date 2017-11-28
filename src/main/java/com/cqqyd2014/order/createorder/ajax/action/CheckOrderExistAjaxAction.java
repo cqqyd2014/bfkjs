@@ -53,7 +53,7 @@ public class CheckOrderExistAjaxAction extends ActionSupport {
 
 	@Action(value = "check_order_exist", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String check_order_exist() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

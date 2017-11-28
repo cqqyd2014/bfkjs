@@ -44,9 +44,9 @@ public class NewDeliverBillInitAction extends ActionSupport {
 	@Action(value = "new_deliver_bill_init", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String new_deliver_bill_init() throws Exception {
 
-		Map session_http = ActionContext.getContext().getSession();
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
+		//String user = (String) session_http.get("USER");
+		//String user_name = (String) session_http.get("USER_NAME");
 		String userid = (String) session_http.get("USER_ID");
 		String com_id = (String) session_http.get("com_code");
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();

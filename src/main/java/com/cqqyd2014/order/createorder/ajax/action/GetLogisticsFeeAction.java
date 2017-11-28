@@ -61,7 +61,7 @@ public void setNum(java.math.BigDecimal num) {
 
 	@Action(value = "get_logistics_fee", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String get_logistics_fee() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

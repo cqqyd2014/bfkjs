@@ -53,7 +53,7 @@
 	 * jquery 定时刷新
 	 * edit 
 	 */
-	setInterval("Push()", <s:property value="#request.interval_time" /> * 1000);
+	//setInterval("Push()", <s:property value="#request.interval_time" /> * 1000);
 	function Push() {
 		
 		$.ajax({

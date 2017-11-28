@@ -1,6 +1,7 @@
 package com.cqqyd2014.weixin.scan_qr_code.ajax.action;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
+import com.cqqyd2014.order.model.DeliverBillDetail;
 import com.opensymphony.xwork2.ActionSupport;
 
 @ParentPackage("json-default")
@@ -74,9 +75,11 @@ public class GetBarcodeAction   extends ActionSupport {
 			session.flush();
 			sm=com.cqqyd2014.wh.logic.GoodsLogic.getAjaxMessageModelByBarcode(sm, session, barcode, com_id);
 			
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbs=(java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail>)sm.getO5();
-			java.util.ArrayList<Object> dbd_objects=com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(dbs.toArray(), "isReturned", false);
-			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds_array=com.cqqyd2014.order.logic.DeliverDLogic.getArrayListModelFromArrayListObject(dbd_objects);
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds_array=(ArrayList<DeliverBillDetail>)com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(dbs, "isReturned", false);
+
 			if (dbds_array.size()>0) {
 				sm.setO5(dbds_array.get(0));
 			}
@@ -85,10 +88,12 @@ public class GetBarcodeAction   extends ActionSupport {
 			}
 			
 			
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.weixin.model.ScanQrLog> sqls=(java.util.ArrayList<com.cqqyd2014.weixin.model.ScanQrLog>)sm.getO4();
 			
-			java.util.ArrayList<Object> sql_objects=com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(sqls.toArray(), "isEffective", true);
-			java.util.ArrayList<com.cqqyd2014.weixin.model.ScanQrLog> sqls_array=com.cqqyd2014.weixin.logic.ScanQrLogLogic.getArrayListModelFromArrayListObject(sql_objects);
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.weixin.model.ScanQrLog> sqls_array=(java.util.ArrayList<com.cqqyd2014.weixin.model.ScanQrLog>)com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(sqls, "isEffective", true);
+			
 			
 			sm.setO4(sqls_array);
 			tx.commit();

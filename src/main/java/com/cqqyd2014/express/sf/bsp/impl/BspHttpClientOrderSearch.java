@@ -1,12 +1,8 @@
 package com.cqqyd2014.express.sf.bsp.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import java.io.UnsupportedEncodingException;
+
 
 import org.dom4j.Element;
 import org.hibernate.Session;

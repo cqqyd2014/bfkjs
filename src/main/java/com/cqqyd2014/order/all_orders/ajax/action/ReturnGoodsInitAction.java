@@ -61,7 +61,7 @@ public class ReturnGoodsInitAction extends ActionSupport {
 
 	@Action(value = "return_goods_init", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String return_goods_init() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

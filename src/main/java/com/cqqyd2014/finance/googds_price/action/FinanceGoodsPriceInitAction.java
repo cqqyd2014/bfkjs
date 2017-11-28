@@ -53,7 +53,7 @@ public class FinanceGoodsPriceInitAction  extends ActionSupport {
 
 	public String finance_goods_price_init() throws Exception {
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		String com_id = (String) session_http.get("com_code");
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();

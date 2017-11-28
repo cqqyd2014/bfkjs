@@ -184,7 +184,7 @@ public class UploadTaobaoExpFileAction extends ActionSupport {
 			Transaction tx = session.beginTransaction();
 			
 			try {
-				Map session_http = ActionContext.getContext().getSession();
+				Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 
 				String com_id = (String) session_http.get("com_code");

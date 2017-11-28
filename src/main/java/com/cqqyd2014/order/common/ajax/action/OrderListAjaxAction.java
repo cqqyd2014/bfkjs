@@ -134,7 +134,7 @@ public abstract class OrderListAjaxAction extends ActionSupport{
 
 
 		//String user_name = (String) this.session.get("USER_NAME");
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		String user = (String) session_http.get("USER");
 		//String user_name = (String) session_http.get("USER_NAME");
 		String user_id = (String) session_http.get("USER_ID");

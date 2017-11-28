@@ -59,7 +59,7 @@ public class CancelDeliverBillAction extends ActionSupport {
 	@Action(value = "cancel_deliver_bill", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String cancel_deliver_bill() throws Exception {
 
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String userid = (String) session_http.get("USER_ID");
 		String com_id = (String) session_http.get("com_code");

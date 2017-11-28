@@ -45,7 +45,7 @@ public class GetPackageTableAction     extends ActionSupport {
 	public String get_package_table() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		String com_id = (String) session_http.get("com_code");

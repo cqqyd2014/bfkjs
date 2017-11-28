@@ -131,7 +131,7 @@ Transaction tx = session.beginTransaction();
 			db.setPackage_userid(userid);
 			db.setPackage_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			db.setPackage_weight(new java.math.BigDecimal(0));
-			db.setSend_dat(new com.cqqyd2014.util.DateUtil().ShortStringToJDate("1900-1-1"));
+			db.setSend_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			db.setSend_user_assgin_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			db.setSend_userid("");
 			db.setSended(false);

@@ -36,7 +36,7 @@ public class GetNewBarcodeUnPrintedAjaxAction extends ActionSupport {
 	}
 	@Action(value = "get_new_barcode_un_printed", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String add_order_detail() {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");

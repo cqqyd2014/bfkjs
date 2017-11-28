@@ -20,6 +20,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/wh") //表示当前Action所在命名空间  
 public class MoveWareHouseInitAction extends ActionSupport {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	java.util.LinkedHashMap<String,String> wh_map;
 	String wh_id;
 	java.util.Date move_date;
@@ -61,10 +65,10 @@ public class MoveWareHouseInitAction extends ActionSupport {
 	
 
 	public String move_warehouse_init() throws Exception {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
+		//String user = (String) session_http.get("USER");
+		//String user_name = (String) session_http.get("USER_NAME");
 		String userid = (String) session_http.get("USER_ID");
 		String com_id = (String) session_http.get("com_code");
 
@@ -84,7 +88,7 @@ public class MoveWareHouseInitAction extends ActionSupport {
 			
 			java.util.ArrayList<com.cqqyd2014.wh.model.WareHouse> whs=com.cqqyd2014.wh.logic.WareHouseLogic.getArrayListModelFromArrayListEntity(whs_h);
 			
-			wh_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(whs.toArray(), "getWh_id", "getWh_name");
+			wh_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(whs, "getWh_id", "getWh_name");
 			
 			move_date=new java.util.Date();
 			

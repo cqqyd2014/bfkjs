@@ -57,7 +57,7 @@ public class MainInitAction extends ActionSupport {
 	public String main_init() throws Exception {
 		
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 		com_name=(String) session_http.get("com_name");
 		
 		

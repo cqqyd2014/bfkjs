@@ -52,7 +52,7 @@ public class SavePrepackageAction   extends ActionSupport {
 	}
 	@Action(value = "save_prepackage", results = { @Result(type = "json", params = { "root", "msg" }) })
 	public String save_prepackage() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		String user = (String) session_http.get("USER");
 		String user_name = (String) session_http.get("USER_NAME");
@@ -119,7 +119,7 @@ public class SavePrepackageAction   extends ActionSupport {
 			ppm.setPrepackage_dat(new java.util.Date());
 			ppm.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getPackege_barcode"));
 			ppm.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getGoods_name"));
-			ppm.setPackage_weight(com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ppds.toArray(), "getPackage_weight"));
+			ppm.setPackage_weight(com.cqqyd2014.util.ArrayListTools.sumFields(ppds, "getPackage_weight"));
 			ppm.setPackaged(true);
 			ppm.setWh_id(wh_id);
 			ppm.setPpds(ppds);
@@ -132,7 +132,7 @@ public class SavePrepackageAction   extends ActionSupport {
 			ppm.setPackageTime(new java.util.Date());
 			ppm.setMemoBarcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getPackege_barcode"));
 			ppm.setMemoNames(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getGoods_name"));
-			ppm.setPackageWeight(com.cqqyd2014.util.ArrayListTools.convertFieldsSumBigDecimal(ppds.toArray(), "getPackage_weight"));
+			ppm.setPackageWeight(com.cqqyd2014.util.ArrayListTools.sumFields(ppds, "getPackage_weight"));
 			ppm.setPackaged(true);
 			ppm.setWhId(wh_id);
 			session.saveOrUpdate(ppm);

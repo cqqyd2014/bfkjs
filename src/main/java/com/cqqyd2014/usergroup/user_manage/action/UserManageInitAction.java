@@ -52,7 +52,7 @@ public void setUser_map(java.util.HashMap<String, String> user_map) {
 
 	public String login_init() throws Exception {
 		
-		Map session_http = ActionContext.getContext().getSession();
+		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 
 		
@@ -66,7 +66,7 @@ public void setUser_map(java.util.HashMap<String, String> user_map) {
 			
 			com.cqqyd2014.hibernate.dao.SysUserDAO sudao=new com.cqqyd2014.hibernate.dao.SysUserDAO();
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysUser> users=sudao.getUsersAllByCom(session, com_id);
-			user_map=com.cqqyd2014.util.HashMapTools.convertArrayToHashMap(users.toArray(), "getId", "getName");
+			user_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(users, "getId", "getName");
 			com.cqqyd2014.hibernate.dao.VGoodsInfoDAO vgidao=new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VGoodsInfo> vgis=vgidao.getGoodsInfosAll(session, com_id);
 			

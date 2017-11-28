@@ -4,13 +4,7 @@ package com.cqqyd2014.express.sf.bsp;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
-
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -359,7 +353,7 @@ public abstract class BspHttpClient {
 		
 		Element root = document.getRootElement();  
 		
-		String service=root.attribute("service").getText();
+		//String service=root.attribute("service").getText();
 		String head=root.element("Head").getText();
 		
 	
