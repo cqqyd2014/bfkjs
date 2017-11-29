@@ -23,7 +23,7 @@ import com.cqqyd2014.order.model.OrderFromUser;
 @Scope("prototype")//支持多例  
 
 @Namespace(value="/order") //表示当前Action所在命名空间  
-@ParentPackage("bfkjs-order")
+@ParentPackage("bfkjs-default") 
 public class CreateOrderInitAction extends UserLoginedAction {
 	String logistics;
 	

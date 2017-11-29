@@ -1,36 +1,24 @@
 package com.cqqyd2014.finance.my_price.action;
 
-import java.util.Map;
+
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+
 import org.springframework.context.annotation.Scope;
 
-import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
+
 
 @Scope("prototype")//支持多例  
-@ParentPackage("struts-default")  //表示继承的父包  
+@ParentPackage("bfkjs-default") 
 @Namespace(value="/finance") //表示当前Action所在命名空间 
-public class MyPriceInitAction  extends ActionSupport {
-	String userid;
-	
-
-	public String getUserid() {
-		return userid;
-	}
-
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+public class MyPriceInitAction  extends UserLoginedAction {
 
 
 	@Actions({     
@@ -40,20 +28,22 @@ public class MyPriceInitAction  extends ActionSupport {
 		            results={  //表示结果跳转  
 		                    @Result(name="success",location="/WEB-INF/finance/my_price.jsp"),  
 		                    
-		            }
-		    )    
-	   
-	   })  
+		            },
+		            interceptorRefs={  
+                            @InterceptorRef("authorityInterceptor")  
+            }
+    )    
+
+})  
 	
 
-	public String my_price_init() throws Exception {
+	@Authority(module="mainframe", privilege="[00010001]",error_url="login") 
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
 		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
 		
-		String com_id = (String) session_http.get("com_code");
-		userid = (String) session_http.get("USER_ID");
 		
 		
 

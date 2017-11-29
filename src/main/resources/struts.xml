@@ -12,7 +12,23 @@
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.ui.theme" value="simple" />
 
+<package name="bfkjs-default" namespace="/" extends="struts-default">
 
+		 <interceptors>  
+            <interceptor name="authorityInterceptor" class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>  
+            <!-- 一个拦截器栈中可以定义多个拦截器 -->  
+            <interceptor-stack name="authorityStack">  
+                <interceptor-ref name="authorityInterceptor" />  
+                <interceptor-ref name="defaultStack" />  
+            </interceptor-stack>  
+        </interceptors>  
+        <!--全局结果处理  -->  
+        <global-results>  
+            <result name="login">../portal/qyd</result>
+            <result name="ajax_login">../portal/qyd</result>  
+        </global-results>  
+
+	</package>
 
 
 

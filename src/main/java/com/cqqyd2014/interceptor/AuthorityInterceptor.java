@@ -53,6 +53,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 			// 两个ArrayList取交集
 			privilege_array.retainAll(menu_array);
 			if (privilege_array.size() > 0) {
+				/*
 				String log="用户[" + user_id + "]在" + new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss").format(new Date())
 						+ "调用了[" + clazz.getName() + "]类的[" + methodName + "]方法，所在模块[" + module + "]，拥有权限[" + privilege
 						+ "]。";
@@ -60,6 +61,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 				logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				logger.info(log);
 				logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+				*/
 				return invocation.invoke();
 			} else {
 				return error_url;

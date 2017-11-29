@@ -57,7 +57,7 @@ function getUserPriceTable(){
 $(document).ready(function() {
 
 
-	$('#userid').val('<s:property value="#request.userid" />');
+	$('#userid').val('<s:property value="#request.user_id" />');
 
 
 //	$('#order_dat').datetimebox('setValue', '${order_time}');

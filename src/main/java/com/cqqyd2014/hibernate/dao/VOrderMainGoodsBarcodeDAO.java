@@ -18,38 +18,39 @@ public class VOrderMainGoodsBarcodeDAO {
 			
 		}
 		if (gt_statuss.size()>0){
-			hql=hql+" and gt_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(gt_statuss);
+			hql=hql+" and gt_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(gt_statuss)+" ";
 			
 		}
 		if (ems_statuss.size()>0){
-			hql=hql+" and ems_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(ems_statuss);
+			hql=hql+" and ems_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(ems_statuss)+" ";
 		}
 		if (package_user!=null){
-			hql=hql+" and package_user=\'"+package_user+"\' and ";
+			hql=hql+" and package_user=\'"+package_user+"\'";
 		}
 		if (user_id!=null){
-			hql=hql+"user_id=\'"+user_id+"\' and ";
+			hql=hql+" and user_id=\'"+user_id+"\'";
 		}
 		if (goods_name!=null){
-			hql=hql+"detail_memo like \'%"+goods_name+"%\' and ";
+			hql=hql+" and  detail_memo like \'%"+goods_name+"%\' ";
 		}
 		if (user_name!=null){
-			hql=hql+"c_user_name like \'%"+user_name+"%\' and ";
+			hql=hql+"and c_user_name like \'%"+user_name+"%\' ";
 		}
 		if (user_tell!=null){
-			hql=hql+"c_tell like \'%"+user_tell+"%\' and ";
+			hql=hql+"and c_tell like \'%"+user_tell+"%\' ";
 		}
 		if (original_id!=null){
-			hql=hql+"original_id like \'%"+original_id+"%\' and ";
+			hql=hql+"and original_id like \'%"+original_id+"%\' ";
 		}
 		if (barcode!=null){
-			hql=hql+"goods_barcode like \'%"+barcode+"%\' and ";
+			hql=hql+"and goods_barcode like \'%"+barcode+"%\' ";
 		}
 		if (express_no!=null){
-			hql=hql+"deliver_express_no like \'%"+express_no+"%\' and ";
+			hql=hql+"and deliver_express_no like \'%"+express_no+"%\' ";
 		}
-		hql=hql+"order_dat between \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(start_dat)+"\' and \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(end_dat)+"\' group by order_no) t1";
-		//System.out.println(hql);
+		hql=hql+"and order_dat between \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(start_dat)+"\' and \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(end_dat)+"\' group by order_no) t1";
+		System.out.println(hql);
+		hql=hql.replace("where and ", "where ");
 		return (java.math.BigInteger)session.createSQLQuery(hql).uniqueResult();
 
 		

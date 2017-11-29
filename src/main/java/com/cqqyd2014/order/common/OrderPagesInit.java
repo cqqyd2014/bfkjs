@@ -1,16 +1,16 @@
 package com.cqqyd2014.order.common;
 
-import java.util.Map;
+
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-public class OrderPagesInit extends ActionSupport {
+
+public class OrderPagesInit extends UserLoginedAction {
 	int pageSize;// 每页的记录数
 	 java.util.LinkedHashMap<String, String> logisticsList;
 	
@@ -104,20 +104,18 @@ public class OrderPagesInit extends ActionSupport {
 
 
 	String default_logistics;
-	String userid;
-	public void init() throws Exception{
 
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
 
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		 userid= (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+		
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new com.cqqyd2014.hibernate.dao.SysCodeDAO();
+			//com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new com.cqqyd2014.hibernate.dao.SysCodeDAO();
 			com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO lcdao=new com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO();
 			
 			
@@ -126,8 +124,8 @@ public class OrderPagesInit extends ActionSupport {
 			experss_no_len_map=lcdao.getBillLengthMap(session);
 
 			com.cqqyd2014.hibernate.dao.UserParDAO updao=new com.cqqyd2014.hibernate.dao.UserParDAO();
-			default_logistics=updao.getValue(session, userid, com_id, "default_logistics_com");
-			pageSize=Integer.parseInt(updao.getValue(session, userid, com_id, "default_rows_in_page"));
+			default_logistics=updao.getValue(session, user_id, com_id, "default_logistics_com");
+			pageSize=Integer.parseInt(updao.getValue(session, user_id, com_id, "default_rows_in_page"));
 			com.cqqyd2014.hibernate.dao.WareHouseDAO whdao=new com.cqqyd2014.hibernate.dao.WareHouseDAO();
 			
 			wh_map=whdao.getUserWareHouseMapByComId(session, com_id);
@@ -139,8 +137,8 @@ public class OrderPagesInit extends ActionSupport {
 			vehicle_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(lvs, "getVehicleId", "getVehicleName");
 			
 			
-			vehicle=updao.getValue(session, userid, com_id, "default_logistics_vehicle");
-			default_warehouse=updao.getValue(session, userid, com_id, "default_warehouse");
+			vehicle=updao.getValue(session, user_id, com_id, "default_logistics_vehicle");
+			default_warehouse=updao.getValue(session, user_id, com_id, "default_warehouse");
 			tx.commit();
 		
 		} catch (HibernateException e) {
@@ -154,16 +152,10 @@ public class OrderPagesInit extends ActionSupport {
 		} finally {
 			HibernateSessionFactory.closeSession();
 		}
+		return "";
 	}
 
 
-	public String getUserid() {
-		return userid;
-	}
-
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+	
 
 }
