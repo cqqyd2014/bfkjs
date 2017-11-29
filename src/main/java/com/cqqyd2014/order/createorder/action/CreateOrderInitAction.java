@@ -7,6 +7,7 @@ import org.apache.struts2.convention.annotation.Actions;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -20,8 +21,9 @@ import com.cqqyd2014.order.model.OrderFromUser;
 
 
 @Scope("prototype")//支持多例  
-@ParentPackage("struts-default")  //表示继承的父包  
+
 @Namespace(value="/order") //表示当前Action所在命名空间  
+@ParentPackage("bfkjs-order")
 public class CreateOrderInitAction extends UserLoginedAction {
 	String logistics;
 	
@@ -111,8 +113,9 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		 @Action( //表示请求的Action及处理方法  
 		            value="create_order_init",  //表示action的请求名称  
 		            results={  //表示结果跳转  
-		                    @Result(name="success",location="/WEB-INF/order/createOrderMain.jsp"),  
-		                    
+		                    @Result(name="success",location="/WEB-INF/order/createOrderMain.jsp")  },
+		            interceptorRefs={  
+		                            @InterceptorRef("authorityInterceptor")  
 		            }
 		    )    
 	   
