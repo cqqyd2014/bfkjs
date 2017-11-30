@@ -42,8 +42,8 @@ public class TestUtil {
 				com.cqqyd2014.hibernate.entities.DeliverM vdm=vdms.get(i);
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds=dddao.getArrayListViewByOrderNo(session, "CQQY",vdm.getId().getOrderNo());
 				java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(vdds);
-				vdm.setMemoBarcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(dbds.toArray(), "getGoods_barcode"));
-				vdm.setMemoNames(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(dbds.toArray(), "getGoods_name"));
+				vdm.setMemoBarcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(dbds, "getGoods_barcode"));
+				vdm.setMemoNames(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(dbds, "getGoods_name"));
 				session.saveOrUpdate(vdm);
 			}
 

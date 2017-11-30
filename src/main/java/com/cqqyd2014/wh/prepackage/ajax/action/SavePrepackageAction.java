@@ -130,8 +130,8 @@ public class SavePrepackageAction   extends ActionSupport {
 			*/
 			ppm.setNum(new java.math.BigDecimal(ppds.size()));
 			ppm.setPackageTime(new java.util.Date());
-			ppm.setMemoBarcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getPackege_barcode"));
-			ppm.setMemoNames(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getGoods_name"));
+			ppm.setMemoBarcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds, "getPackege_barcode"));
+			ppm.setMemoNames(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds, "getGoods_name"));
 			ppm.setPackageWeight(com.cqqyd2014.util.ArrayListTools.sumFields(ppds, "getPackage_weight"));
 			ppm.setPackaged(true);
 			ppm.setWhId(wh_id);

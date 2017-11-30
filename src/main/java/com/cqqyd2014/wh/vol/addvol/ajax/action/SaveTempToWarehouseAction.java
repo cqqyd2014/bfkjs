@@ -144,7 +144,7 @@ com.cqqyd2014.hibernate.dao.ContractMDAO cmdao=new com.cqqyd2014.hibernate.dao.C
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VContractD> vcds=cddao.getArrayListByContractNo(session, com_id, contract_id);
 			
 			java.util.ArrayList<com.cqqyd2014.contract.model.ContractD> cds=com.cqqyd2014.contract.logic.ContractDLogic.getArrayListModelFromArrayListView(vcds);
-			java.util.LinkedHashMap<String, java.math.BigDecimal> need_in_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(cds.toArray(), "getGoods_id", "getWait_for_arrival");
+			java.util.LinkedHashMap<String, java.math.BigDecimal> need_in_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(cds, "getGoods_id", "getWait_for_arrival");
 			
 			if (com.cqqyd2014.util.HashMapTools.check_if_contains(need_in_map, goods_in_session_map)) {
 				//可以入库,处理单个商品

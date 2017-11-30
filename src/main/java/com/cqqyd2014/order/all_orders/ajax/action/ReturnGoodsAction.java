@@ -161,7 +161,7 @@ public class ReturnGoodsAction extends ActionSupport {
 			com.cqqyd2014.wh.logic.Storage.ReturnGoods(session, goods_id, wh_id, new java.math.BigDecimal(1), com_id);
 			com.cqqyd2014.wh.logic.IntoWh.numChange(session, com_id,g.getInto_wh_uuid() , goods_id, new java.math.BigDecimal(1), "0003", userid);
 			//处理订单标志
-			java.util.LinkedHashMap<String, java.math.BigDecimal> order_detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getNum");
+			java.util.LinkedHashMap<String, java.math.BigDecimal> order_detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods, "getGoods_id", "getNum");
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds_return=dddao.getArrayListViewByOrderNoReturned(session, com_id, order_no);
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> order_reurn=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(vdds_return);
 			java.util.LinkedHashMap<String , java.math.BigDecimal> order_reurn_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(order_reurn, "getGoods_id");

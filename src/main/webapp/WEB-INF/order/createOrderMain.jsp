@@ -338,7 +338,8 @@
 
 		}, function(result) {
 
-			$.each(result, function(i, field) {
+			var field=result.msg;
+			ajax_authority(field);
 
 				if (field.success) {
 					alert('保存成功');
@@ -349,7 +350,7 @@
 
 				}
 
-			});
+			
 
 		});
 		$("input[name=not_air]").attr("disabled",true);

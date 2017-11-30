@@ -27,8 +27,21 @@ function dialog_init_little(o){
 //ajax未认证处理
 
 function ajax_authority(field){
+	if (field==null){
+		return;
+	}
 	if (!field.auth_success){
 		window.parent.parent.location.href="/Bfkjs";
+	}
+	
+}
+//top框架使用
+function ajax_authority2(field){
+	if (field==null){
+		return;
+	}
+	if (!field.auth_success){
+		window.parent.location.href="/Bfkjs";
 	}
 	
 }
@@ -84,14 +97,16 @@ function set_default(code, value) {
 			"par_value" : value
 		},
 		success : function(data) {
-
+			
 			var field=data.msg;
+			ajax_authority(field);
 			if (field.success){
-				alert("设置默认参数成功");
+				$.messager.alert('提示','设置默认参数成功','info');
+				
 			
 			
 			} else {
-				alert("设置默认参数失败");
+				$.messager.alert('错误','设置默认参数失败','error');
 			}
 		}
 	});

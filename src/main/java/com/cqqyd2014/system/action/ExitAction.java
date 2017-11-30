@@ -26,9 +26,12 @@ public class ExitAction extends UserLoginedAction {
 					value = "exit", // 表示action的请求名称
 					results = { // 表示结果跳转
 
+							/*
 							@Result(name = "success", params = { "actionName", "login_init", "namespace", "/login",
 									"method", "login_init" }, type = "chain")
 
+*/
+							@Result(name = "success",location="/", type = "redirect")
 					})
 
 	})

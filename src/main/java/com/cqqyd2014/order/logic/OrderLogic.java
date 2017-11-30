@@ -28,7 +28,7 @@ public class OrderLogic {
 		//明细总金额
 		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.sumFields(ods, "getTotal1");
 		//该商品的金额
-		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getPrice");
+		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods, "getGoods_id", "getPrice");
 		String goods_id=com.cqqyd2014.wh.logic.GoodsLogic.getGoodsIdByBarcode(session, goods_barcode, com_id);
 		java.math.BigDecimal value=detail_map.get(goods_id);
 		//分摊的金额
@@ -41,7 +41,7 @@ public class OrderLogic {
 		//明细总金额
 		java.math.BigDecimal goods_detail_total=com.cqqyd2014.util.ArrayListTools.sumFields(ods, "getTotal1");
 		//该商品的金额
-		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods.toArray(), "getGoods_id", "getPrice");
+		java.util.LinkedHashMap<String, java.math.BigDecimal> detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods, "getGoods_id", "getPrice");
 		
 		java.math.BigDecimal value=detail_map.get(goods_id);
 		//分摊的金额

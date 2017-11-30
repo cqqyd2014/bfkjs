@@ -17,13 +17,9 @@ public class RequestRouteService  extends Request{
 		order_e.addAttribute("tracking_type", "1");
 		order_e.addAttribute("method_type", "1");
 		String mail_nos="";
-		try {
-			mail_nos=com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(this.getDbs().toArray(), "getExpress_no");
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+			mail_nos=com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(this.getDbs(), "getExpress_no");
+		
 		mail_nos=mail_nos.substring(1, mail_nos.length()-1);
 		
 		order_e.addAttribute("tracking_number",mail_nos);

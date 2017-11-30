@@ -11,7 +11,7 @@ public class VOrderMainGoodsBarcodeDAO {
 	//订单数量的查询
 	
 	public java.math.BigInteger getOrderNoCount(Session session, java.util.Date start_dat,java.util.Date end_dat,String com_id,java.util.ArrayList<String> order_statuss,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String user_id,java.util.ArrayList<String> gt_statuss,java.util.ArrayList<String> ems_statuss){
-		String hql="select count(*) from ( select order_no from v_order_main_goods_barcode where ";
+		String hql="select count(*) from ( select order_no from v_order_main_goods_barcode where";
 
 		if (order_statuss.size()>0){
 			hql=hql+" c_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(order_statuss);

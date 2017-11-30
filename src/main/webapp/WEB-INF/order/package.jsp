@@ -65,7 +65,8 @@ function pickup_barcode(){
 						"vehicle":$('#deliver_div_order_vehicle').val()
 					},
 					function(result) {
-						var field = result.msg;
+						var field=result.msg;
+						ajax_authority(field);
 
 						if (field.success) {
 
@@ -153,6 +154,7 @@ function pickup_barcode(){
 
 		}, function(result) {
 			var field=result.msg;
+			ajax_authority(field);
 			
 
 			if (field.success) {
@@ -215,6 +217,8 @@ function pickup_barcode(){
 			"order_no" : order_no
 
 		}, function(result) {
+			var field=result.msg;
+			ajax_authority(field);
 
 			$('#new_deliver_order_no').val(order_no);
 			$('#new_deliver_express_no').val("");
@@ -465,6 +469,8 @@ function pickup_barcode(){
 			order_status:$('#order_status').val()
 
 		}, function(result) {
+			var field=result.msg;
+			ajax_authority(field);
 			
 			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
 			$('#order_list_table').datagrid('loadData', result);
@@ -479,7 +485,8 @@ function pickup_barcode(){
 
 		}, function(result) {
 			
-
+			var field=result.msg;
+			ajax_authority(field);
 				
 					var count = parseInt(result, 10);
 					var rows_in_page = parseInt($('#rows_in_page').val(), 10);
@@ -838,9 +845,11 @@ function pickup_barcode(){
 
 			$.getJSON("get_picked_barcode.action", {
 
-			}, function(data) {
+			}, function(result) {
 
-				var field=data.msg;
+				
+				var field=result.msg;
+				ajax_authority(field);
 
 				if (field.success) {
 					var o=field.o;
@@ -866,8 +875,10 @@ function pickup_barcode(){
 
 			$.getJSON("get_need_pickup.action", {
 				order_no : $("#new_deliver_order_no").val()
-			}, function(data) {
-				var field=data.msg;
+			}, function(result) {
+				
+				var field=result.msg;
+				ajax_authority(field);
 				var o=field.o;
 				$("#new_deliver_need_table").datagrid('loadData', {
 					total : o.length,
@@ -890,10 +901,11 @@ function pickup_barcode(){
 				url : "get_picked_barcode.action",
 
 				async : false,
-				success : function(data) {
+				success : function(result) {
 
 
-					var field=data.msg;
+					var field=result.msg;
+					ajax_authority(field);
 
 					if (field.success) {
 						var o=field.o;
@@ -919,6 +931,7 @@ function pickup_barcode(){
 				"vehicle":$('#deliver_div_order_vehicle').val()
 			}, function(result) {
 				var field=result.msg;
+				ajax_authority(field);
 
 				if (field.success) {
 						//body 是返回的seq序号
@@ -1058,6 +1071,7 @@ function pickup_barcode(){
 
 			}, function(result) {
 				var field=result.msg;
+				ajax_authority(field);
 				
 
 				if (field.success) {
@@ -1141,10 +1155,8 @@ function pickup_barcode(){
 									express_no : $('#change_express_no').val()
 								},
 								function(result) {
-									$
-											.each(
-													result,
-													function(i, field) {
+									var field=result.msg;
+									ajax_authority(field);
 
 														if (field.success) {
 															alert('更新成功');
@@ -1174,7 +1186,7 @@ function pickup_barcode(){
 																	+ field.body);
 														}
 
-													});
+													
 								});
 
 			} else {
