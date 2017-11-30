@@ -35,7 +35,7 @@ public class GetWarehouseDetailByWarehouseAction   extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "set_user_default", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Authority(module = "set_user_default", privilege = "[00020001]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub

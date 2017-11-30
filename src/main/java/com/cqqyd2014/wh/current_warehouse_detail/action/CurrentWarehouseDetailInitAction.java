@@ -47,7 +47,7 @@ public class CurrentWarehouseDetailInitAction extends OrderPagesInit {
     )    
 
 })  
-	@Authority(module="pickup_package", privilege="[00010003]",error_url="login") 
+	@Authority(module="pickup_package", privilege="[00020001]",error_url="login") 
 	public String pickup_package_init() throws Exception{
 	execute();
 		
