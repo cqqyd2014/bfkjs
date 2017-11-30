@@ -3,7 +3,7 @@ package com.cqqyd2014.print.pdf.action;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.util.HashMap;
+
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
 
+@SuppressWarnings("serial")
 public abstract class PrintLogisticsBilUsingPDF  extends ActionSupport implements SessionAware,ServletResponseAware, ServletContextAware {
 
 	HttpServletResponse response;

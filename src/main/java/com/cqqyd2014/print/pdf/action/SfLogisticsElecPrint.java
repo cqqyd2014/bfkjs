@@ -8,6 +8,7 @@ import com.cqqyd2014.express.common.ExpressBillModel;
 import com.cqqyd2014.express.sf.BillSf;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
+@SuppressWarnings("serial")
 public class SfLogisticsElecPrint extends PrintLogisticsBilUsingPDF{
 	String order_no;
 	String seq;

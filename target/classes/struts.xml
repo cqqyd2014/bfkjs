@@ -50,7 +50,7 @@
 	</package>
 
 
-
+<include file="struts-module-print.xml"></include>
 
 
 

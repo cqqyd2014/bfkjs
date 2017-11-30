@@ -143,72 +143,7 @@ function pickup_barcode(){
 
 
 
-	function view_deliver_div(order_no, seq) {
 
-		$('#view_deliver_order_no').val(order_no);
-		$('#view_deliver_seq').val(seq);
-
-		$.getJSON("view_deliver_bill_init.action", {
-			"order_no" : order_no,
-			"seq" : seq
-
-		}, function(result) {
-			var field=result.msg;
-			ajax_authority(field);
-			
-
-			if (field.success) {
-				var deliver_bill = field.o;
-				var goods = field.o2;
-
-				$('#deliver_status').text(deliver_bill.deliver_bill_status);
-				$("#deliver_no2").val(deliver_bill.deliver_no);
-
-				$("#order_no2").val(deliver_bill.order_no);
-				$("#express_com2").val(deliver_bill.express_com_name);
-				$("#express_no2").val(deliver_bill.express_no);
-				$('#express_code2').val(deliver_bill.express_com);
-				$('#view_prepack_sn').val(deliver_bill.pre_package_barcode);
-
-				var n = deliver_bill.dbds.length;
-
-				$("#deliverViewPickupTable").datagrid('loadData', {
-					total : n,
-					rows : deliver_bill.dbds
-				});
-
-				var n2 = goods.length;
-
-				$("#deliverViewBarcodeTable").datagrid('loadData', {
-					total : n2,
-					rows : goods
-				});
-
-				$("#view_logistics_id").val(field.express_com_id);
-				/*
-				
-				
-				
-				
-				 
-
-				
-
-				 //var dataJson=JSON.parse(list1.list);
-				
-				 */
-
-				 dialog_init('view_deliver_div');
-				$('#view_deliver_div').dialog('open');
-
-			}
-			else{
-
-				$.messager.alert("操作提示", "获取运单基本信息出错！原因：" + field.body,
-				"error");
-			}
-		});
-	}
 
 	function new_deliver_div(order_no, logistics, logistics_name, vehicle,
 			vehicle_name) {
@@ -956,7 +891,7 @@ function pickup_barcode(){
 
 
 
-	<div id="view_deliver_div" class="easyui-dialog" title="发货单"
+	<div id="view_deliver_div" class="easyui-dialog" title="查看发货单"
 		style="width: 600px; height: 400px; padding: 10px"
 		data-options="	iconCls: 'qyd',	buttons: '#view_deliver_buttons'">
 
@@ -967,14 +902,16 @@ function pickup_barcode(){
 
 		<table width="100%" class='box'>
 			<tr>
-				<td colspan='2'>发货仓库：<span id="view_deliver_div_wh_name"></span>发货单状态：<span id="deliver_status">发货单 </span></td>
+				<td colspan='2'>发货仓库：<span id="view_deliver_div_wh_name"><input type="hidden"
+					name="view_wh_id" id="view_wh_id"></span>发货单状态：<span id="deliver_status">发货单 </span></td>
 			</tr>
 			<tr>
 				<td width="50%">订单编号：<input type="text" name="order_no2"
 					id="order_no2" readonly="readonly" /></td>
 				<td width="50%" colspan="2">发货单号：<input type="text"
 					name="deliver_no2" id="deliver_no2" style="width: 250px;"
-					readonly="readonly" /></td>
+					readonly="readonly" /><input type="hidden"
+					name="seq2" id="seq2"></td>
 
 			</tr>
 			<tr>
@@ -991,7 +928,11 @@ function pickup_barcode(){
 
 			</tr>
 			<tr>
-				<td colspan='2'>预包装编号：<input type="text" name="view_prepack_sn"
+				<td>运输方式：<input type="text" name="express_vehicle_name2"
+					id="express_vehicle_name2" readonly="readonly" /> <input type="hidden"
+					name="express_vehicle_code2" id="express_vehicle_code2">
+				</td>
+				<td>预包装编号：<input type="text" name="view_prepack_sn"
 					id="view_prepack_sn" readonly="readonly" /></td>
 				
 			<tr>
@@ -1000,7 +941,11 @@ function pickup_barcode(){
 					onclick="javascript:deliverViewKd100()" iconCls="qyd">查询物流<kuaidi100></kuaidi100></a>
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 					onclick="javascript:print_express($('#order_no2').val(),$('#view_logistics_id').val(),'','','','','','','','','BIG_')"
-					iconCls="qyd">打印</a> <a href="javascript:void(0)"
+					iconCls="qyd">打印</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton"
+					onclick="javascript:print_express($('#order_no2').val(),$('#seq2').val(),$('#express_code2').val(),$('#express_vehicle_code2').val(),'ELEC',$('#view_wh_id').val(),'<s:property value="#request.user_id" />')"
+					iconCls="qyd">打印电子面单</a>
+					 <a href="javascript:void(0)"
 					class="easyui-linkbutton"
 					onclick="javascript:change_express($('#order_no2').val(),$('#view_deliver_seq').val())"
 					iconCls="qyd">更新运单</a></td>
@@ -1058,6 +1003,80 @@ function pickup_barcode(){
 			onclick="javascript:$('#view_deliver_div').dialog('close')">关闭</a>
 	</div>
 	<script language='javascript' type='text/javascript'>
+	function view_deliver_div(order_no, seq) {
+
+		$('#view_deliver_order_no').val(order_no);
+		$('#view_deliver_seq').val(seq);
+
+		$.getJSON("view_deliver_bill_init.action", {
+			"order_no" : order_no,
+			"seq" : seq
+
+		}, function(result) {
+			var field=result.msg;
+			ajax_authority(field);
+			
+
+			if (field.success) {
+				var deliver_bill = field.o;
+				var goods = field.o2;
+
+				$('#deliver_status').text(deliver_bill.deliver_bill_status);
+				$("#deliver_no2").val(deliver_bill.deliver_no);
+
+				$("#order_no2").val(deliver_bill.order_no);
+				$("#express_com2").val(deliver_bill.express_com_name);
+				$("#express_no2").val(deliver_bill.express_no);
+				$('#express_code2').val(deliver_bill.express_com);
+				$('#view_prepack_sn').val(deliver_bill.pre_package_barcode);
+				$('#seq2').val(deliver_bill.seq);
+				$('#express_vehicle_code2').val(deliver_bill.vehicle_id);
+
+				$('#express_vehicle_name2').val(deliver_bill.vehicle_name);
+				$('#view_wh_id').val(deliver_bill.wh_id);
+				var n = deliver_bill.dbds.length;
+
+				$("#deliverViewPickupTable").datagrid('loadData', {
+					total : n,
+					rows : deliver_bill.dbds
+				});
+
+				var n2 = goods.length;
+
+				$("#deliverViewBarcodeTable").datagrid('loadData', {
+					total : n2,
+					rows : goods
+				});
+
+				$("#view_logistics_id").val(field.express_com_id);
+				/*
+				
+				
+				
+				
+				 
+
+				
+
+				 //var dataJson=JSON.parse(list1.list);
+				
+				 */
+
+				 dialog_init('view_deliver_div');
+				$('#view_deliver_div').dialog('open');
+
+			}
+			else{
+
+				$.messager.alert("操作提示", "获取运单基本信息出错！原因：" + field.body,
+				"error");
+			}
+		});
+	}
+
+
+
+	
 		//$("#deliverView").dialog('close');
 		
 		function cancel_deliver_bill(order_no,seq){
