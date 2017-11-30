@@ -4,12 +4,15 @@
 
 DROP VIEW v_order_main_goods_barcode;
 
+DROP VIEW v_deliver_yue;
 
+
+DROP VIEW v_deliver_d;
 
 DROP VIEW v_order_main;
 
 CREATE OR REPLACE VIEW v_order_main AS 
- SELECT t1.paid,t1.paid_money,t1.paid_time,t1.c_qty,t1.c_tax2,t1.c_reg_tax2,t1.c_amount2 original_amount2,t1.actual_amount2,t1.cancel_request_dat, t1.cancel_confirm_dat, t1.cancel_status, 
+ SELECT t1.c_tell receiver_mobile,t1.paid,t1.paid_money,t1.paid_time,t1.c_qty,t1.c_tax2,t1.c_reg_tax2,t1.c_amount2 original_amount2,t1.actual_amount2,t1.cancel_request_dat, t1.cancel_confirm_dat, t1.cancel_status, 
     t1.cancel_request_userid, t1.cancel_confirm_userid, t1.cancel_request_memo, 
     t1.cancel_confirm_memo, t2.name AS sys_user_name, t00.vehicle_id, 
     t00.vehicle_name, t0.logistics_id, t0.logistics_name, t1.user_com, t1.tell2, 
@@ -44,13 +47,13 @@ CREATE OR REPLACE VIEW v_order_main AS
 
 
 
-DROP VIEW v_deliver_yue;
 
 
-DROP VIEW v_deliver_d;
+
+
 
 CREATE OR REPLACE VIEW v_deliver_d AS 
- SELECT t8.addr_district,t8.addr_city,t8.addr_province,t8.c_tell,t8.tell2,t8.c_user_addr,t8.c_user_name,t8.order_dat,t8.sys_user_name create_user_name
+ SELECT t9.name send_user_name,t8.receiver_mobile,t8.addr_district,t8.addr_city,t8.addr_province,t8.c_tell,t8.tell2,t8.c_user_addr,t8.c_user_name,t8.order_dat,t8.sys_user_name create_user_name
  ,t8.original_id,t3.returned, t3.returned_memo, t3.returned_dat, t3.returned_userid, 
     t2.effective, t2.sended, t2.deliver_bill_status, t0.wh_name, t2.wh_id, 
     t2.com_id, t5.logistics_name AS deliver_express_com_name, 
@@ -59,8 +62,8 @@ CREATE OR REPLACE VIEW v_deliver_d AS
     t2.order_no, t2.seq, t3.goods_id, t6.c_name, t3.net_weight, t3.gross_weight, 
     t3.uuid AS deliver_d_uuid, t3.package_weight, t2.deliver_no, 
     t7.s_value AS unit
-   FROM warehouse t0, deliver_m t2, deliver_d t3, logistics_company t5, 
-    goods_info t6, sys_code t7,v_order_main t8
+   FROM warehouse t0, deliver_d t3, logistics_company t5, 
+    goods_info t6, sys_code t7,v_order_main t8, deliver_m t2 left outer join sys_user t9 on (t2.send_userid=t9.id and t2.com_id=t9.com_id)
   WHERE t2.com_id = t3.com_id AND t2.order_no = t3.order_no AND t2.seq = t3.seq 
   AND t6.unit::text = t7.s_code::text AND t5.logistics_id::text = t2.express_com::text 
   AND t6.c_id::text = t3.goods_id::text AND t6.com_id::bpchar = t3.com_id

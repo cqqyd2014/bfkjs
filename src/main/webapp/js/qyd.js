@@ -24,7 +24,7 @@ function dialog_init_little(o){
 	//$('#'+o).panel("move",{top : $(document).scrollTop()+ ($(window).height() - dialog_height_little) * 0.5	});
 }
 
-//ajax未认证处理
+//ajax未认证处理，中心框架用
 
 function ajax_authority(field){
 	if (field==null){
@@ -42,6 +42,16 @@ function ajax_authority2(field){
 	}
 	if (!field.auth_success){
 		window.parent.location.href="/Bfkjs";
+	}
+	
+}
+//无框架使用
+function ajax_authority2(field){
+	if (field==null){
+		return;
+	}
+	if (!field.auth_success){
+		window.location.href="/Bfkjs";
 	}
 	
 }

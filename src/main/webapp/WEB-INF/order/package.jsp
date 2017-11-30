@@ -762,10 +762,10 @@ function pickup_barcode(){
 					onclick="javascript:set_default('default_logistics_vehicle',$('#new_deliver_logistics_vehicle').val())"
 					iconCls="qyd">默认</a> <a id="b_new_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.userid" />')"
+					onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
 					iconCls="qyd">打印多联纸质快递单</a> <a id="b_electric_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.userid" />')"
+					onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
 					iconCls="qyd">打印电子面单</a>
 			</div>
 			<div>
