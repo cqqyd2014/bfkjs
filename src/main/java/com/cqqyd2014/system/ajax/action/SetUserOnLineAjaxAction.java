@@ -26,7 +26,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
-@Namespace("/order")
+@Namespace("/system")
 public class SetUserOnLineAjaxAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
@@ -41,7 +41,7 @@ public class SetUserOnLineAjaxAction extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Authority(module = "set_user_online", privilege = "*", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub
