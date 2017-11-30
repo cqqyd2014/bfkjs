@@ -11,7 +11,8 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
 import org.hibernate.HibernateException;
-
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
@@ -94,7 +95,10 @@ public String execute() {
 // TODO Auto-generated method stub
 super.execute();
 sm.setAuth_success(true);
-		
+Session session = HibernateSessionFactory.getSession();
+
+
+Transaction tx = session.beginTransaction();
 		try {
 			
 			

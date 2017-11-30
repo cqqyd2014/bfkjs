@@ -45,7 +45,7 @@ sm.setAuth_success(true);
 				.get("temp_deliver_picked_sn");
 		
 
-		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		sm.setSuccess(true);
 		sm.setO(odis);
 		msg = sm.toMap();
