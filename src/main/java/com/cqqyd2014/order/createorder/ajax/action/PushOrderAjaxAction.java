@@ -1,33 +1,31 @@
 package com.cqqyd2014.order.createorder.ajax.action;
 
-import java.math.RoundingMode;
+
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.order.logic.LogisticsLogic;
 import com.cqqyd2014.order.logic.OrderLogic;
 import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class PushOrderAjaxAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class PushOrderAjaxAction extends UserLoginedAction {
 	
 	public String original_no;
 	public String OrderFrom;
@@ -76,15 +74,17 @@ public class PushOrderAjaxAction extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "push_order", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String push_order() {
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		//String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+	@Action(value = "push_order", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 				.get("temp_order_detail");
 		Session session = HibernateSessionFactory.getSession();
@@ -138,8 +138,8 @@ public class PushOrderAjaxAction extends ActionSupport {
 		order.setCard_pay(new java.math.BigDecimal(0));
 		//测试是否有not_air商品
 		boolean not_air=false;
-		com.cqqyd2014.hibernate.dao.VGoodsInfoDAO gidao = new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
-		com.cqqyd2014.hibernate.dao.EcsTaxRateDAO etrdao = new com.cqqyd2014.hibernate.dao.EcsTaxRateDAO();
+		//com.cqqyd2014.hibernate.dao.VGoodsInfoDAO gidao = new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
+		//com.cqqyd2014.hibernate.dao.EcsTaxRateDAO etrdao = new com.cqqyd2014.hibernate.dao.EcsTaxRateDAO();
 		
 		order.setDetail_memo("");
 		//财务申报的增值税
@@ -152,9 +152,9 @@ public class PushOrderAjaxAction extends ActionSupport {
 		order.setOriginal_amount2(new java.math.BigDecimal(0));
 		//计算商品数量
 		java.math.BigDecimal qty=new java.math.BigDecimal(0);
-		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods=new java.util.ArrayList<>();
+		//java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods=new java.util.ArrayList<>();
 		
-		com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupadao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
+		//com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupadao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
 		String order_no = com.cqqyd2014.order.logic.OrderNo.createNo(session,order.getOrder_type_code(),order.getCom_id());
 		order.setOrder_no(order_no);
 				for (int i=0;i<odis.size();i++){

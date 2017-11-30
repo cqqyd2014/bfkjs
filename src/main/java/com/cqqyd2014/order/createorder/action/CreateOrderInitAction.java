@@ -25,6 +25,11 @@ import com.cqqyd2014.order.model.OrderFromUser;
 @Namespace(value="/order") //表示当前Action所在命名空间  
 @ParentPackage("bfkjs-default") 
 public class CreateOrderInitAction extends UserLoginedAction {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	String logistics;
 	
 	String vehicle;
@@ -125,7 +130,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	
 
 
-	@Authority(module="mainframe", privilege="[00010001]",error_url="login") 
+	@Authority(module="mainframe", privilege="[00010001]",error_url="authority_error") 
 	@Override
 	public String execute() {
 		// TODO Auto-generated method stub

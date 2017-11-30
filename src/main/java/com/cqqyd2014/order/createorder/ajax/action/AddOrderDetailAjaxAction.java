@@ -1,30 +1,31 @@
 package com.cqqyd2014.order.createorder.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.math.RoundingMode;
 import java.util.Map;
 
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.hibernate.dao.VInventoryByGoodsIdAvailableDAO;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
+
 @SuppressWarnings("serial")
-public class AddOrderDetailAjaxAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class AddOrderDetailAjaxAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -81,14 +82,16 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 		this.unit = unit;
 	}
 
-	@Action(value = "add_order_detail", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String add_order_detail() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "add_order_detail", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 				.get("temp_order_detail");
@@ -105,7 +108,7 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 			java.util.ArrayList<java.math.BigDecimal> ert = etrdao.getRegTax(session, vgi.getId().getCHs());
 		com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO fgpdao = new com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO();
 		com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupadao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
-		java.util.LinkedHashMap<String, java.math.BigDecimal> odis_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(odis.toArray(), "getGoods_id", "getNum");
+		java.util.LinkedHashMap<String, java.math.BigDecimal> odis_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(odis, "getGoods_id", "getNum");
 		// 先看看这个goods_id是否在订单明细中是否存在
 		if (odis_map.get(goods_id)!=null) {
 			//存在，更新数量
@@ -135,6 +138,7 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 			od.setCom_id(com_id);
 			od.setDetail_id(com.cqqyd2014.util.StringUtil.getUUID());
 			od.setGoods_id(goods_id);
+			od.setGoods_name(gi.getGoods_name());
 			od.setMemo(getWarehouseMemo(session,goods_id,c_count,com_id));
 			od.setNot_air(gi.isNot_air());
 			od.setNum(c_count);
@@ -142,7 +146,7 @@ public class AddOrderDetailAjaxAction extends ActionSupport {
 			od.setOrder_no("");
 			java.util.Date now=new java.util.Date();
 			//得到客户价格
-			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=vupadao.getGoodsInfos(session, goods_id, com_id, userid,now);
+			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=vupadao.getGoodsInfos(session, goods_id, com_id, user_id,now);
 			
 			od.setPrice(vupa.getId().getUserPrice());
 			//得到财务入账价格

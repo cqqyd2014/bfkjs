@@ -25,24 +25,26 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 		// 检查Action类AnnotationTest是否含有@Authority注解
 		// 有注解，必定有session中的user_id等，如果取不到，那么肯定没有登录
 		if (currentMethod.isAnnotationPresent(Authority.class)) {
+			// 取得权限验证的注解
+						Authority authority = currentMethod.getAnnotation(Authority.class);
+						// 取得当前请求的注解的action
+						String module = authority.module();
+						// 取得当前请求需要的权限
+						String privilege = authority.privilege();
+//			取得错误返回地址
+					String error_url=authority.error_url();
 			// 从session里取得当前的用户
 			String user_id = (String) ServletActionContext.getRequest().getSession().getAttribute("user_id");
-			if (user_id == null) {
-				return "login";
+			if (user_id == null||user_id .equals("")) {
+				return error_url;
 			}
 			// 取到权限
 
 			@SuppressWarnings("unchecked")
 			java.util.ArrayList<String> menu_array = (java.util.ArrayList<String>) ServletActionContext.getRequest()
 					.getSession().getAttribute("menu_array");
-			// 取得权限验证的注解
-			Authority authority = currentMethod.getAnnotation(Authority.class);
-			// 取得当前请求的注解的action
-			String module = authority.module();
-			// 取得当前请求需要的权限
-			String privilege = authority.privilege();
-			//	取得错误返回地址
-			String error_url=authority.error_url();
+			
+			
 			// 如果权限为"*"，则不需要任何权限,只需要登录就行
 			if (privilege.equals("*")) {
 				return invocation.invoke();

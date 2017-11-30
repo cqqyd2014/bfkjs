@@ -53,7 +53,7 @@
 	 * jquery 定时刷新
 	 * edit 
 	 */
-	//setInterval("Push()", <s:property value="#request.interval_time" /> * 1000);
+	setInterval("Push()", <s:property value="#request.interval_time" /> * 1000);
 	function Push() {
 		
 		$.ajax({
@@ -92,7 +92,7 @@
 	<td rowspan="2" width="40%" align="left" ><h1>MIS 2017V3.0</h1>
 	</td>
 	<td width="60%" align="right">
-	当前时间：<span id="current_time"><s:property value="#request.chineseDate"/></span>      登录用户：<s:property value="#request.user_name" />
+	当前时间：<span id="current_time"><s:property value="#request.chineseDate"/></span>登录用户：<s:property value="#request.user_name" />
 		
 		
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:exit()">退出</a>

@@ -48,8 +48,15 @@ function login(){
 
 $(document).ready(function() {
 	//$("#login_dialog").panel("move",{top:$(document).scrollTop() + ($(window).height()-250) * 0.5});  
+	dialog_init_mid('login_dialog');
+	$('#login_dialog').dialog('open');
 
 });
+
+
+function root(){
+	window.location.href="../";
+}
 </script>
 
 </head>
@@ -61,10 +68,10 @@ $(document).ready(function() {
 	<div id="login_dialog" 
 		style="width: 450px; height: 220px;"
 		class="easyui-dialog" title="登录系统" iconCls="qyd"
-		
+		data-options="	iconCls: 'qyd',	buttons: '#login_buttons'"
 		>
 		
-	<table>
+	<table style="width: 100%">
 	<tr>
 		<td width="30%">公司名称：
 		</td>
@@ -92,16 +99,16 @@ $(document).ready(function() {
 	</table>
 			
 			
-			<div style="padding: 5px; text-align: center;">
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:login()"
-					icon="icon-ok">登录</a> <a href="
-					javascript:void(0)"" class="easyui-linkbutton" icon="icon-cancel">取消</a>
-			</div>
+			
 
 		
 	</div>
 
-
+	<div id="login_buttons">
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:login()"
+					icon="icon-ok">登录</a> <a href="
+					javascript:void(0)"" class="easyui-linkbutton" icon="icon-cancel" onclick="javascript:root()">取消</a>
+	</div>
 
 
 

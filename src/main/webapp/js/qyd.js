@@ -23,6 +23,16 @@ function dialog_init_little(o){
 	$('#'+o).window('center'); 
 	//$('#'+o).panel("move",{top : $(document).scrollTop()+ ($(window).height() - dialog_height_little) * 0.5	});
 }
+
+//ajax未认证处理
+
+function ajax_authority(field){
+	if (!field.auth_success){
+		window.parent.parent.location.href="/Bfkjs";
+	}
+	
+}
+
 //供使用者调用  
 function trim(s){  
     return trimRight(trimLeft(s));  

@@ -7,8 +7,10 @@ import org.hibernate.Transaction;
 
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 
-public class UserLoginedAction {
+@SuppressWarnings("serial")
+public class UserLoginedAction extends ActionSupport {
 	
 	public com.cqqyd2014.util.AjaxSuccessMessage sm;
 	public String user_id;

@@ -4,29 +4,31 @@ package com.cqqyd2014.order.pickup_package.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
+import com.cqqyd2014.express.sf.bsp.BspException;
 import com.cqqyd2014.express.sf.bsp.impl.BspHttpClientOrderConfirm;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.hibernate.dao.SfResponseOrderBackDAO;
 
 
 import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
+
 @SuppressWarnings("serial")
-public class CancelDeliverBillAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class CancelDeliverBillAction extends UserLoginedAction {
 	String order_no;
 	String seq;
 
@@ -56,14 +58,16 @@ public class CancelDeliverBillAction extends ActionSupport {
 		this.msg = msg;
 	}
 
-	@Action(value = "cancel_deliver_bill", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String cancel_deliver_bill() throws Exception {
-
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "cancel_deliver_bill", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
@@ -80,12 +84,12 @@ public class CancelDeliverBillAction extends ActionSupport {
 			
 			
 			db.setCancel_confirm_memo("拣货阶段手动取消");
-			db.setCancel_confirm_userid(userid);
+			db.setCancel_confirm_userid(user_id);
 			java.util.Date now=new java.util.Date();
 			db.setCancel_confrim_dat(now);
 			db.setCancel_request_dat(now);
 			db.setCancel_request_memo("拣货阶段手动取消");
-			db.setCancel_request_userid(userid);
+			db.setCancel_request_userid(user_id);
 			db.setCancel_status("取消成功");
 			com.cqqyd2014.order.logic.DeliverMLogic.save(session, db);
 			//如果快递是顺丰，查看是否电子面单，如果电子面单，做取消处理
@@ -111,7 +115,7 @@ public class CancelDeliverBillAction extends ActionSupport {
 			
 			for (int i=0;i<dbds.size();i++) {
 				com.cqqyd2014.order.model.DeliverBillDetail dbd=dbds.get(i);
-				com.cqqyd2014.wh.logic.GoodsLogic.ReturnLockItemToDefault(session, dbd.getGoods_barcode(), com_id,userid);
+				com.cqqyd2014.wh.logic.GoodsLogic.ReturnLockItemToDefault(session, dbd.getGoods_barcode(), com_id,user_id);
 				com.cqqyd2014.wh.logic.Storage.ReturnLockItemToDefault(session,dbd.getGoods_barcode(), db.getWh_id(), new java.math.BigDecimal(1), com_id);
 				//订单打包，减少"仓库锁定"的数量
 				//com.cqqyd2014.wh.logic.WareHouse.orderUnLock(session, g.getGoods_id(), new java.math.BigDecimal(1), com_id);
@@ -136,6 +140,10 @@ public class CancelDeliverBillAction extends ActionSupport {
 		catch (AjaxSuccessMessageException e) {
 			sm.setSuccess(false);
 			sm.setBody(e.getMessageString());
+		}
+		catch (BspException e) {
+			sm.setSuccess(false);
+			sm.setBody(e.getMessage());
 		}
 		finally {
 			HibernateSessionFactory.closeSession();

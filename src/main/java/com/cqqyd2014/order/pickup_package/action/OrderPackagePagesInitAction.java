@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Scope;
 
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.order.common.OrderPagesInit;
-
+@SuppressWarnings("serial")
 @Scope("prototype")//支持多例  
 @ParentPackage("bfkjs-default") 
 @Namespace(value="/order") //表示当前Action所在命名空间 
@@ -26,7 +26,7 @@ public class OrderPackagePagesInitAction  extends OrderPagesInit{
 		 @Action( //表示请求的Action及处理方法  
 		            value="order_package_init",  //表示action的请求名称  
 		            results={  //表示结果跳转  
-		                    @Result(name="success",location="/WEB-INF/order/package.jsp"),  
+		                    @Result(name="success",location="/WEB-INF/order/package.jsp")
 		                    
 		            },
 		            interceptorRefs={  

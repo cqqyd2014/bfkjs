@@ -1,29 +1,33 @@
 package com.cqqyd2014.order.pickup_package.ajax.action;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
+
 import java.util.Date;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.Session;
 
+import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.order.common.ajax.action.OrderCountAjaxAction;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
+
 @SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
 
 public class GetWaitPackageCountAction extends OrderCountAjaxAction{
 	
 
-	@Action(value = "get_wait_package_count", results = { @Result(type = "json", params = { "root", "msg" }) })
+	@Action(value = "get_wait_package_count", results = { @Result(type = "json", params = { "root", "msg" })  }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
 	@Override
 	public String getJson() throws Exception {
 		// TODO Auto-generated method stub

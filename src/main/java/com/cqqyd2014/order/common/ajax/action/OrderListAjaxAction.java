@@ -1,23 +1,20 @@
 package com.cqqyd2014.order.common.ajax.action;
 
-import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.ServletActionContext;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.hibernate.dao.DeliverMDAO;
+
 import com.cqqyd2014.order.logic.OrderLogic;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
 
-public abstract class OrderListAjaxAction extends ActionSupport{
+
+@SuppressWarnings("serial")
+public abstract class OrderListAjaxAction extends UserLoginedAction{
 	java.util.ArrayList<com.cqqyd2014.order.model.Order> msg;
 	public java.util.ArrayList<com.cqqyd2014.order.model.Order> getMsg() {
 		return msg;
@@ -133,12 +130,7 @@ public abstract class OrderListAjaxAction extends ActionSupport{
 		// TODO Auto-generated method stub
 
 
-		//String user_name = (String) this.session.get("USER_NAME");
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-		String user = (String) session_http.get("USER");
-		//String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+		super.execute();
 		
 		Session session = HibernateSessionFactory.getSession();
 
@@ -160,9 +152,9 @@ public abstract class OrderListAjaxAction extends ActionSupport{
 
 			
 			
-			com.cqqyd2014.hibernate.dao.VOrderMainDAO vomdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
+			//com.cqqyd2014.hibernate.dao.VOrderMainDAO vomdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
 			
-			com.cqqyd2014.hibernate.dao.DeliverMDAO dmdao=new DeliverMDAO();
+			//com.cqqyd2014.hibernate.dao.DeliverMDAO dmdao=new DeliverMDAO();
 			if (rows==null){
 				rows="10";
 			}

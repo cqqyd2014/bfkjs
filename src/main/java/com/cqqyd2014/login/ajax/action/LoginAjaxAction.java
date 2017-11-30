@@ -97,6 +97,7 @@ public class LoginAjaxAction extends ActionSupport {
 				sldao.saveLog(session, b.getId(), "登录系统,来自IP：" + ip, "1", com_id);
 				sldao = null;
 				sm.setSuccess(true);
+				sm.setAuth_success(true);
 
 			
 			tx.commit();

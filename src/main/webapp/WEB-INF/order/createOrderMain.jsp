@@ -516,14 +516,16 @@
 
 	//模糊/精确查询goods_id
 	function getGoodsPrice(fuzzy) {
+		
 
 		$.getJSON("get_goods_info.action", {
-			"goods_id" : $("#goods_id").val(),
-			fuzzy : fuzzy
+			goods_id:$("#goods_id").val(),
+			fuzzy:fuzzy
 
 		}, function(result) {
 
-			$.each(result, function(i, field2) {
+			var field2=result.msg;
+			ajax_authority(field2);
 
 				if (field2.success) {
 					var o = field2.o;
@@ -562,7 +564,7 @@
 
 				}
 
-			});
+			
 
 		});
 
@@ -640,13 +642,14 @@
 
 	function show_table_goods_pirce() {
 
-		$.getJSON("GetGoodsInfo.action", {
+		$.getJSON("get_goods_info.action", {
 			"goods_id" : $("#goods_id").val(),
 			fuzzy : true
 
 		}, function(result) {
 
-			$.each(result, function(i, field) {
+			var field=result.msg;
+			ajax_authority(field);
 
 				if (field.success) {
 
@@ -663,7 +666,7 @@
 
 				}
 
-			});
+			
 
 		});
 

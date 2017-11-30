@@ -4,26 +4,27 @@ package com.cqqyd2014.order.pickup_package.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
 import com.cqqyd2014.util.hashmap.HashMapToolsCompareResult;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
+
 @SuppressWarnings("serial")
-public class PickupGoodsBarcodeAction extends ActionSupport{
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class PickupGoodsBarcodeAction extends UserLoginedAction{
 	String pickup_barcode;
 	String order_no;
 	String seq;
@@ -97,16 +98,16 @@ public class PickupGoodsBarcodeAction extends ActionSupport{
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "pickup_goodsbarcode", results = { @Result(type = "json", params = { "root", "msg" }) })
-public String pickup_goodsbarcode() throws Exception  {
-		
-
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "pickup_goodsbarcode", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 
@@ -119,7 +120,7 @@ public String pickup_goodsbarcode() throws Exception  {
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VPickupYue> vpys=dydao.getArrayListViewByOrderNo(session, order_no, com_id);
 			
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbs=com.cqqyd2014.order.logic.DeliverDLogic.getArrayListModelFromArrayListView2(vpys);
-			java.util.LinkedHashMap<String,java.math.BigDecimal> order_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(dbs.toArray(), "getGoods_id", "getYue");
+			java.util.LinkedHashMap<String,java.math.BigDecimal> order_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(dbs, "getGoods_id", "getYue");
 			
 			
 			//商品条码只能是14位或者22位，预包装是18位
@@ -203,8 +204,8 @@ public String pickup_goodsbarcode() throws Exception  {
 					db.setLogistics_fb_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 					db.setLogistics_fb_memo("");
 					db.setLogistics_fb_status("");
-					db.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getGoods_barcode"));
-					db.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds.toArray(), "getGoods_name"));
+					db.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds, "getGoods_barcode"));
+					db.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(ppds, "getGoods_name"));
 					db.setNum(new java.math.BigDecimal(ppds.size()));
 					db.setOrder_no(order_no);
 					db.setPackage_dat(new java.util.Date());

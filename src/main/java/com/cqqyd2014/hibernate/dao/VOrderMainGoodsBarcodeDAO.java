@@ -49,7 +49,7 @@ public class VOrderMainGoodsBarcodeDAO {
 			hql=hql+"and deliver_express_no like \'%"+express_no+"%\' ";
 		}
 		hql=hql+"and order_dat between \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(start_dat)+"\' and \'"+com.cqqyd2014.util.DateUtil.JDateToFullString(end_dat)+"\' group by order_no) t1";
-		System.out.println(hql);
+		//System.out.println(hql);
 		hql=hql.replace("where and ", "where ");
 		return (java.math.BigInteger)session.createSQLQuery(hql).uniqueResult();
 

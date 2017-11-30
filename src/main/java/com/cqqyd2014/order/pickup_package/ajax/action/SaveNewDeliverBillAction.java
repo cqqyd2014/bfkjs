@@ -5,26 +5,24 @@ package com.cqqyd2014.order.pickup_package.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class SaveNewDeliverBillAction extends ActionSupport{
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class SaveNewDeliverBillAction extends UserLoginedAction{
 	String wh_id;
 	public String getWh_id() {
 		return wh_id;
@@ -86,19 +84,16 @@ public class SaveNewDeliverBillAction extends ActionSupport{
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "save_new_deliver_bill", results = { @Result(type = "json", params = { "root", "msg" }) })
-public String save_new_deliver_bill() throws Exception {
-		
-
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String com_id = (String) session_http.get("com_code");
-
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
-		String userid=(String)session_http.get("USER_ID");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "save_new_deliver_bill", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		
 		try {
 			
@@ -107,7 +102,7 @@ public String save_new_deliver_bill() throws Exception {
 			com.cqqyd2014.hibernate.entities.VOrderMain vom=vomdao.getVOrderMain(session, com_id, order_no);
 			
 			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getOrderModelFromHiberanteEntities(vom);
-			if (com.cqqyd2014.order.logic.OrderLogic.check_if_cancel(session, order, userid, "保存发货单")){
+			if (com.cqqyd2014.order.logic.OrderLogic.check_if_cancel(session, order, user_id, "保存发货单")){
 				sm.setSuccess(false);
 				sm.setBody("订单已经被客户申请取消");
 				msg = sm.toMap();
@@ -125,6 +120,7 @@ public String save_new_deliver_bill() throws Exception {
 			db.setSeq(seq);
 			
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=new java.util.ArrayList<>();
+			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.wh.model.Goods> odis= (java.util.ArrayList<com.cqqyd2014.wh.model.Goods>) session_http
 					.get("temp_deliver_picked_sn");
 			com.cqqyd2014.hibernate.dao.GoodsInfoDAO gidao=new com.cqqyd2014.hibernate.dao.GoodsInfoDAO();
@@ -153,7 +149,7 @@ public String save_new_deliver_bill() throws Exception {
 				dbd.setUuid(com.cqqyd2014.util.StringUtil.getUUID());
 				dbds.add(dbd);
 				
-				com.cqqyd2014.wh.logic.GoodsLogic.LockItemsForPickup(session, g.getBarcode(), com_id,userid);
+				com.cqqyd2014.wh.logic.GoodsLogic.LockItemsForPickup(session, g.getBarcode(), com_id,user_id);
 				com.cqqyd2014.wh.logic.Storage.LockItemsForPickup(session,g.getGoods_id(), wh_id, new java.math.BigDecimal(1), com_id);
 				
 				com.cqqyd2014.wh.logic.Storage.addStorage(session, g.getGoods_id(), "ORDER_", "DEFAUL", new java.math.BigDecimal("-1"), com_id);
@@ -190,7 +186,7 @@ public String save_new_deliver_bill() throws Exception {
 			db.setLogistics_fb_memo("");
 			db.setLogistics_fb_status("");
 			db.setOrder_no(order_no);
-			db.setPackage_userid(userid);
+			db.setPackage_userid(user_id);
 			db.setPre_package_barcode("");
 			db.setSend_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			db.setSend_user_assgin_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
@@ -199,8 +195,8 @@ public String save_new_deliver_bill() throws Exception {
 			db.setVehicle_id(vehicle);
 			db.setWh_id(wh_id);
 			db.setSend_userid("");
-			db.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis.toArray(), "getBarcode"));
-			db.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis.toArray(), "getGoods_name"));
+			db.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getBarcode"));
+			db.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getGoods_name"));
 
 			com.cqqyd2014.order.logic.DeliverMLogic.save(session, db);
 			
