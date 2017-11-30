@@ -1,18 +1,22 @@
 package com.cqqyd2014.wh.deliverbill.common.ajax.action;
 
 import java.util.Date;
-import java.util.Map;
 
+
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.hibernate.dao.DeliverMDAO;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-public abstract class DeliverListAction extends ActionSupport{
+
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public abstract class DeliverListAction extends UserLoginedAction{
 	java.util.ArrayList<com.cqqyd2014.order.model.DeliverBill> msg;
 	public java.util.ArrayList<com.cqqyd2014.order.model.DeliverBill> getMsg() {
 		return msg;
@@ -133,15 +137,7 @@ public abstract class DeliverListAction extends ActionSupport{
 		
 		
 
-		// TODO Auto-generated method stub
-
-
-		//String user_name = (String) this.session.get("USER_NAME");
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-		String user = (String) session_http.get("USER");
-		//String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+		super.execute();
 		java.util.ArrayList<com.cqqyd2014.order.model.DeliverBill> dbs=null;
 		Session session = HibernateSessionFactory.getSession();
 
@@ -165,7 +161,7 @@ public abstract class DeliverListAction extends ActionSupport{
 			
 			
 			
-			com.cqqyd2014.hibernate.dao.DeliverMDAO dmdao=new DeliverMDAO();
+			//com.cqqyd2014.hibernate.dao.DeliverMDAO dmdao=new DeliverMDAO();
 			if (rows==null){
 				rows="10";
 			}
@@ -184,7 +180,7 @@ public abstract class DeliverListAction extends ActionSupport{
 				dbs=new java.util.ArrayList<>();
 			}
 			else {
-				java.util.ArrayList<com.cqqyd2014.hibernate.entities.DeliverM> voms=dmdao.getArrayListByDeliverNoArray(session, arraylist_delivers, com_id);
+				//java.util.ArrayList<com.cqqyd2014.hibernate.entities.DeliverM> voms=dmdao.getArrayListByDeliverNoArray(session, arraylist_delivers, com_id);
 				
 				
 				

@@ -1,16 +1,22 @@
 package com.cqqyd2014.wh.deliverbill.common.action;
 
-import java.util.Map;
 
+
+
+
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-public class DeliverBillPagesInitAction extends ActionSupport {
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class DeliverBillPagesInitAction extends UserLoginedAction {
 	java.util.LinkedHashMap<String, String> wh_map;
 	String default_warehouse;
 	public String getDefault_warehouse() {
@@ -25,12 +31,7 @@ public class DeliverBillPagesInitAction extends ActionSupport {
 	public void setWh_map(java.util.LinkedHashMap<String, String> wh_map) {
 		this.wh_map = wh_map;
 	}
-	public String getUserid() {
-		return userid;
-	}
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
+
 
 	int pageSize;
 	public int getPageSize() {
@@ -40,15 +41,11 @@ public class DeliverBillPagesInitAction extends ActionSupport {
 		this.pageSize = pageSize;
 	}	
 	
-	String userid;
+
 	public void init() throws Exception{
 
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		 userid= (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+		super.execute();
+		sm.setAuth_success(true);
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
@@ -57,8 +54,8 @@ public class DeliverBillPagesInitAction extends ActionSupport {
 			
 			wh_map=whdao.getUserWareHouseMapByComId(session, com_id);
 			com.cqqyd2014.hibernate.dao.UserParDAO updao=new com.cqqyd2014.hibernate.dao.UserParDAO();
-			pageSize=Integer.parseInt(updao.getValue(session, userid, com_id, "default_rows_in_page"));
-			default_warehouse=updao.getValue(session, userid, com_id, "default_warehouse");
+			pageSize=Integer.parseInt(updao.getValue(session, user_id, com_id, "default_rows_in_page"));
+			default_warehouse=updao.getValue(session, user_id, com_id, "default_warehouse");
 			tx.commit();
 		
 		} catch (HibernateException e) {

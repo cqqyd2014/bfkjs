@@ -38,6 +38,7 @@ function show_wh_by_goods_id_div(){
 	$.getJSON("GetWhByGoodsId.action", {
 		
 	}, function(result) {
+		
 		$('#wh_by_goods_id').empty();
 		var html='';
 		html=html+'<div class=\'wh_list\'>';
@@ -75,6 +76,7 @@ function show_wh_by_goods_id_div(){
 			var html='';
 			
 			var field=result.msg;
+			ajax_authority(field);
 				if (field.success){
 					html=html+'<table width=\'100%\'>';
 					var data=field.o;

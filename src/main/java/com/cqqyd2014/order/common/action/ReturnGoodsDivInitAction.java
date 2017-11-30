@@ -17,6 +17,7 @@ import com.cqqyd2014.order.model.OrderFromUser;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
+@SuppressWarnings("serial")
 @Scope("prototype")//支持多例  
 @ParentPackage("struts-default")  //表示继承的父包  
 @Namespace(value="/order/common") //表示当前Action所在命名空间  

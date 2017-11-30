@@ -1,16 +1,19 @@
 package com.cqqyd2014.wh.deliverbill.common.ajax.action;
 
-import java.util.Date;
-import java.util.Map;
 
+
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-public abstract class DeliverCountAction extends ActionSupport{
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public abstract class DeliverCountAction extends UserLoginedAction{
 	
 	
 	public  abstract java.math.BigInteger getCount(Session session,java.util.Date start_dat,java.util.Date end_dat,String goods_barcode,String deliverbill_status ,String express_com,String express_no,String com_id,String rows,String receiver_name,String receiver_mobile,String reciever_addr,String page,String send_user,String create_userid,String order_no);
@@ -137,11 +140,7 @@ public abstract class DeliverCountAction extends ActionSupport{
 
 
 		//String user_name = (String) this.session.get("USER_NAME");
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-		String user = (String) session_http.get("USER");
-		//String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+		super.execute();
 		
 		Session session = HibernateSessionFactory.getSession();
 
