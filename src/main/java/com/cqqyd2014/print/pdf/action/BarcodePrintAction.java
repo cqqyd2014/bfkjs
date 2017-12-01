@@ -88,9 +88,8 @@ public class BarcodePrintAction   extends ActionSupport implements ServletRespon
 	public InputStream getInputStream()  {
 		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
+		
+		String user_id = (String) session_http.get("user_id");
 		String com_id = (String) session_http.get("com_code");
 		
 		Session session = HibernateSessionFactory.getSession();

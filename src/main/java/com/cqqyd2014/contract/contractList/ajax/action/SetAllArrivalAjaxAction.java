@@ -44,7 +44,7 @@ public class SetAllArrivalAjaxAction    extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "set_all_arrival", privilege = "[00050003]", error_url = "authority_ajax_error")
+@Authority(module = "set_all_arrival", privilege = "[00030002]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub

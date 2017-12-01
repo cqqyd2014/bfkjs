@@ -42,7 +42,7 @@ public class GetContractAjaxAction   extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "add_contract_detail_in_session", privilege = "[00050003]", error_url = "authority_ajax_error")
+@Authority(module = "get_contract", privilege = "[00030002]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub

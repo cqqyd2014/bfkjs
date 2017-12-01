@@ -22,6 +22,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 		Class clazz = invocation.getAction().getClass(); // 获取类对象
 		@SuppressWarnings("unchecked")
 		Method currentMethod = clazz.getMethod(methodName);
+		
 		// 检查Action类AnnotationTest是否含有@Authority注解
 		// 有注解，必定有session中的user_id等，如果取不到，那么肯定没有登录
 		if (currentMethod.isAnnotationPresent(Authority.class)) {
@@ -29,6 +30,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 						Authority authority = currentMethod.getAnnotation(Authority.class);
 						// 取得当前请求的注解的action
 						String module = authority.module();
+						//System.out.println(module);
 						// 取得当前请求需要的权限
 						String privilege = authority.privilege();
 //			取得错误返回地址
@@ -64,6 +66,7 @@ public class AuthorityInterceptor extends AbstractInterceptor {
 				logger.info(log);
 				logger.info("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 				*/
+				//System.out.println("ok");
 				return invocation.invoke();
 			} else {
 				return error_url;

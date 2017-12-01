@@ -59,6 +59,7 @@ public class ContractListInitAction extends UserLoginedAction {
 		} finally {
 			HibernateSessionFactory.closeSession();
 		}
+		//System.out.println("init_ok");
 		return "success";
 		
 		

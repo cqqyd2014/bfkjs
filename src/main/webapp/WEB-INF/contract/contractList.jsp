@@ -110,6 +110,9 @@ function new_contract(){
 					total : n,
 					rows : o
 				});
+
+
+				dialog_init('contract_detail');
 				$('#contract_detail').dialog('open');
 
 			}
@@ -234,10 +237,10 @@ alert("没有找到要删除的商品");
 
 	function show_contract_table() {
 
-		$.getJSON("get_contract_list.action", {}, function(result) {
+		$.getJSON("get_contract_array_list.action", {}, function(result) {
 				var field=result.msg;
 			
-
+				ajax_authority(field);
 				if (field.success) {
 					var o = field.o;
 					var n = o.length;
@@ -257,8 +260,8 @@ alert("没有找到要删除的商品");
 	$(document).ready(function() {
 		//对话框初始化
 		
-		$('#contract_detail').window('resize',{width:dialog_width,height:dialog_height});
 		
+		dialog_init('contract_detail');
 
 		
 		$('#contract_table').datagrid({  
@@ -437,7 +440,7 @@ alert("没有找到要删除的商品");
 			//rownumbers: true, 
 			fitColumns : false
 		});
-		$('#contract_detail').dialog('close');
+		
 		show_contract_table();
 	});
 </script>
