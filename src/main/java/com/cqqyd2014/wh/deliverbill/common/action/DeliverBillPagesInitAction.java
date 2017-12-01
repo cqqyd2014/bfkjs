@@ -1,15 +1,11 @@
 package com.cqqyd2014.wh.deliverbill.common.action;
 
 
-
-
-
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
@@ -42,7 +38,7 @@ public class DeliverBillPagesInitAction extends UserLoginedAction {
 	}	
 	
 
-	public void init() throws Exception{
+	public void init() {
 
 		super.execute();
 		sm.setAuth_success(true);

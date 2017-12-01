@@ -15,7 +15,7 @@ public class QuotaTransLogic {
 		java.math.BigDecimal begin_amount=sysuser.getQuotaCurrent();
 		java.math.BigDecimal begin_freez_amount=sysuser.getQuotaFreez();
 		java.math.BigDecimal add_amount=sysuser.getQuotaAdd();
-		java.math.BigDecimal substract_amount=sysuser.getQuotaSubtract();
+		//java.math.BigDecimal substract_amount=sysuser.getQuotaSubtract();
 		com.cqqyd2014.hibernate.entities.QuotaTrans qt=new com.cqqyd2014.hibernate.entities.QuotaTrans();
 		com.cqqyd2014.hibernate.entities.QuotaTransId qtid=new com.cqqyd2014.hibernate.entities.QuotaTransId();
 		qtid.setComId(com_id);

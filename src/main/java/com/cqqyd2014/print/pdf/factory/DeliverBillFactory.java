@@ -2,7 +2,7 @@ package com.cqqyd2014.print.pdf.factory;
 
 import java.util.ArrayList;
 
-import com.cqqyd2014.wh.model.Goods;
+
 
 public class DeliverBillFactory {
 	public static ArrayList<com.cqqyd2014.order.model.DeliverBill> getBeanCollection(){

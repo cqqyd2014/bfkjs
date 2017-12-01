@@ -3,25 +3,25 @@ package com.cqqyd2014.quota.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.context.annotation.Scope;
 
+
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.quota.logic.QuotaTransLogic;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@Scope("prototype")//支持多例  
-@ParentPackage("json-default")  //表示继承的父包  
-@Namespace(value="/quota") //表示当前Action所在命名空间  
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
-public class RedFlagQuotaAction     extends ActionSupport {
+
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/system")
+public class RedFlagQuotaAction     extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -31,8 +31,16 @@ public class RedFlagQuotaAction     extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	String userid;
-	
+
+	String sys_user_id;
+	public String getSys_user_id() {
+		return sys_user_id;
+	}
+
+	public void setSys_user_id(String sys_user_id) {
+		this.sys_user_id = sys_user_id;
+	}
+
 	String uuid;
 
 
@@ -44,37 +52,30 @@ public class RedFlagQuotaAction     extends ActionSupport {
 		this.uuid = uuid;
 	}
 
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
 
 
-	@Action(value = "red_flag_quota", results = { @Result(type = "json", params = { "root", "msg" }) })
-
-	public String red_flag_quota() throws Exception {
-		
-		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		
-		String com_id = (String) session_http.get("com_code");
-		String op_user_id=(String)session_http.get("USER_ID");
+	@Action(value = "red_flag_quota", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "red_flag_quota", privilege = "[00050003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 
 Session session = HibernateSessionFactory.getSession();
 Transaction tx = session.beginTransaction();
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		try {
 			com.cqqyd2014.hibernate.dao.QuotaTransDAO qtdao=new com.cqqyd2014.hibernate.dao.QuotaTransDAO();
-			com.cqqyd2014.hibernate.entities.QuotaTrans qt=qtdao.getObjectByUuid(session, com_id, uuid, userid);
+			com.cqqyd2014.hibernate.entities.QuotaTrans qt=qtdao.getObjectByUuid(session, com_id, uuid, user_id);
 			
 			qt.setStatus("已经冲销");
 			session.saveOrUpdate(qt);
 			
-			QuotaTransLogic.changeQuota(session, com_id, userid, op_user_id, "0007", qt.getTransAmount(), "", "", uuid);
+			QuotaTransLogic.changeQuota(session, com_id, sys_user_id, user_id, "0007", qt.getTransAmount(), "", "", uuid);
 			
 				
 				sm.setSuccess(true);

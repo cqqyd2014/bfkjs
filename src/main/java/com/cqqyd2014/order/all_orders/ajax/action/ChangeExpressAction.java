@@ -1,27 +1,27 @@
 package com.cqqyd2014.order.all_orders.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class ChangeExpressAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class ChangeExpressAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -73,14 +73,16 @@ public void setExpress_no(String express_no) {
 		this.order_no = order_no;
 	}
 
-	@Action(value = "change_express", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String change_express() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "change_express", results = { @Result(type = "json", params = { "root", "msg" })  }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "set_all_arrival", privilege = "[00010002]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();

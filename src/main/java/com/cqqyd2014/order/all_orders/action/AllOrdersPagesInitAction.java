@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.order.common.OrderPagesInit;
 
+@SuppressWarnings("serial")
 @Scope("prototype")//支持多例  
 @ParentPackage("bfkjs-default") 
 @Namespace(value="/order") //表示当前Action所在命名空间 

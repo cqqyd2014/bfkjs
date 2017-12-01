@@ -1,29 +1,29 @@
 package com.cqqyd2014.order.all_orders.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.hibernate.dao.VWeixinScanQrLogDAO;
 import com.cqqyd2014.util.hashmap.HashMapToolsCompareResult;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class ReturnGoodsAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class ReturnGoodsAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -85,15 +85,16 @@ public class ReturnGoodsAction extends ActionSupport {
 		this.order_no = order_no;
 	}
 
-	@Action(value = "return_goods", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String return_goods() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
-		
+	@Action(value = "return_goods", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "set_all_arrival", privilege = "[00010002]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -118,12 +119,12 @@ public class ReturnGoodsAction extends ActionSupport {
 			//计算退回的金额
 			java.math.BigDecimal return_value=com.cqqyd2014.order.logic.OrderLogic.getGoodsValue(session, order, ods, goods_barcode, com_id);
 			rg.setReturn_pirce(return_value);
-			rg.setReturn_userid(userid);
+			rg.setReturn_userid(user_id);
 			rg.setSeq(seq);
 			rg.setUuid(com.cqqyd2014.util.StringUtil.getUUID());
 			com.cqqyd2014.order.logic.ReturnGoodsLogic.save(session, rg);
 			//退备用金
-			com.cqqyd2014.quota.logic.QuotaTransLogic.changeQuota(session, com_id, order.getUser_id(), userid, "0005", return_value, "退货退费", order.getOrder_no(), "");
+			com.cqqyd2014.quota.logic.QuotaTransLogic.changeQuota(session, com_id, order.getUser_id(), user_id, "0005", return_value, "退货退费", order.getOrder_no(), "");
 			//处理发货单明细
 			com.cqqyd2014.hibernate.dao.VDeliverDDAO dddao=new com.cqqyd2014.hibernate.dao.VDeliverDDAO();
 			com.cqqyd2014.hibernate.entities.VDeliverD dd=dddao.getViewByOrderNoSeqGoodsBarcode(session, order_no, seq, goods_barcode, com_id);
@@ -142,7 +143,7 @@ public class ReturnGoodsAction extends ActionSupport {
 			java.util.Date return_dat=new java.util.Date();
 			dbd.setReturned_dat(return_dat);
 			dbd.setReturned_memo(memo);
-			dbd.setReturned_userid(userid);
+			dbd.setReturned_userid(user_id);
 			com.cqqyd2014.order.logic.DeliverDLogic.save(session, dbd);
 			//清理微信查询记录
 			com.cqqyd2014.hibernate.dao.VWeixinScanQrLogDAO logdao=new VWeixinScanQrLogDAO();
@@ -150,16 +151,16 @@ public class ReturnGoodsAction extends ActionSupport {
 			com.cqqyd2014.weixin.logic.ScanQrLogLogic.cleanLogs(session, com.cqqyd2014.weixin.logic.ScanQrLogLogic.getArrayListModelFromArrayListViews(logs));
 			//生成日志
 			com.cqqyd2014.hibernate.dao.OrderLogDAO oldao=new com.cqqyd2014.hibernate.dao.OrderLogDAO();
-			oldao.addLog(session, order_no, "订单退货，商品id"+goods_id+"，条码"+goods_barcode, "0003", com_id, userid);
+			oldao.addLog(session, order_no, "订单退货，商品id"+goods_id+"，条码"+goods_barcode, "0003", com_id, user_id);
 			com.cqqyd2014.hibernate.dao.VGoodsDAO vgdao=new com.cqqyd2014.hibernate.dao.VGoodsDAO();
 			com.cqqyd2014.hibernate.entities.VGoods vg=vgdao.getEntityViewByBarcode(session, com_id, goods_barcode);
 			com.cqqyd2014.wh.model.Goods g=com.cqqyd2014.wh.logic.GoodsLogic.getModelFromEntity(vg);
 			
 			session.flush();
 			//处理商品库位
-			com.cqqyd2014.wh.logic.GoodsLogic.GoodsReturn(session, goods_barcode, wh_id, return_dat, com_id, userid);
+			com.cqqyd2014.wh.logic.GoodsLogic.GoodsReturn(session, goods_barcode, wh_id, return_dat, com_id, user_id);
 			com.cqqyd2014.wh.logic.Storage.ReturnGoods(session, goods_id, wh_id, new java.math.BigDecimal(1), com_id);
-			com.cqqyd2014.wh.logic.IntoWh.numChange(session, com_id,g.getInto_wh_uuid() , goods_id, new java.math.BigDecimal(1), "0003", userid);
+			com.cqqyd2014.wh.logic.IntoWh.numChange(session, com_id,g.getInto_wh_uuid() , goods_id, new java.math.BigDecimal(1), "0003", user_id);
 			//处理订单标志
 			java.util.LinkedHashMap<String, java.math.BigDecimal> order_detail_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(ods, "getGoods_id", "getNum");
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds_return=dddao.getArrayListViewByOrderNoReturned(session, com_id, order_no);
@@ -181,7 +182,7 @@ public class ReturnGoodsAction extends ActionSupport {
 			java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> deliver_return_array=(java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail>)com.cqqyd2014.util.ArrayListTools.getArrayListSearchBooleanField(dbds, "isReturned", true);
 			java.util.LinkedHashMap<String, java.math.BigDecimal> deliver_return_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMapCount(deliver_return_array, "getGoods_id");
 			HashMapToolsCompareResult rs2=com.cqqyd2014.util.HashMapTools.compare(deliver_map, deliver_return_map);
-			if (rs1.isFlag()) {
+			if (rs2.isFlag()) {
 				//所有商品都退货了
 				
 				db.setDeliver_bill_status("退货完成");

@@ -1,29 +1,27 @@
 package com.cqqyd2014.order.all_orders.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.hibernate.dao.VWeixinScanQrLogDAO;
-import com.cqqyd2014.util.hashmap.HashMapToolsCompareResult;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class CancelOrderAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class CancelOrderAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -60,14 +58,16 @@ public class CancelOrderAction extends ActionSupport {
 		this.order_no = order_no;
 	}
 
-	@Action(value = "cancel_order", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String cancel_order() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "cancel_order", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "set_all_arrival", privilege = "[00010002]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
@@ -85,7 +85,7 @@ public class CancelOrderAction extends ActionSupport {
 			java.util.Date now=new java.util.Date();
 			order.setCancel_request_dat(now);
 			order.setCancel_request_memo(cancel_memo);
-			order.setCancel_request_userid(userid);
+			order.setCancel_request_userid(user_id);
 			order.setCancel_status("申请取消");
 			//根据状态
 			//1、“订单生成”，只锁定的order库房的数量，没有拣货
@@ -97,7 +97,7 @@ public class CancelOrderAction extends ActionSupport {
             case "订单生成":
                 //设置退货完成
             	order.setCancel_confirm_memo("订单处于-订单生成状态-取消");
-            	order.setCancel_confirm_userid(userid);
+            	order.setCancel_confirm_userid(user_id);
             	order.setCancel_confrim_dat(now);
             	order.setCancel_status("取消成功");
             	order.setOrder_status("取消成功");
@@ -111,7 +111,7 @@ public class CancelOrderAction extends ActionSupport {
             case "订单已付":
                 //设置退货完成
             	order.setCancel_confirm_memo("订单处于-订单已付状态-取消");
-            	order.setCancel_confirm_userid(userid);
+            	order.setCancel_confirm_userid(user_id);
             	order.setCancel_confrim_dat(now);
             	order.setCancel_status("取消成功");
             	order.setOrder_status("取消成功");
@@ -121,7 +121,7 @@ public class CancelOrderAction extends ActionSupport {
             		com.cqqyd2014.wh.logic.Storage.addStorage(session, od.getGoods_id(), "ORDER_", "DEFAUL", od.getNum().multiply(new java.math.BigDecimal(-1)), order.getCom_id());
             	}
             	//退款
-            	com.cqqyd2014.quota.logic.QuotaTransLogic.changeQuota(session, com_id, userid, userid, "0003", order.getActual_amount(), "已经付款订单取消解冻", order.getOrder_no(), "");
+            	com.cqqyd2014.quota.logic.QuotaTransLogic.changeQuota(session, com_id, order.getUser_id(), user_id, "0003", order.getActual_amount(), "已经付款订单取消解冻", order.getOrder_no(), "");
             	
             	
                 break;

@@ -1,30 +1,27 @@
 package com.cqqyd2014.wh.make_new_barcode.ajax.action;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ServletActionContext;
+
+
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.hibernate.dao.VInventoryByGoodsIdAvailableDAO;
-import com.cqqyd2014.util.message.IfMessage;
-import com.cqqyd2014.util.taobao.OrderAutoAnalysisException;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class MakeNewBarcodeAjaxAction  extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class MakeNewBarcodeAjaxAction  extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -52,21 +49,21 @@ public class MakeNewBarcodeAjaxAction  extends ActionSupport {
 		this.c_goods_id = c_goods_id;
 	}
 
-	@Action(value = "make_new_barcode", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String make_new_barcode() {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
-		
+	@Action(value = "make_new_barcode", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "set_all_arrival", privilege = "[00020002]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		
 		try {
-			sm=com.cqqyd2014.wh.logic.GoodsLogic.makeBarcode(session, com_id, c_goods_id, num,user_id,"",new java.math.BigDecimal(0));
+			com.cqqyd2014.wh.logic.GoodsLogic.makeBarcode(session, com_id, c_goods_id, num,user_id,"",new java.math.BigDecimal(0));
 			sm.setSuccess(true);
 			
 			tx.commit();

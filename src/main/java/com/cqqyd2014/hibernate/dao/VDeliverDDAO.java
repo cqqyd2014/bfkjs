@@ -150,7 +150,7 @@ public class VDeliverDDAO {
 	}
 
 	
-	public java.util.LinkedHashMap<String, java.math.BigDecimal> getGoodsIdMapByOrderSended(Session session,String orderNo,String com_id) throws Exception{
+	public java.util.LinkedHashMap<String, java.math.BigDecimal> getGoodsIdMapByOrderSended(Session session,String orderNo,String com_id) {
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverD> vdds=getArrayListViewByOrderNoSended(session,orderNo,com_id);
 		
 		java.util.ArrayList<com.cqqyd2014.order.model.DeliverBillDetail> dbds=com.cqqyd2014.order.logic.DeliverDLogic.getArrayModelFromArrayView(vdds);

@@ -1,9 +1,10 @@
 package com.cqqyd2014.wh.move_warehouse.action;
 
-import java.util.Map;
+
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -12,14 +13,16 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
+
 
 @Scope("prototype")//支持多例  
-@ParentPackage("struts-default")  //表示继承的父包  
+@ParentPackage("bfkjs-default")  
 @Namespace(value="/wh") //表示当前Action所在命名空间  
-public class MoveWareHouseInitAction extends ActionSupport {
+public class MoveWareHouseInitAction extends UserLoginedAction {
 	/**
 	 * 
 	 */
@@ -56,21 +59,23 @@ public class MoveWareHouseInitAction extends ActionSupport {
 		 @Action( //表示请求的Action及处理方法  
 		            value="move_warehouse_init",  //表示action的请求名称  
 		            results={  //表示结果跳转  
-		                    @Result(name="success",location="/WEB-INF/wh/move_warehouse.jsp"),  
-		                    
-		            }
-		    )    
-	   
-	   })  
-	
+		                    @Result(name="success",location="/WEB-INF/wh/move_warehouse.jsp")},
+		            interceptorRefs={  
+                            @InterceptorRef("authorityInterceptor")  
+            }
+    )    
 
-	public String move_warehouse_init() throws Exception {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
+})  
 
-		//String user = (String) session_http.get("USER");
-		//String user_name = (String) session_http.get("USER_NAME");
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+
+
+
+
+@Authority(module="move_warehouse_init", privilege="[00020008]",error_url="authority_error") 
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
 
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
@@ -80,7 +85,7 @@ public class MoveWareHouseInitAction extends ActionSupport {
 			
 			com.cqqyd2014.hibernate.dao.UserParDAO cpcdao = new com.cqqyd2014.hibernate.dao.UserParDAO();
 			
-			wh_id = cpcdao.getValue(session, userid, com_id, "default_warehouse");
+			wh_id = cpcdao.getValue(session, user_id, com_id, "default_warehouse");
 			
 			
 			com.cqqyd2014.hibernate.dao.WareHouseDAO whdao = new com.cqqyd2014.hibernate.dao.WareHouseDAO();

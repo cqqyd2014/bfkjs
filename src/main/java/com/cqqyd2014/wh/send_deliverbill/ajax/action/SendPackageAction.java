@@ -4,26 +4,26 @@ package com.cqqyd2014.wh.send_deliverbill.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 import com.cqqyd2014.wh.logic.IntoWh;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class SendPackageAction   extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class SendPackageAction   extends UserLoginedAction {
 	String deliver_no;
 	String wh_id;
 	public String getWh_id() {
@@ -45,14 +45,16 @@ public class SendPackageAction   extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "send_package", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String send_package() throws Exception {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "send_package", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_wait_send_deliver_list", privilege = "[00010004]", error_url = "authority_ajax_error")
+	@Override
+	public String execute() {
+	// TODO Auto-generated method stub
+	super.execute();
+	sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -77,14 +79,14 @@ public class SendPackageAction   extends ActionSupport {
 			
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.DeliverD> dds=dddao.getEntityByOrderNoSeq(session, order_no, seq, com_id);
 			for (int i=0;i<dds.size();i++) {
-				com.cqqyd2014.wh.logic.GoodsLogic.LockItemToSaleItem(session,dds.get(i).getGoodsBarcode(), com_id,userid);
+				com.cqqyd2014.wh.logic.GoodsLogic.LockItemToSaleItem(session,dds.get(i).getGoodsBarcode(), com_id,user_id);
 				com.cqqyd2014.wh.logic.Storage.LockItemToSaleItem(session,dds.get(i).getGoodsId(), wh_id, new java.math.BigDecimal(1), com_id);
 				com.cqqyd2014.hibernate.entities.VGoods vg=vgdao.getEntityViewByBarcode(session, com_id, dds.get(i).getGoodsBarcode());
-				IntoWh.numChange(session,com_id,vg.getId().getIntoWhUuid(),vg.getId().getGoodsId(),new java.math.BigDecimal(-1),"0002",userid);
+				IntoWh.numChange(session,com_id,vg.getId().getIntoWhUuid(),vg.getId().getGoodsId(),new java.math.BigDecimal(-1),"0002",user_id);
 			}
 			
 			
-			com.cqqyd2014.order.logic.OrderLogic.afterSendedPackage(session, order_no, com_id,userid);
+			com.cqqyd2014.order.logic.OrderLogic.afterSendedPackage(session, order_no, com_id,user_id);
 			
 			
 			

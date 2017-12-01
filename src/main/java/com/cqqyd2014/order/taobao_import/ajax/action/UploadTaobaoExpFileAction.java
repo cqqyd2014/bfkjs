@@ -3,48 +3,42 @@ package com.cqqyd2014.order.taobao_import.ajax.action;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
+
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.hibernate.dao.VInventoryByGoodsIdAvailableDAO;
+
 import com.cqqyd2014.order.taobao_import.logic.TwoFileToOrders;
-import com.cqqyd2014.util.message.IfMessage;
+
 import com.cqqyd2014.util.table.Table;
 import com.cqqyd2014.util.table.element.Row;
-import com.cqqyd2014.util.taobao.OrderAutoAnalysisException;
+
 import com.csvreader.CsvReader;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/order")
 
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
 @SuppressWarnings("serial")
-public class UploadTaobaoExpFileAction extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/order")
+public class UploadTaobaoExpFileAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -97,9 +91,16 @@ public class UploadTaobaoExpFileAction extends ActionSupport {
 	/**
 	 * 文件上传关键方法。
 	 */
-	@Action(value = "upload", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String upload() {
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "upload", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_temp_order_detail", privilege = "[00010005]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		// 文件所放的文件夹。，
 		// 有关路径问题，请参考另一篇博文：http://www.cnblogs.com/xiaoMzjm/p/3878758.html
 		//String root = ServletActionContext.getServletContext().getRealPath("/") + File.separator+"upload"+File.separator;
@@ -184,11 +185,7 @@ public class UploadTaobaoExpFileAction extends ActionSupport {
 			Transaction tx = session.beginTransaction();
 			
 			try {
-				Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-				String com_id = (String) session_http.get("com_code");
-				String user_id = (String) session_http.get("USER_ID");
+				
 				//多次提交之后，order_from会重复“TB,TB”
 				order_from=order_from.substring(0,order_from.indexOf(","));
 			tft.process(session, ts.get(0), ts.get(1), com_id, order_from,user_id);

@@ -4,8 +4,7 @@ package com.cqqyd2014.order.logic;
 
 import org.hibernate.Session;
 
-import com.cqqyd2014.express.sf.bsp.BspException;
-import com.cqqyd2014.express.sf.bsp.impl.BspHttpClientOrderConfirm;
+
 import com.cqqyd2014.hibernate.dao.SfResponseOrderBackDAO;
 
 import com.cqqyd2014.order.model.Order;

@@ -3,26 +3,26 @@ package com.cqqyd2014.quota.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.context.annotation.Scope;
 
+
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 import com.cqqyd2014.quota.logic.QuotaTransLogic;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@Scope("prototype")//支持多例  
-@ParentPackage("json-default")  //表示继承的父包  
-@Namespace(value="/quota") //表示当前Action所在命名空间  
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
-public class SaveAddQuotaAction     extends ActionSupport {
+
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/system")
+public class SaveAddQuotaAction     extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -32,7 +32,7 @@ public class SaveAddQuotaAction     extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	String userid;
+	String sys_user_id;
 	String memo;
 	public String getMemo() {
 		return memo;
@@ -44,12 +44,13 @@ public class SaveAddQuotaAction     extends ActionSupport {
 	java.math.BigDecimal amount;
 
 
-	public String getUserid() {
-		return userid;
+
+	public String getSys_user_id() {
+		return sys_user_id;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setSys_user_id(String sys_user_id) {
+		this.sys_user_id = sys_user_id;
 	}
 
 	public java.math.BigDecimal getAmount() {
@@ -60,24 +61,24 @@ public class SaveAddQuotaAction     extends ActionSupport {
 		this.amount = amount;
 	}
 
-	@Action(value = "save_add_quota", results = { @Result(type = "json", params = { "root", "msg" }) })
-
-	public String save_add_quota() throws Exception {
-		
-		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		
-		String com_id = (String) session_http.get("com_code");
-		String op_user_id=(String)session_http.get("USER_ID");
+	@Action(value = "save_add_quota", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "save_add_quota", privilege = "[00050003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 
 Session session = HibernateSessionFactory.getSession();
 Transaction tx = session.beginTransaction();
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		try {
 			
 			
-			QuotaTransLogic.changeQuota(session, com_id, userid, op_user_id, "0001", amount, memo, "", "");
+			QuotaTransLogic.changeQuota(session, com_id, sys_user_id, user_id, "0001", amount, memo, "", "");
 			
 				
 				sm.setSuccess(true);

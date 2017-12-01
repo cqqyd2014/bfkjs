@@ -361,10 +361,10 @@ public class GoodsLogic {
 	
 	//生成条码的处理
 	
-	public static com.cqqyd2014.util.AjaxSuccessMessage makeBarcode(Session session,String com_id,String goods_id,int num,String user_id,String contract_id,java.math.BigDecimal contract_price){
+	public static void makeBarcode(Session session,String com_id,String goods_id,int num,String user_id,String contract_id,java.math.BigDecimal contract_price){
 		
 		
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		
 			com.cqqyd2014.hibernate.dao.VGoodsInfoDAO gid=new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
 			String snCode=gid.getSnCode(session, goods_id, com_id);
@@ -425,12 +425,7 @@ public class GoodsLogic {
 				
 			}
 			
-			sm.setSuccess(true);
 			
-			
-
-	
-		return sm;
 	}
 	
 	

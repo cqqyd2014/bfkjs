@@ -1,28 +1,27 @@
 package com.cqqyd2014.wh.search_goods_barcode.ajax.action;
 
-import java.lang.reflect.InvocationTargetException;
+
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
 @SuppressWarnings("serial")
-public class SearchGoodsBarcodeAction   extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class SearchGoodsBarcodeAction   extends UserLoginedAction {
 	String goods_barcode;
 
 	
@@ -42,12 +41,16 @@ public class SearchGoodsBarcodeAction   extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "search_goods_barcode", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String search_goods_barcode() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-
-		String com_id = (String) session_http.get("com_code");
+	@Action(value = "search_goods_barcode", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_unprinted_prepackage_barcode", privilege = "[00020006]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();

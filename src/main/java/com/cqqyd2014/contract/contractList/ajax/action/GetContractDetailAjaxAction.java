@@ -2,26 +2,24 @@ package com.cqqyd2014.contract.contractList.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Actions;
+
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
-import org.hibernate.HibernateException;
+
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.springframework.context.annotation.Scope;
 
+
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@Scope("prototype")//支持多例  
-@ParentPackage("json-default")  //表示继承的父包  
-@Namespace(value="/contract") //表示当前Action所在命名空间  
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
-public class GetContractDetailAjaxAction  extends ActionSupport {
+
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/contract")
+public class GetContractDetailAjaxAction  extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -40,21 +38,20 @@ public class GetContractDetailAjaxAction  extends ActionSupport {
 		this.contract_no = contract_no;
 	}
 
-	@Action(value = "get_contract_detail", results = { @Result(type = "json", params = { "root", "msg" }) })
-
-	public String get_contract_detail() throws Exception {
-		
-		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+	@Action(value = "get_contract_detail", results = { @Result(type = "json", params = { "root", "msg" })  }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "add_contract_detail_in_session", privilege = "[00050003]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		
 Session session = HibernateSessionFactory.getSession();
 		
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		//com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
 		try {
 			
 			

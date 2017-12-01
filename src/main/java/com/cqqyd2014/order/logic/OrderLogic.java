@@ -1,6 +1,6 @@
 package com.cqqyd2014.order.logic;
 
-import java.lang.reflect.InvocationTargetException;
+
 
 import java.util.Map;
 
@@ -22,7 +22,7 @@ public class OrderLogic {
 	
 	
 	//计算退货金额
-	public static java.math.BigDecimal getGoodsValue(Session session,com.cqqyd2014.order.model.Order order,java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods,String goods_barcode,String com_id) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static java.math.BigDecimal getGoodsValue(Session session,com.cqqyd2014.order.model.Order order,java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods,String goods_barcode,String com_id) {
 		//订单总商品金额
 		java.math.BigDecimal goods_total=order.getActual_amount().subtract(order.getShip_fee());
 		//明细总金额
@@ -35,7 +35,7 @@ public class OrderLogic {
 		java.math.BigDecimal goods_value=goods_total.multiply(value.divide(goods_detail_total));
 		return goods_value;
 	}
-	public static java.math.BigDecimal getGoodsValue(Session session,com.cqqyd2014.order.model.Order order,java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods,String goods_id,java.math.BigDecimal num) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public static java.math.BigDecimal getGoodsValue(Session session,com.cqqyd2014.order.model.Order order,java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods,String goods_id,java.math.BigDecimal num) {
 		//订单总商品金额
 		java.math.BigDecimal goods_total=order.getActual_amount().subtract(order.getShip_fee());
 		//明细总金额
@@ -77,7 +77,7 @@ public class OrderLogic {
 		}
 	}
 	
-	public static void afterSendedPackage(Session session,String order_no,String com_id,String op_userid) throws Exception {
+	public static void afterSendedPackage(Session session,String order_no,String com_id,String op_userid)  {
 
 		//更新订单状态，如果全部发货，更新订单状态为，发货完毕
 		com.cqqyd2014.hibernate.dao.OrderDetailDAO oddao=new com.cqqyd2014.hibernate.dao.OrderDetailDAO();

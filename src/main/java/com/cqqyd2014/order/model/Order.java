@@ -1,14 +1,6 @@
 package com.cqqyd2014.order.model;
 
-import java.math.RoundingMode;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import com.cqqyd2014.express.sf.bsp.BspException;
-import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.util.message.IfMessage;
 
 public class Order {
 	//以财务入账价值测算的实际支付金额

@@ -3,24 +3,24 @@ package com.cqqyd2014.wh.move_warehouse.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class MoveWarehouseToWarehoustAction   extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class MoveWarehouseToWarehoustAction   extends UserLoginedAction {
 
 	String fromWh;
 	String toWh;
@@ -37,15 +37,16 @@ public class MoveWarehouseToWarehoustAction   extends ActionSupport {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-	@Action(value = "move_warehouse_to_warehouse", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String move_warehouse_to_warehouse() throws Exception {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "move_warehouse_to_warehouse", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_unprinted_prepackage_barcode", privilege = "[00020008]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		
@@ -61,7 +62,7 @@ public class MoveWarehouseToWarehoustAction   extends ActionSupport {
 			com.cqqyd2014.hibernate.entities.MoveGoodsWarehouseMId mgwmid=new com.cqqyd2014.hibernate.entities.MoveGoodsWarehouseMId();
 			mgwmid.setComId(com_id);
 			mgwmid.setMoveDate(now);
-			mgwmid.setUserId(userid);
+			mgwmid.setUserId(user_id);
 			mgwm.setId(mgwmid);
 			mgwm.setMemo(memo);
 			mgwm.setWhFrom(fromWh);
@@ -74,14 +75,14 @@ public class MoveWarehouseToWarehoustAction   extends ActionSupport {
 				mdid.setComId(com_id);
 				mdid.setGoodsBarcode(gb.getBarcode());
 				mdid.setMoveDate(now);
-				mdid.setUserId(userid);
+				mdid.setUserId(user_id);
 				md.setId(mdid);
 				session.saveOrUpdate(md);
 				
 				//跟新库存
 				com.cqqyd2014.wh.logic.Storage.MoveGoods(session, gb.getGoods_id(), fromWh, toWh, new java.math.BigDecimal(1), com_id);
 				//跟新商品状态，移库
-				com.cqqyd2014.wh.logic.GoodsLogic.MoveGoods(session, gb.getBarcode(), toWh, fromWh, now, com_id,userid);
+				com.cqqyd2014.wh.logic.GoodsLogic.MoveGoods(session, gb.getBarcode(), toWh, fromWh, now, com_id,user_id);
 			}
 			
 			

@@ -87,7 +87,7 @@ public class PrePackageMLogic {
 	}
 	
 	
-	public static java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> getArrayListModelFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.PrePackageM> ppms_h) throws Exception{
+	public static java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> getArrayListModelFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.PrePackageM> ppms_h) {
 		java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> ppms=new java.util.ArrayList<>();
 		for (int i=0;i<ppms_h.size();i++) {
 			com.cqqyd2014.wh.model.PrePackageM ppm=getModelFromEntity(ppms_h.get(i));

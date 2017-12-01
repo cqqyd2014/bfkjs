@@ -3,6 +3,7 @@ import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Actions;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -11,14 +12,16 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+
+
 
 @Scope("prototype")//支持多例  
-@ParentPackage("struts-default")  //表示继承的父包  
-@Namespace(value="/wh") //表示当前Action所在命名空间  
-public class MakeNewBarcodeInitAction extends ActionSupport {
+@ParentPackage("bfkjs-default")  
+@Namespace(value="/wh") //表示当前Action所在命名空间   
+public class MakeNewBarcodeInitAction extends UserLoginedAction {
 	/**
 	 * 
 	 */
@@ -39,29 +42,26 @@ public class MakeNewBarcodeInitAction extends ActionSupport {
 		 @Action( //表示请求的Action及处理方法  
 		            value="make_new_barcode_init",  //表示action的请求名称  
 		            results={  //表示结果跳转  
-		                    @Result(name="success",location="/WEB-INF/wh/make_new_barcode.jsp"),  
-		                    
-		            }
-		    )    
-	   
-	   })  
-	
- 
-	
+		                    @Result(name="success",location="/WEB-INF/wh/make_new_barcode.jsp") },
+		            interceptorRefs={  
+                            @InterceptorRef("authorityInterceptor")  
+            }
+    )    
+
+})  
 
 
-	public String make_new_barcode_init() throws Exception {
-		
-		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
+
+
+@Authority(module="mainframe", privilege="[00020002]",error_url="authority_error") 
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		try {
 		com.cqqyd2014.hibernate.dao.VGoodsInfoDAO gidao=new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
         giList=gidao.getGoodsInfosMapInUse(session, com_id);

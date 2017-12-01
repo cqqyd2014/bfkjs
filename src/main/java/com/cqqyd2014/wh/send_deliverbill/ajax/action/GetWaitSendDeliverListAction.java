@@ -4,23 +4,27 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.Session;
 
+import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.wh.deliverbill.common.ajax.action.DeliverListAction;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
 public class GetWaitSendDeliverListAction extends DeliverListAction{
 	
-	@Action(value = "get_wait_send_deliver_list", results = { @Result(type = "json", params = { "root", "msg" }) })
+	@Action(value = "get_wait_send_deliver_list", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_wait_send_deliver_list", privilege = "[00010004]", error_url = "authority_ajax_error")
 	@Override
 	public String getJson() throws Exception {
 		// TODO Auto-generated method stub

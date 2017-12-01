@@ -3,24 +3,24 @@ package com.cqqyd2014.wh.make_new_prepackage_barcode.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
 
-@ParentPackage("json-default")
-@Namespace("/wh")
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-		@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
+
 @SuppressWarnings("serial")
-public class GetUnPrintedPrepackageBarcodeAction  extends ActionSupport {
+@ParentPackage("bfkjs-json-default")
+@Namespace("/wh")
+public class GetUnPrintedPrepackageBarcodeAction  extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -32,22 +32,23 @@ public class GetUnPrintedPrepackageBarcodeAction  extends ActionSupport {
 	}
 
 
-	@Action(value = "get_unprinted_prepackage_barcode", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String get_unprinted_prepackage_barcode() throws Exception {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String userid = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+	@Action(value = "get_unprinted_prepackage_barcode", results = { @Result(type = "json", params = { "root", "msg" })}, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_unprinted_prepackage_barcode", privilege = "[00020004]", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 		
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		
 		try {
 			com.cqqyd2014.hibernate.dao.PrePackageDAO ppdao=new com.cqqyd2014.hibernate.dao.PrePackageDAO();
-			java.util.ArrayList<com.cqqyd2014.hibernate.entities.PrePackageM> ppms_h=ppdao.getUnPrintPreSn(session, com_id,userid);
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.PrePackageM> ppms_h=ppdao.getUnPrintPreSn(session, com_id,user_id);
 			
 			
 			

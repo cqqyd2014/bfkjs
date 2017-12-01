@@ -107,9 +107,9 @@ function red_flag_quota(uuid,type,status){
 		}
 
 	if (type=='普通充值'){
-		$.getJSON("../quota/red_flag_quota.action", {
+		$.getJSON("../system/red_flag_quota.action", {
 			
-			userid :$("#sys_id").text(),
+			sys_user_id :$("#sys_id").text(),
 			uuid:uuid
 			
 
@@ -146,9 +146,9 @@ function add_quota(){
 		alert("没有选中用户");
 	}
 	else{
-		$.getJSON("../quota/save_add_quota.action", {
+		$.getJSON("../system/save_add_quota.action", {
 			amount :$('#add_quota_amount').val(),
-			userid :$("#sys_id").text(),
+			sys_user_id :$("#sys_id").text(),
 			memo:$("#add_quota_memo").val()
 			
 
@@ -201,7 +201,7 @@ function getQuotaTransTable(){
 	
 
 	$.getJSON("get_quota_trans_table.action", {
-		userid :$("#user_id").val()
+		sys_user_id :$("#user_id").val()
 		
 
 	}, function(result) {
