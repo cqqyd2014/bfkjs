@@ -10,6 +10,11 @@ public class MenuDLogic {
 		md.setM_d_name(vumd.getId().getMenuDName());
 		md.setM_id(vumd.getId().getMenuId());
 		md.setUserid(vumd.getId().getUserId());
+		md.setWeb_attention(vumd.getId().getWebAttention());
+		md.setGet_num_class(vumd.getId().getGetNumClass());
+		md.setGet_num_method(vumd.getId().getGetNumMethod());
+		md.setWeb_attention_tips(vumd.getId().getWebAttentionTips());
+		md.setWeb_url(vumd.getId().getMenuDJsUrl().substring(3));
 		return md;
 	}
 	

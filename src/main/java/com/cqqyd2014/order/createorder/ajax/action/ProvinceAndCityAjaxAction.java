@@ -43,7 +43,7 @@ public class ProvinceAndCityAjaxAction extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Authority(module = "province_and_city", privilege = "[00010001]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub

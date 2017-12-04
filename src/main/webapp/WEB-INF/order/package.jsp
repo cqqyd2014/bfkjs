@@ -870,9 +870,10 @@ function pickup_barcode(){
 
 				if (field.success) {
 						//body 是返回的seq序号
-						window.open("../print/package_list_print.action?order_nos="
-								+ $("#new_deliver_order_no").val() + "&seqs="
-								+ field.body);
+						
+						
+						print_deliver_bill($("#new_deliver_order_no").val(),field.body);
+						
 						$('#new_deliver_div').dialog('close');
 						show_order_list_table(current_page, $('#rows_in_page')
 								.val());
@@ -1217,7 +1218,7 @@ function pickup_barcode(){
 	</script>
 
 
-
+<jsp:include page="common/deliver_bill.jsp" flush="true" />
 
 	<jsp:include page="../common/print_logistics_bill.jsp" flush="true" />
 </body>

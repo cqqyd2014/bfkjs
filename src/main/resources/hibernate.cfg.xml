@@ -118,7 +118,6 @@
         <mapping class="com.cqqyd2014.hibernate.entities.Ebusiness"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VComGoods"/>
         <mapping class="com.cqqyd2014.hibernate.entities.DeliverD"/>
-        <mapping class="com.cqqyd2014.hibernate.entities.VReturnGoods"/>
         <mapping class="com.cqqyd2014.hibernate.entities.ComInfo"/>
         <mapping class="com.cqqyd2014.hibernate.entities.SnMax"/>
         <mapping class="com.cqqyd2014.hibernate.entities.WxInput"/>

@@ -26,7 +26,7 @@
         <!--全局结果处理  -->  
         <global-results>  
             <result name="authority_error">/WEB-INF/authoryity_error/authority_error.jsp</result>
-            
+             <result name="authority_web_error">/WEB-INF/authoryity_error/authority_web_error.jsp</result>
         </global-results>  
 
 	</package>

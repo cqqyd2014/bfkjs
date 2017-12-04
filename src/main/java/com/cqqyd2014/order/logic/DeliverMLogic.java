@@ -151,6 +151,7 @@ public class DeliverMLogic {
 		dm.setPrePackageBarcode(db.getPre_package_barcode());
 		dm.setSendDat(db.getSend_dat());
 		dm.setSended(db.isSended());
+		dm.setSendUserid(db.getSend_userid());
 		dm.setSendUserAssignTime(db.getSend_user_assgin_dat());
 		dm.setWhId(db.getWh_id());
 		dm.setCartonType(db.getCarton_type());
@@ -159,6 +160,7 @@ public class DeliverMLogic {
 		dm.setSendUserid(db.getSend_userid());
 		dm.setMemoBarcodes(db.getMemo_barcodes());
 		dm.setMemoNames(db.getMemo_names());
+		
 		session.saveOrUpdate(dm);
 		
 		if (db.getDbds()!=null) {

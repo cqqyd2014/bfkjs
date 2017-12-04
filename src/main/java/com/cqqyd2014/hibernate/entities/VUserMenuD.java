@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,7 +26,12 @@ public class VUserMenuD implements java.io.Serializable {
 
 	@EmbeddedId
 
-	@AttributeOverrides({ @AttributeOverride(name = "orderId", column = @Column(name = "order_id")),
+	@AttributeOverrides({
+			@AttributeOverride(name = "webAttentionTips", column = @Column(name = "web_attention_tips", length = 1024)),
+			@AttributeOverride(name = "webAttention", column = @Column(name = "web_attention")),
+			@AttributeOverride(name = "getNumClass", column = @Column(name = "get_num_class", length = 1024)),
+			@AttributeOverride(name = "getNumMethod", column = @Column(name = "get_num_method", length = 1024)),
+			@AttributeOverride(name = "orderId", column = @Column(name = "order_id")),
 			@AttributeOverride(name = "menuId", column = @Column(name = "menu_id", length = 4)),
 			@AttributeOverride(name = "menuDId", column = @Column(name = "menu_d_id", length = 4)),
 			@AttributeOverride(name = "menuDName", column = @Column(name = "menu_d_name", length = 45)),

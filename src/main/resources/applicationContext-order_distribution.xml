@@ -13,7 +13,7 @@
     <task:scheduler id="taskScheduler" pool-size="100" />
 
     <task:scheduled-tasks scheduler="taskScheduler">
-        <!-- 每59秒触发任务 -->
+       
         <task:scheduled ref="taskJobOrderAssign" method="order_assign" cron="59 * * * * ?"/>
         
     </task:scheduled-tasks>

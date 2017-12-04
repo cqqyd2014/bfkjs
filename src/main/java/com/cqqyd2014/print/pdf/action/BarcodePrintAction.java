@@ -2,7 +2,7 @@ package com.cqqyd2014.print.pdf.action;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.convention.annotation.Action;
@@ -19,9 +19,9 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.apache.struts2.interceptor.SessionAware;
+
 import org.apache.struts2.util.ServletContextAware;
-import org.hibernate.HibernateException;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -32,11 +32,9 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
+
 import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanArrayDataSource;
+
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @ParentPackage("struts-default")

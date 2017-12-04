@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,7 +26,9 @@ public class VOrderMain implements java.io.Serializable {
 
 	@EmbeddedId
 
-	@AttributeOverrides({ @AttributeOverride(name = "paid", column = @Column(name = "paid")),
+	@AttributeOverrides({
+			@AttributeOverride(name = "receiverMobile", column = @Column(name = "receiver_mobile", length = 45)),
+			@AttributeOverride(name = "paid", column = @Column(name = "paid")),
 			@AttributeOverride(name = "paidMoney", column = @Column(name = "paid_money", precision = 131089, scale = 0)),
 			@AttributeOverride(name = "paidTime", column = @Column(name = "paid_time", length = 35)),
 			@AttributeOverride(name = "CQty", column = @Column(name = "c_qty", precision = 131089, scale = 0)),

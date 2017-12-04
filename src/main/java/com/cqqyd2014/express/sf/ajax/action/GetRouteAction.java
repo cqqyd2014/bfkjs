@@ -3,6 +3,7 @@ package com.cqqyd2014.express.sf.ajax.action;
 import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
@@ -11,19 +12,19 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.context.annotation.Scope;
 
-
+import com.cqqyd2014.annotation.Authority;
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.express.sf.bsp.impl.BspHttpClientRoute;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
 
-@Scope("prototype")//支持多例  
-@ParentPackage("json-default")  //表示继承的父包  
 @Namespace(value="/express/sf") //表示当前Action所在命名空间  
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
-public class GetRouteAction      extends ActionSupport {
+
+public class GetRouteAction      extends UserLoginedAction {
 	/**
 	 * 
 	 */
@@ -57,20 +58,20 @@ public class GetRouteAction      extends ActionSupport {
 		this.seq = seq;
 	}
 
-	@Action(value = "get_route", results = { @Result(type = "json", params = { "root", "msg" }) })
-
-	public String get_sf_elec_bill() throws Exception {
-		
-		
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		
-		String com_id = (String) session_http.get("com_code");
-		
+	@Action(value = "get_route", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
+			
+			@InterceptorRef("defaultStack"),
+			@InterceptorRef("authorityInterceptor") })
+@Authority(module = "get_route", privilege = "*", error_url = "authority_ajax_error")
+@Override
+public String execute() {
+// TODO Auto-generated method stub
+super.execute();
+sm.setAuth_success(true);
 
 Session session = HibernateSessionFactory.getSession();
 Transaction tx = session.beginTransaction();
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
+		
 		try {
 			
 			
@@ -89,6 +90,7 @@ Transaction tx = session.beginTransaction();
 				BspHttpClientRoute bhco1=new BspHttpClientRoute(session, dbs);
 				
 				bhco1.initBill();
+				@SuppressWarnings("unchecked")
 				java.util.ArrayList<com.cqqyd2014.order.model.Route> rs=(java.util.ArrayList<com.cqqyd2014.order.model.Route>)bhco1.post();
 				session.flush();
 				

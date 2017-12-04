@@ -10,6 +10,7 @@ import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 
+@SuppressWarnings("serial")
 public class OrderPagesInit extends UserLoginedAction {
 	int pageSize;// 每页的记录数
 	 java.util.LinkedHashMap<String, String> logisticsList;

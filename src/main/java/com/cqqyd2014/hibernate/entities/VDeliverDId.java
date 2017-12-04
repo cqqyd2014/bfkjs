@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +12,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class VDeliverDId implements java.io.Serializable {
 
+	private String sendUserName;
 	private String receiverMobile;
 	private String addrDistrict;
 	private String addrCity;
@@ -48,19 +49,19 @@ public class VDeliverDId implements java.io.Serializable {
 	private BigDecimal packageWeight;
 	private String deliverNo;
 	private String unit;
-	private String sendUserName;
 
 	public VDeliverDId() {
 	}
 
-	public VDeliverDId(String receiverMobile, String addrDistrict, String addrCity, String addrProvince, String CTell,
-			String tell2, String CUserAddr, String CUserName, Date orderDat, String createUserName, String originalId,
-			Boolean returned, String returnedMemo, Date returnedDat, String returnedUserid, Boolean effective,
-			Boolean sended, String deliverBillStatus, String whName, String whId, String comId,
-			String deliverExpressComName, String deliverExpressCom, String deliverExpressNo,
+	public VDeliverDId(String sendUserName, String receiverMobile, String addrDistrict, String addrCity,
+			String addrProvince, String CTell, String tell2, String CUserAddr, String CUserName, Date orderDat,
+			String createUserName, String originalId, Boolean returned, String returnedMemo, Date returnedDat,
+			String returnedUserid, Boolean effective, Boolean sended, String deliverBillStatus, String whName,
+			String whId, String comId, String deliverExpressComName, String deliverExpressCom, String deliverExpressNo,
 			String deliverExpressVehicle, String goodsBarcode, String orderNo, String seq, String goodsId, String CName,
 			BigDecimal netWeight, BigDecimal grossWeight, String deliverDUuid, BigDecimal packageWeight,
-			String deliverNo, String unit, String sendUserName) {
+			String deliverNo, String unit) {
+		this.sendUserName = sendUserName;
 		this.receiverMobile = receiverMobile;
 		this.addrDistrict = addrDistrict;
 		this.addrCity = addrCity;
@@ -97,6 +98,14 @@ public class VDeliverDId implements java.io.Serializable {
 		this.packageWeight = packageWeight;
 		this.deliverNo = deliverNo;
 		this.unit = unit;
+	}
+
+	@Column(name = "send_user_name", length = 45)
+	public String getSendUserName() {
+		return this.sendUserName;
+	}
+
+	public void setSendUserName(String sendUserName) {
 		this.sendUserName = sendUserName;
 	}
 
@@ -424,15 +433,6 @@ public class VDeliverDId implements java.io.Serializable {
 		this.unit = unit;
 	}
 
-	@Column(name = "send_user_name")
-	public String getSendUserName() {
-		return this.sendUserName;
-	}
-
-	public void setSendUserName(String sendUserName) {
-		this.sendUserName = sendUserName;
-	}
-
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -442,9 +442,11 @@ public class VDeliverDId implements java.io.Serializable {
 			return false;
 		VDeliverDId castOther = (VDeliverDId) other;
 
-		return ((this.getReceiverMobile() == castOther.getReceiverMobile())
-				|| (this.getReceiverMobile() != null && castOther.getReceiverMobile() != null
-						&& this.getReceiverMobile().equals(castOther.getReceiverMobile())))
+		return ((this.getSendUserName() == castOther.getSendUserName()) || (this.getSendUserName() != null
+				&& castOther.getSendUserName() != null && this.getSendUserName().equals(castOther.getSendUserName())))
+				&& ((this.getReceiverMobile() == castOther.getReceiverMobile())
+						|| (this.getReceiverMobile() != null && castOther.getReceiverMobile() != null
+								&& this.getReceiverMobile().equals(castOther.getReceiverMobile())))
 				&& ((this.getAddrDistrict() == castOther.getAddrDistrict())
 						|| (this.getAddrDistrict() != null && castOther.getAddrDistrict() != null
 								&& this.getAddrDistrict().equals(castOther.getAddrDistrict())))
@@ -529,15 +531,13 @@ public class VDeliverDId implements java.io.Serializable {
 				&& ((this.getDeliverNo() == castOther.getDeliverNo()) || (this.getDeliverNo() != null
 						&& castOther.getDeliverNo() != null && this.getDeliverNo().equals(castOther.getDeliverNo())))
 				&& ((this.getUnit() == castOther.getUnit()) || (this.getUnit() != null && castOther.getUnit() != null
-						&& this.getUnit().equals(castOther.getUnit())))
-				&& ((this.getSendUserName() == castOther.getSendUserName())
-						|| (this.getSendUserName() != null && castOther.getSendUserName() != null
-								&& this.getSendUserName().equals(castOther.getSendUserName())));
+						&& this.getUnit().equals(castOther.getUnit())));
 	}
 
 	public int hashCode() {
 		int result = 17;
 
+		result = 37 * result + (getSendUserName() == null ? 0 : this.getSendUserName().hashCode());
 		result = 37 * result + (getReceiverMobile() == null ? 0 : this.getReceiverMobile().hashCode());
 		result = 37 * result + (getAddrDistrict() == null ? 0 : this.getAddrDistrict().hashCode());
 		result = 37 * result + (getAddrCity() == null ? 0 : this.getAddrCity().hashCode());
@@ -574,7 +574,6 @@ public class VDeliverDId implements java.io.Serializable {
 		result = 37 * result + (getPackageWeight() == null ? 0 : this.getPackageWeight().hashCode());
 		result = 37 * result + (getDeliverNo() == null ? 0 : this.getDeliverNo().hashCode());
 		result = 37 * result + (getUnit() == null ? 0 : this.getUnit().hashCode());
-		result = 37 * result + (getSendUserName() == null ? 0 : this.getSendUserName().hashCode());
 		return result;
 	}
 

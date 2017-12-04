@@ -73,7 +73,9 @@ public class BspHttpClientRoute extends BspHttpClient {
 		Element route_response=body.element("RouteResponse");
 		String mail_no=route_response.attribute("mailno").getText();
 		
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<Element> rs=(java.util.ArrayList<Element>)route_response.elements();
+		java.util.ArrayList<com.cqqyd2014.order.model.Route> rts=new java.util.ArrayList<>();
 		for (int i=0;i<rs.size();i++) {
 			Element r=rs.get(i);
 			com.cqqyd2014.hibernate.entities.SfResponseRouteBack rb=new com.cqqyd2014.hibernate.entities.SfResponseRouteBack();
@@ -92,6 +94,8 @@ public class BspHttpClientRoute extends BspHttpClient {
 	        rb.setOpcode(r.attribute("opcode").getText());
 	        rb.setRemark(r.attribute("remark").getText());
 	        rb.setPush(false);
+	        com.cqqyd2014.order.model.Route rt=com.cqqyd2014.express.sf.logic.RouteLogic.getModelFromEntity(rb);
+	        rts.add(rt);
 	        getSession().save(rb);
 		}
 		
@@ -99,7 +103,7 @@ public class BspHttpClientRoute extends BspHttpClient {
 		
         
        
-        return rs;
+        return rts;
 		
 	}
 

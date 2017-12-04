@@ -26,7 +26,7 @@ public class VOrderMainDAO {
 		return new java.math.BigDecimal(l);
 	}
 	
-	public java.math.BigDecimal getWaitAssginPackageCount(Session session,String com_id){
+	public static java.math.BigDecimal getWaitAssginPackageCount(Session session,String com_id){
 		String hql="select count(*) from VOrderMain where id.comId=:com_id and id.CStatus=\'订单已付\' and id.packageUserName=\'\' and id.effective=true ";
 		
 		
@@ -36,7 +36,7 @@ public class VOrderMainDAO {
 		return new java.math.BigDecimal(l);
 	}
 	
-	public java.math.BigDecimal getUnPaidCount(Session session,String com_id){
+	public static java.math.BigDecimal getUnPaidCount(Session session,String com_id){
 		String hql="select count(*) from VOrderMain where id.comId=:com_id and id.paid=false and id.effective=true ";
 		
 		

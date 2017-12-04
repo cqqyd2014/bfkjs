@@ -10,6 +10,13 @@
 function qyd_pc(){
 	window.location.href='portal/qyd';
 }
+function qyd_mobile(){
+	window.location.href='web/login/qyd';
+}
+
+
+ 
+
 </script>
 <link rel="stylesheet" type="text/css"
 	href="js/themes/default/easyui.css" />

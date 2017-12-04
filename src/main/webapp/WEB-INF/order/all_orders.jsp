@@ -552,16 +552,20 @@
 			<tr>
 				<td colspan='2' align="right"><a id="b_new_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#new_deliver_order_no').val(),$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.userid" />')"
+					onclick="javascript:print_express($('#new_deliver_order_no').val(),$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
 					iconCls="qyd">打印多联纸质快递单</a> <a id="b_electric_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.userid" />')"
+					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
 					iconCls="qyd">打印电子面单</a><a 
 					href="javascript:void(0)" class="easyui-linkbutton"
 					onclick="javascript:view_route($('#order_no2').val(),$('#view_deliver_seq').val())" iconCls="qyd">查看顺丰路由</a>
 					<a 
 					href="javascript:void(0)" class="easyui-linkbutton"
 					onclick="javascript:change_express_init($('#order_no2').val(),$('#view_deliver_seq').val())" iconCls="qyd">变更物流信息</a>
+					<a 
+					href="javascript:void(0)" class="easyui-linkbutton"
+					onclick="javascript:print_deliver_bill($('#order_no2').val(),$('#view_deliver_seq').val())"
+					iconCls="qyd">查看发货单</a>
 					</td>
 
 			</tr>
@@ -607,6 +611,9 @@
 	
 	
 	<script language='javascript' type='text/javascript'>
+
+
+	
 		//$("#deliverView").dialog('close');
 		
 		
@@ -800,7 +807,7 @@
 	<s:action name="return_goods_div_init" executeResult="true" namespace="/order/common"> </s:action>
 
 <jsp:include page="common/cancel_order.jsp" flush="true" />
-
+<jsp:include page="common/deliver_bill.jsp" flush="true" />
 	<jsp:include page="../common/print_logistics_bill.jsp" flush="true" />
 </body>
 </html>

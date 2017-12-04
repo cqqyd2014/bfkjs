@@ -48,15 +48,21 @@ public class SysUserDAO {
 		com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
 		int offline_time=spdao.getOffLineTime(session);
 		
+		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysUser> sus2=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysUser>)q.list();
 		for (int i=0;i<sus2.size();i++){
 			com.cqqyd2014.hibernate.entities.SysUser su=sus2.get(i);
+			
+			//相隔的秒数
 			long user_last_on_line_distance=com.cqqyd2014.util.DateUtil.getDistanceSecends(now,su.getLastOnlineTime());
-			if (user_last_on_line_distance>offline_time){
+			//System.out.println("用户"+su.getName());
+			//System.out.println("上次上线距离时间"+user_last_on_line_distance);
+			//System.out.println("强制下线时间"+offline_time);
+			if ((user_last_on_line_distance/60)>offline_time){
 				//心跳超时，强制下线
 				su.setOnline(false);
 				session.saveOrUpdate(su);
-				continue;
+				
 			}
 			
 			

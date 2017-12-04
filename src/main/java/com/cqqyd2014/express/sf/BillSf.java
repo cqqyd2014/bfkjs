@@ -1,11 +1,10 @@
 package com.cqqyd2014.express.sf;
 
-import org.hibernate.HibernateException;
+
 import org.hibernate.Session;
 
 import com.cqqyd2014.express.common.ExpressBillModel;
-import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.order.model.Order;
+
 
 public class BillSf extends ExpressBillModel {
 	public BillSf() {

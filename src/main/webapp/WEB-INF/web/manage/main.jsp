@@ -26,16 +26,12 @@ function init(){
 			
 				if (field.success){
 					//成功登录
-					var att=field.o;
-					$('#unpaid_count').text(att.un_paid_count);
-					$('#wait_assgin_package_count').text(att.wait_assign_package);
-					$('#wait_package_count').text(att.wait_package);
-					$('#wait_deliver_count').text(att.wait_deliver);
-					//alert(att.un_paid_count);
-
-					//$("span[data-role=content] ul li").listview("refresh");
-
-				//window.location.href='../manage/main_init.action';
+					var atts=field.o;
+					atts.forEach(function(att,index,array){
+						 
+					　　　　$('#count_'+att.m_id).text(att.count);
+					 
+					　　});
 				}
 				else{
 					
@@ -68,68 +64,49 @@ function init(){
 <body>
 
 	<div data-role="page" id="pageone">
-		<div data-role="header">
-			<h1><s:property value="#request.com_name" />移动MIS</h1>
-			<div data-role="navbar">
-				<ul>
-					<li><a href="#" data-icon="home">首页</a></li>
-					<li><a href="#" data-icon="refresh">刷新</a></li>
-					<li><a href="#" data-icon="search">退出</a></li>
-				</ul>
-			</div>
-		</div>
+		<jsp:include page="common/head.jsp" flush="true" />
 
 		<div data-role="content">
 			<ul data-role="listview" data-inset="true">
-      <li data-role="list-divider">订单</li>
-      <li>
-					<a href="#">
-					<img src="../../img/icon/icon_09.jpg">
-					<h2>录入订单</h2>
-					<p>录入订单详细信息</p>
-					</a>
-				</li>
-				<li><a href="#">
-					<img src="../../img/icon/icon_12.jpg">
-					<h2>等待付款的订单</h2>
-					<p>取现未付款订单</p>
-					<span class="ui-li-count" id="unpaid_count">0</span>
-					</a>
-				</li>
-      <li data-role="list-divider">库房</li>
-      <li><a href="#">
-					<img src="../../img/icon/icon_32.jpg">
-					<h2>待分拣订单</h2>
-					<p>等待分配拣货人的订单</p>
-					<span class="ui-li-count" id="wait_assgin_package_count">0</span>
-					</a>
-				</li>
-	<li><a href="#">
-					<img src="../../img/icon/icon_84.jpg">
-					<h2>待拣货订单</h2>
-					<p>等拣货的订单</p>
-					<span class="ui-li-count" id="wait_package_count">0</span>
-					</a>
-				</li>
-      <li><a href="#">
-					<img src="../../img/icon/icon_01.jpg">
-					<h2>等待出库的包裹</h2>
-					<p>已经拣货完成的包裹</p>
-					<span class="ui-li-count" id="wait_deliver_count">0</span>
-					</a>
-				</li>
-      
-      <li data-role="list-divider">系统</li>
-      
-    </ul>
-		</div>
 
-		<div data-role="footer">
-			<h1>V2017 V3.0</h1>
+				<s:iterator value="menu" >
+					<li data-role="list-divider">${m_name }</li>
+
+
+
+
+					<s:iterator value="menu_d" status="st">
+						<li><a href="${web_url}">
+
+								<h2>${m_d_name}</h2>
+								<p>${web_attention_tips}</p>
+								<s:if test="web_attention">
+									<span class="ui-li-count" id="count_${m_id}${m_d_id}">0</span>
+								</s:if>
+						</a></li>
+
+
+
+
+					</s:iterator>
+
+
+
+
+				</s:iterator>
+
+
+
+
+
+
+			</ul>
 		</div>
+		<jsp:include page="common/tail.jsp" flush="true" />
+
 	</div>
 
 
-<jsp:include page="../dialog.jsp" flush="true" />
+	<jsp:include page="../dialog.jsp" flush="true" />
 </body>
 </html>

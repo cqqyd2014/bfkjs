@@ -19,11 +19,10 @@ import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 import com.cqqyd2014.order.model.OrderFromUser;
 
+@Scope("prototype") // 支持多例
 
-@Scope("prototype")//支持多例  
-
-@Namespace(value="/order") //表示当前Action所在命名空间  
-@ParentPackage("bfkjs-default") 
+@Namespace(value = "/order") // 表示当前Action所在命名空间
+@ParentPackage("bfkjs-default")
 public class CreateOrderInitAction extends UserLoginedAction {
 	/**
 	 * 
@@ -31,11 +30,9 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	private static final long serialVersionUID = 1L;
 
 	String logistics;
-	
+
 	String vehicle;
 	java.util.LinkedHashMap<String, String> vehicle_map;
-	
-	
 
 	public String getVehicle() {
 		return vehicle;
@@ -60,7 +57,9 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	public void setLogistics(String logistics) {
 		this.logistics = logistics;
 	}
+
 	java.util.LinkedHashMap<String, String> logistics_map;
+
 	public java.util.LinkedHashMap<String, String> getLogistics_map() {
 		return logistics_map;
 	}
@@ -68,6 +67,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	public void setLogistics_map(java.util.LinkedHashMap<String, String> logistics_map) {
 		this.logistics_map = logistics_map;
 	}
+
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -77,9 +77,6 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-
-
-
 
 	public String order_time;
 
@@ -96,7 +93,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	String card_pay;
 	java.util.ArrayList<OrderFromUser> ofus;
 	java.util.ArrayList<com.cqqyd2014.order.model.OrderTypeLen> otls;
-	
+
 	public java.util.ArrayList<com.cqqyd2014.order.model.OrderTypeLen> getOtls() {
 		return otls;
 	}
@@ -112,37 +109,32 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	public void setOfus(java.util.ArrayList<OrderFromUser> ofus) {
 		this.ofus = ofus;
 	}
+
 	java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> provinces;
-	@Actions({     
-	    
-		 @Action( //表示请求的Action及处理方法  
-		            value="create_order_init",  //表示action的请求名称  
-		            results={  //表示结果跳转  
-		                    @Result(name="success",location="/WEB-INF/order/createOrderMain.jsp")  },
-		            interceptorRefs={  
-		                            @InterceptorRef("authorityInterceptor")  
-		            }
-		    )    
-	   
-	   })  
-	
-  
-	
 
+	@Actions({
 
-	@Authority(module="mainframe", privilege="[00010001]",error_url="authority_error") 
+			@Action( // 表示请求的Action及处理方法
+					value = "create_order_init", // 表示action的请求名称
+					results = { // 表示结果跳转
+							@Result(name = "success", location = "/WEB-INF/order/createOrderMain.jsp") }, interceptorRefs = {
+									@InterceptorRef("authorityInterceptor") })
+
+	})
+
+	@Authority(module = "mainframe", privilege = "[00010001]", error_url = "authority_error")
 	@Override
 	public String execute() {
 		// TODO Auto-generated method stub
 		super.execute();
-		order_time=com.cqqyd2014.util.DateUtil.JDateToFullString(new java.util.Date());
+		order_time = com.cqqyd2014.util.DateUtil.JDateToFullString(new java.util.Date());
 
 		@SuppressWarnings("unchecked")
-		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>)
-				session_http.get("temp_order_detail");
+		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
+				.get("temp_order_detail");
 		if (odis == null) {
 			odis = new java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>();
-			
+
 		}
 		odis.clear();
 		session_http.put("temp_order_detail", odis);
@@ -150,57 +142,50 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		Session session = HibernateSessionFactory.getSession();
 		Transaction tx = session.beginTransaction();
 		try {
-			//com.cqqyd2014.hibernate.dao.UserParDAO cpcdao=new com.cqqyd2014.hibernate.dao.UserParDAO();
-			
-			com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO lcdao=new com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO();
-			logistics_map=lcdao.getNameMap(session);
-			
-			discount="0";
-			ship_fee="0";
-			card_pay="0";
+			// com.cqqyd2014.hibernate.dao.UserParDAO cpcdao=new
+			// com.cqqyd2014.hibernate.dao.UserParDAO();
 
-			
-			com.cqqyd2014.hibernate.dao.VOrderFromUserDAO vfdao=new com.cqqyd2014.hibernate.dao.VOrderFromUserDAO();
-			
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUser> vofus=vfdao.getArrayViewByUserID(session, com_id, user_id);
-		ofus= com.cqqyd2014.order.logic.OrderFromUserLogic.getArrayModelFromArrayEntityView(vofus);
-		com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO vfldao=new com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO();
-		
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUserLen> vofuls=vfldao.getArrayViewByUserID(session, com_id, user_id);
-		otls=com.cqqyd2014.order.logic.OrderTypeLenLogic.getArrayModelArraryEntityView(vofuls);
-		
-		
-		
-		
-		vfdao=null;
-		com.cqqyd2014.hibernate.dao.RegionDAO rdao=new com.cqqyd2014.hibernate.dao.RegionDAO();
-		
-		provinces=rdao.getProvince(session);
-		rdao=null;
-		
+			com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO lcdao = new com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO();
+			logistics_map = lcdao.getNameMap(session);
 
-		
+			discount = "0";
+			ship_fee = "0";
+			card_pay = "0";
 
-		//com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new com.cqqyd2014.hibernate.dao.SysCodeDAO();
-		
-		
-			
-		com.cqqyd2014.hibernate.dao.UserParDAO updao=new com.cqqyd2014.hibernate.dao.UserParDAO();
-		
-		orderFrom=updao.getValue(session, user_id, com_id, "default_order_from");
-		logistics=updao.getValue(session, user_id, com_id, "default_logistics_com");
-		com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO lvdao=new com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO();
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.LogisticsVehicle> lvs=lvdao.getArrayEntities(session);
-		
-		
-		
-		vehicle_map=com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(lvs, "getVehicleId", "getVehicleName");
-		
-		
-		vehicle=updao.getValue(session, user_id, com_id, "default_logistics_vehicle");
-		
+			com.cqqyd2014.hibernate.dao.VOrderFromUserDAO vfdao = new com.cqqyd2014.hibernate.dao.VOrderFromUserDAO();
 
-		tx.commit();
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUser> vofus = vfdao
+					.getArrayViewByUserID(session, com_id, user_id);
+			ofus = com.cqqyd2014.order.logic.OrderFromUserLogic.getArrayModelFromArrayEntityView(vofus);
+			com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO vfldao = new com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO();
+
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUserLen> vofuls = vfldao
+					.getArrayViewByUserID(session, com_id, user_id);
+			otls = com.cqqyd2014.order.logic.OrderTypeLenLogic.getArrayModelArraryEntityView(vofuls);
+
+			vfdao = null;
+			com.cqqyd2014.hibernate.dao.RegionDAO rdao = new com.cqqyd2014.hibernate.dao.RegionDAO();
+
+			provinces = rdao.getProvince(session);
+			rdao = null;
+
+			// com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new
+			// com.cqqyd2014.hibernate.dao.SysCodeDAO();
+
+			com.cqqyd2014.hibernate.dao.UserParDAO updao = new com.cqqyd2014.hibernate.dao.UserParDAO();
+
+			orderFrom = updao.getValue(session, user_id, com_id, "default_order_from");
+			logistics = updao.getValue(session, user_id, com_id, "default_logistics_com");
+			com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO lvdao = new com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO();
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.LogisticsVehicle> lvs = lvdao
+					.getArrayEntities(session);
+
+			vehicle_map = com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(lvs, "getVehicleId",
+					"getVehicleName");
+
+			vehicle = updao.getValue(session, user_id, com_id, "default_logistics_vehicle");
+
+			tx.commit();
 		}
 
 		catch (HibernateException e) {
@@ -210,14 +195,14 @@ public class CreateOrderInitAction extends UserLoginedAction {
 			}
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			
+
+		} finally {
+
+			HibernateSessionFactory.closeSession();
 		}
-	 finally {
-		 
-		HibernateSessionFactory.closeSession();
-	}
 		return "success";
 	}
+
 	public String getDiscount() {
 		return discount;
 	}
@@ -242,8 +227,6 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		this.card_pay = card_pay;
 	}
 
-
-
 	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> getProvinces() {
 		return provinces;
 	}
@@ -261,5 +244,5 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	}
 
 	String orderFrom;
-	
+
 }

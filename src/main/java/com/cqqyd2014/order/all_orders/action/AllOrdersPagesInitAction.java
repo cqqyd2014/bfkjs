@@ -32,7 +32,7 @@ public class AllOrdersPagesInitAction  extends OrderPagesInit{
 
 })  @Authority(module="mainframe", privilege="[00010002]",error_url="login") 
 	
-	public String all_orders_init() throws Exception{
+	public String all_orders_init(){
 		execute();
 		
 		return "success";

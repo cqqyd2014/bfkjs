@@ -102,6 +102,7 @@ public class UserLoginedAction extends ActionSupport {
 
 
 
+	
 
 	public void setUser_login(String user_login) {
 		this.user_login = user_login;
@@ -117,6 +118,7 @@ public class UserLoginedAction extends ActionSupport {
 		user_name = (String) session_http.get("user_name");
 		user_id = (String) session_http.get("user_id");
 		com_id = (String) session_http.get("com_code");
+		com_name=(String) session_http.get("com_name");
 		sm = new com.cqqyd2014.util.AjaxSuccessMessage();
 		
 		return null;

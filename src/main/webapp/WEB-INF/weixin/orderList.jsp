@@ -103,7 +103,7 @@ input{
     <tr  class="altrow">
     <td>序号：<s:property value="#st.index+1"/></td>
     
-    <td>申报状态：<s:property value="#id.CStatus"/><s:if test="#id.CStatus.equals(\'微信申报\')"><a href="delApply.action?orderNo=<s:property value="#id.COrderId"/>&userid=<s:property value="#request.userid"/>&OpenID=<s:property value="#id.weixinFromuser"/>">撤销</a></s:if></td>
+    <td>申报状态：<s:property value="#id.CStatus"/><s:if test="#id.CStatus.equals(\'微信申报\')"><a href="delApply.action?orderNo=<s:property value="#id.COrderId"/>&userid=<s:property value="#request.user_id"/>&OpenID=<s:property value="#id.weixinFromuser"/>">撤销</a></s:if></td>
     
   </tr>
   <tr>

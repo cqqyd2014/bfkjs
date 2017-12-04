@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -20,6 +20,10 @@ public class MenuD implements java.io.Serializable {
 	private String menuDJsMethod;
 	private String menuDJsUrl;
 	private Integer orderId;
+	private Boolean webAttention;
+	private String webAttentionTips;
+	private String getNumClass;
+	private String getNumMethod;
 
 	public MenuD() {
 	}
@@ -28,12 +32,17 @@ public class MenuD implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public MenuD(MenuDId id, String menuDName, String menuDJsMethod, String menuDJsUrl, Integer orderId) {
+	public MenuD(MenuDId id, String menuDName, String menuDJsMethod, String menuDJsUrl, Integer orderId,
+			Boolean webAttention, String webAttentionTips, String getNumClass, String getNumMethod) {
 		this.id = id;
 		this.menuDName = menuDName;
 		this.menuDJsMethod = menuDJsMethod;
 		this.menuDJsUrl = menuDJsUrl;
 		this.orderId = orderId;
+		this.webAttention = webAttention;
+		this.webAttentionTips = webAttentionTips;
+		this.getNumClass = getNumClass;
+		this.getNumMethod = getNumMethod;
 	}
 
 	@EmbeddedId
@@ -84,6 +93,42 @@ public class MenuD implements java.io.Serializable {
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+
+	@Column(name = "web_attention")
+	public Boolean getWebAttention() {
+		return this.webAttention;
+	}
+
+	public void setWebAttention(Boolean webAttention) {
+		this.webAttention = webAttention;
+	}
+
+	@Column(name = "web_attention_tips", length = 1024)
+	public String getWebAttentionTips() {
+		return this.webAttentionTips;
+	}
+
+	public void setWebAttentionTips(String webAttentionTips) {
+		this.webAttentionTips = webAttentionTips;
+	}
+
+	@Column(name = "get_num_class", length = 1024)
+	public String getGetNumClass() {
+		return this.getNumClass;
+	}
+
+	public void setGetNumClass(String getNumClass) {
+		this.getNumClass = getNumClass;
+	}
+
+	@Column(name = "get_num_method", length = 1024)
+	public String getGetNumMethod() {
+		return this.getNumMethod;
+	}
+
+	public void setGetNumMethod(String getNumMethod) {
+		this.getNumMethod = getNumMethod;
 	}
 
 }

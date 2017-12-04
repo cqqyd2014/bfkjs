@@ -10,7 +10,7 @@ public class VDeliverMDAO {
 
 
 	
-	public java.math.BigDecimal getWaitDeliverCount(Session session,String com_id){
+	public static java.math.BigDecimal getWaitDeliverCount(Session session,String com_id){
 		String hql="select count(*) from VDeliverM where id.comId=:com_id and id.deliverBillStatus=\'分派发货\' and id.effective=true ";
 		
 		

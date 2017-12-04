@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -12,6 +12,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class VOrderMainId implements java.io.Serializable {
 
+	private String receiverMobile;
 	private Boolean paid;
 	private BigDecimal paidMoney;
 	private Date paidTime;
@@ -67,17 +68,18 @@ public class VOrderMainId implements java.io.Serializable {
 	public VOrderMainId() {
 	}
 
-	public VOrderMainId(Boolean paid, BigDecimal paidMoney, Date paidTime, BigDecimal CQty, BigDecimal CTax2,
-			BigDecimal CRegTax2, BigDecimal originalAmount2, BigDecimal actualAmount2, Date cancelRequestDat,
-			Date cancelConfirmDat, String cancelStatus, String cancelRequestUserid, String cancelConfirmUserid,
-			String cancelRequestMemo, String cancelConfirmMemo, String sysUserName, String vehicleId,
-			String vehicleName, String logisticsId, String logisticsName, String userCom, String tell2, String userId,
-			Boolean notAir, String orderNo, String CUserName, String CUserAddr, BigDecimal CAmount, BigDecimal cardPay,
-			String CMemo, BigDecimal discount, BigDecimal shipFee, BigDecimal actualAmount, String CTell,
-			String detailMemo, Date orderDat, Date CTime, String comId, String CStatus, String addrProvince,
-			String addrCity, String addrDistrict, String gtStatus, String emsStatus, String orderTypeName,
-			String orderTypeFullName, String originalId, String packageUser, String packageUserName, Boolean effective,
-			Date packageUserAssignTime) {
+	public VOrderMainId(String receiverMobile, Boolean paid, BigDecimal paidMoney, Date paidTime, BigDecimal CQty,
+			BigDecimal CTax2, BigDecimal CRegTax2, BigDecimal originalAmount2, BigDecimal actualAmount2,
+			Date cancelRequestDat, Date cancelConfirmDat, String cancelStatus, String cancelRequestUserid,
+			String cancelConfirmUserid, String cancelRequestMemo, String cancelConfirmMemo, String sysUserName,
+			String vehicleId, String vehicleName, String logisticsId, String logisticsName, String userCom,
+			String tell2, String userId, Boolean notAir, String orderNo, String CUserName, String CUserAddr,
+			BigDecimal CAmount, BigDecimal cardPay, String CMemo, BigDecimal discount, BigDecimal shipFee,
+			BigDecimal actualAmount, String CTell, String detailMemo, Date orderDat, Date CTime, String comId,
+			String CStatus, String addrProvince, String addrCity, String addrDistrict, String gtStatus,
+			String emsStatus, String orderTypeName, String orderTypeFullName, String originalId, String packageUser,
+			String packageUserName, Boolean effective, Date packageUserAssignTime) {
+		this.receiverMobile = receiverMobile;
 		this.paid = paid;
 		this.paidMoney = paidMoney;
 		this.paidTime = paidTime;
@@ -129,6 +131,15 @@ public class VOrderMainId implements java.io.Serializable {
 		this.packageUserName = packageUserName;
 		this.effective = effective;
 		this.packageUserAssignTime = packageUserAssignTime;
+	}
+
+	@Column(name = "receiver_mobile", length = 45)
+	public String getReceiverMobile() {
+		return this.receiverMobile;
+	}
+
+	public void setReceiverMobile(String receiverMobile) {
+		this.receiverMobile = receiverMobile;
 	}
 
 	@Column(name = "paid")
@@ -599,8 +610,11 @@ public class VOrderMainId implements java.io.Serializable {
 			return false;
 		VOrderMainId castOther = (VOrderMainId) other;
 
-		return ((this.getPaid() == castOther.getPaid()) || (this.getPaid() != null && castOther.getPaid() != null
-				&& this.getPaid().equals(castOther.getPaid())))
+		return ((this.getReceiverMobile() == castOther.getReceiverMobile())
+				|| (this.getReceiverMobile() != null && castOther.getReceiverMobile() != null
+						&& this.getReceiverMobile().equals(castOther.getReceiverMobile())))
+				&& ((this.getPaid() == castOther.getPaid()) || (this.getPaid() != null && castOther.getPaid() != null
+						&& this.getPaid().equals(castOther.getPaid())))
 				&& ((this.getPaidMoney() == castOther.getPaidMoney()) || (this.getPaidMoney() != null
 						&& castOther.getPaidMoney() != null && this.getPaidMoney().equals(castOther.getPaidMoney())))
 				&& ((this.getPaidTime() == castOther.getPaidTime()) || (this.getPaidTime() != null
@@ -727,6 +741,7 @@ public class VOrderMainId implements java.io.Serializable {
 	public int hashCode() {
 		int result = 17;
 
+		result = 37 * result + (getReceiverMobile() == null ? 0 : this.getReceiverMobile().hashCode());
 		result = 37 * result + (getPaid() == null ? 0 : this.getPaid().hashCode());
 		result = 37 * result + (getPaidMoney() == null ? 0 : this.getPaidMoney().hashCode());
 		result = 37 * result + (getPaidTime() == null ? 0 : this.getPaidTime().hashCode());

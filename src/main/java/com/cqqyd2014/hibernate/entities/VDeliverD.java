@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-11-19 15:08:19 by Hibernate Tools 5.2.5.Final
+// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -27,6 +27,7 @@ public class VDeliverD implements java.io.Serializable {
 	@EmbeddedId
 
 	@AttributeOverrides({
+			@AttributeOverride(name = "sendUserName", column = @Column(name = "send_user_name", length = 45)),
 			@AttributeOverride(name = "receiverMobile", column = @Column(name = "receiver_mobile", length = 45)),
 			@AttributeOverride(name = "addrDistrict", column = @Column(name = "addr_district", length = 45)),
 			@AttributeOverride(name = "addrCity", column = @Column(name = "addr_city", length = 45)),
@@ -62,8 +63,7 @@ public class VDeliverD implements java.io.Serializable {
 			@AttributeOverride(name = "deliverDUuid", column = @Column(name = "deliver_d_uuid", length = 36)),
 			@AttributeOverride(name = "packageWeight", column = @Column(name = "package_weight", precision = 131089, scale = 0)),
 			@AttributeOverride(name = "deliverNo", column = @Column(name = "deliver_no", length = 45)),
-			@AttributeOverride(name = "unit", column = @Column(name = "unit", length = 90)),
-			@AttributeOverride(name = "sendUserName", column = @Column(name = "send_user_name")) })
+			@AttributeOverride(name = "unit", column = @Column(name = "unit", length = 90)) })
 	public VDeliverDId getId() {
 		return this.id;
 	}

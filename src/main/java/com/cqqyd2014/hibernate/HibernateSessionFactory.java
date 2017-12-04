@@ -7,8 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+
 
 /**
  * Configures and provides access to Hibernate sessions, tied to the
@@ -17,12 +16,14 @@ import org.hibernate.service.ServiceRegistry;
  */
 public class HibernateSessionFactory {
 	private static SessionFactory sessionFactory;
-	 private static final ThreadLocal threadLocal = new ThreadLocal();  
+	 @SuppressWarnings("rawtypes")
+	private static final ThreadLocal threadLocal = new ThreadLocal();  
     /**
      * 
      * @return Session
      */
-    public static Session getSession(){
+    @SuppressWarnings("unchecked")
+	public static Session getSession(){
     	Session session = (Session)threadLocal.get();  
         if(session == null){  
             if(sessionFactory == null){  
@@ -49,7 +50,8 @@ public class HibernateSessionFactory {
         return session;  
     }
     
-    public static void closeSession(){
+    @SuppressWarnings("unchecked")
+	public static void closeSession(){
     	 Session session = (Session)threadLocal.get();  
          threadLocal.set(null);  
          if(session != null){  

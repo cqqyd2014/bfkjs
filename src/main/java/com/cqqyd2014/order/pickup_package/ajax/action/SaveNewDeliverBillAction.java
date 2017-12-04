@@ -194,6 +194,7 @@ Transaction tx = session.beginTransaction();
 			db.setPre_package_barcode("");
 			db.setSend_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			db.setSend_user_assgin_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
+			db.setSend_userid("");
 			db.setSended(false);
 			db.setSeq(seq);
 			db.setVehicle_id(vehicle);
