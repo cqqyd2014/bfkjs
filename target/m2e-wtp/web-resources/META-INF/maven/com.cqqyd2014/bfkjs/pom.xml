@@ -24,11 +24,16 @@
 	</repositories>
 	
 	<distributionManagement>
-		<repository>
+		<snapshotRepository>
 			<id>nexus</id>
-			<name>public</name>
-			<url>http://cqqyd2014.wicp.net:8082/repository/maven-public</url>
-		</repository>
+			<name>3dr_part_cqqyd2014-snapshots</name>
+			<url>http://192.168.1.49:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
+		</snapshotRepository>
+		<site>
+            <id>nexus</id>
+            <name>Nexus Sites</name>
+            <url>dav:http://192.168.1.49:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
+        </site>
 
 	</distributionManagement>
 	<dependencies>
@@ -179,7 +184,7 @@
 		<dependency>
 			<groupId>com.cqqyd2014</groupId>
 			<artifactId>util</artifactId>
-			<version>2</version>
+			<version>2-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
