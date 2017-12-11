@@ -29,7 +29,7 @@ public class PrePackageMLogic {
 			
 			long current=end-num.longValue()+i+1;
 			String prepackage_barcode=String.valueOf(c_goods_count)+com.cqqyd2014.util.DateUtil.JDateToCompatString(now)+com.cqqyd2014.util.NumberUtil.numToStr0(current, 9);
-			System.out.println(prepackage_barcode);
+			//System.out.println(prepackage_barcode);
 			ppm.setPrepackage_barcode(prepackage_barcode);
 			ppm.setPrepackage_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 			ppm.setPrinted(false);
@@ -121,7 +121,7 @@ public class PrePackageMLogic {
 		ppm.setWh_id(ppm_h.getWhId());
 		ppm.setNum( ppm_h.getNum());
 		ppm.setPackaged(ppm_h.getPackaged());
-		ppm.setTime_last_chinese(com.cqqyd2014.util.DateUtil.getDistanceChinese(last));
+		ppm.setTime_last_chinese(com.cqqyd2014.util.DateUtil.getDistanceChinese(com.cqqyd2014.util.DateUtil.getDistanceSecends(now,ppm_h.getPackageTime())));
 		return ppm;
 	}
 

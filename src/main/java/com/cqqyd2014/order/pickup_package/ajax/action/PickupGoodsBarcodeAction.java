@@ -171,6 +171,11 @@ sm.setAuth_success(true);
 						dbd.setPackage_weight(ppds.get(i).getPackage_weight());
 						dbd.setSeq(seq);
 						dbd.setSended_count(new java.math.BigDecimal(1));
+						dbd.setReturned_dat(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
+						dbd.setReturned(false);
+						dbd.setReturned_memo("");
+						dbd.setReturned_userid("");
+						
 						dbds.add(dbd);
 						
 						//商品移动
