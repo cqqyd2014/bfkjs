@@ -176,6 +176,10 @@ public class DeliverMLogic {
 				dd.setOrderNo(dbd.getOrder_no());
 				dd.setPackageWeight(dbd.getPackage_weight());
 				dd.setSeq(dbd.getSeq());
+				dd.setReturned(dbd.isReturned());
+				dd.setReturnedDat(dbd.getReturned_dat());
+				dd.setReturnedMemo(dbd.getReturned_memo());
+				dd.setReturnedUserid(dbd.getReturned_userid());
 				session.saveOrUpdate(dd);
 				
 			}
