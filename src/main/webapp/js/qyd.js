@@ -31,7 +31,7 @@ function ajax_authority(field){
 		return;
 	}
 	if (!field.auth_success){
-		window.parent.parent.location.href="/Bfkjs";
+		window.parent.parent.frames.location.href="/Bfkjs";
 	}
 	
 }
@@ -41,7 +41,7 @@ function ajax_authority2(field){
 		return;
 	}
 	if (!field.auth_success){
-		window.parent.location.href="/Bfkjs";
+		window.parent.frames.location.href="/Bfkjs";
 	}
 	
 }

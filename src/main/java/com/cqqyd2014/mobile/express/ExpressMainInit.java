@@ -29,7 +29,7 @@ public class ExpressMainInit extends ActionSupport implements SessionAware {
 	public void setCom_name(String com_name) {
 		this.com_name = com_name;
 	}
-	java.util.HashMap goods_id_map = new java.util.LinkedHashMap();  
+	java.util.LinkedHashMap<String,String> goods_id_map = new java.util.LinkedHashMap<String,String>();  
 	
 	
 	@Override
@@ -69,14 +69,16 @@ public class ExpressMainInit extends ActionSupport implements SessionAware {
 	}
 
 
-	public java.util.HashMap getGoods_id_map() {
+	public java.util.LinkedHashMap<String, String> getGoods_id_map() {
 		return goods_id_map;
 	}
 
 
-	public void setGoods_id_map(java.util.HashMap goods_id_map) {
+	public void setGoods_id_map(java.util.LinkedHashMap<String, String> goods_id_map) {
 		this.goods_id_map = goods_id_map;
 	}
+
+
 
 	
 

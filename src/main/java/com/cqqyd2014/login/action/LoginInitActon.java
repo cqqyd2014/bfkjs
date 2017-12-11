@@ -55,7 +55,7 @@ public class LoginInitActon  extends ActionSupport {
 	   })  
 	
 
-	public String login_init() throws Exception {
+	public String login_init()  {
 		
 		Map<String,Object> session_http = ActionContext.getContext().getSession();
 

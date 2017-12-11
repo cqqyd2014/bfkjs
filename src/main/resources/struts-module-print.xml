@@ -3,10 +3,7 @@
 <struts>
 
 	<package name="bfkjs-print" namespace="/print" extends="struts-default">
-		<result-types>
-			<result-type name="jasper"
-				class="org.apache.struts2.views.jasperreports.JasperReportsResult" />
-		</result-types>
+
 		<action name="custom_logistics_print"
 			class="com.cqqyd2014.print.pdf.action.CutomLogisticsPrint">
 		</action>

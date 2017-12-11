@@ -6,20 +6,15 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
-
-import org.springframework.context.annotation.Scope;
 
 
+import com.cqqyd2014.common.action.UserLoginedAction;
 import com.opensymphony.xwork2.ActionSupport;
 
-@Scope("prototype")//支持多例  
-@ParentPackage("json-default")  //表示继承的父包  
-@Namespace(value="/system") //表示当前Action所在命名空间  
-@Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
-	@Result(name = ActionSupport.ERROR, type = "json", params = { "root", "msg" }) })
-
-public class GetSystemDatAction {
+@SuppressWarnings("serial")
+@ParentPackage("bfkjs-json-default")
+@Namespace("/system")
+public class GetSystemDatAction extends UserLoginedAction{
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -30,12 +25,10 @@ public class GetSystemDatAction {
 		this.msg = msg;
 	}
 	@Action(value = "get_system_dat", results = { @Result(type = "json", params = { "root", "msg" }) })
-	public String get_system_dat() {
-
-		
-		
-		
-		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
+		sm.setAuth_success(true);
 		String result = com.cqqyd2014.util.DateUtil.getLocalFullString(new java.util.Date());
 		sm.setSuccess(true);
 		sm.setBody(result);

@@ -10,7 +10,7 @@ public class ReturnGoodsLogic {
 		rg.setGoods_name(vrg.getId().getCName());
 		rg.setMemo(vrg.getId().getMemo());
 		rg.setOp_date(vrg.getId().getOpDat());
-		rg.setOp_date_chinese(com.cqqyd2014.util.DateUtil.ChineseDate(vrg.getId().getOpDat()));
+		rg.setOp_date_chinese(com.cqqyd2014.util.DateUtil.getLocalFullString(vrg.getId().getOpDat()));
 		rg.setOrder_create_userid(vrg.getId().getOrderCreateUserid());
 		rg.setOrder_create_username(vrg.getId().getOrderCreateUsername());
 		rg.setReturn_pirce(vrg.getId().getReturnPrice());

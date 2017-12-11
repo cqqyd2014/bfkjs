@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
+// Generated 2017-12-5 14:48:25 by Hibernate Tools 5.2.6.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -26,8 +26,7 @@ public class VDeliverD implements java.io.Serializable {
 
 	@EmbeddedId
 
-	@AttributeOverrides({
-			@AttributeOverride(name = "sendUserName", column = @Column(name = "send_user_name", length = 45)),
+	@AttributeOverrides({ @AttributeOverride(name = "sendUserName", column = @Column(name = "send_user_name")),
 			@AttributeOverride(name = "receiverMobile", column = @Column(name = "receiver_mobile", length = 45)),
 			@AttributeOverride(name = "addrDistrict", column = @Column(name = "addr_district", length = 45)),
 			@AttributeOverride(name = "addrCity", column = @Column(name = "addr_city", length = 45)),

@@ -27,6 +27,39 @@
 <script type="text/javascript">
 
 
+function un_package(prepackage_barcode){
+
+	$.getJSON("un_package.action", {
+		prepackage_barcode : prepackage_barcode
+		
+	}, function(result) {
+		
+		var field=result.msg;
+			
+				if (field.success){
+					//合格数据
+					var html="<span><audio autoplay><source src=\'../sound/"+field.sound+".mp3\'><source src=\'../sound/"+field.sound+".ogg\'></audio><font color='bule'>"+field.body+"</font></span>"
+					$("#message_sn").html(html);
+					
+					show_prepack_table();
+
+					
+					}
+				else{
+					 $.messager.alert("操作提示", "作废条码出错！原扫描条码"+$("#goods_barcode").val()+"，出错信息："+field.body,"error");  
+					var html="<span><audio autoplay><source src=\'../sound/"+field.sound+".mp3\'><source src=\'../sound/"+field.sound+".ogg\'></audio><font color='red'>"+field.body+"</font></span>"
+					$("#message_sn").html(html);
+
+
+					}
+				
+				
+			
+		
+		
+	});
+}
+
 function add_goods_barcode_to_repackage(){
 
 	$("#goods_barcode").attr("disabled","disabled");

@@ -31,7 +31,7 @@ public class MyOrdersPagesInitAction  extends OrderPagesInit{
     )    
 
 })  
-	@Authority(module="myorders", privilege="[00010000]",error_url="login") 
+	@Authority(module="myorders", privilege="[00010000]",error_url="authority_error") 
 	public String my_orders_init() throws Exception{
 		execute();
 		

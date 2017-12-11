@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-2 21:24:22 by Hibernate Tools 5.2.6.Final
+// Generated 2017-12-5 14:48:25 by Hibernate Tools 5.2.6.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -100,7 +100,7 @@ public class VDeliverDId implements java.io.Serializable {
 		this.unit = unit;
 	}
 
-	@Column(name = "send_user_name", length = 45)
+	@Column(name = "send_user_name")
 	public String getSendUserName() {
 		return this.sendUserName;
 	}

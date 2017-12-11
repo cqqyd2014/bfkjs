@@ -134,7 +134,7 @@ public class DeliverDLogic {
 		dbd.setReturned_dat(vdd.getId().getReturnedDat());
 		dbd.setReturned_memo(vdd.getId().getReturnedMemo());
 		dbd.setReturned_userid(vdd.getId().getReturnedUserid());
-		dbd.setReturn_dat_chinese(com.cqqyd2014.util.DateUtil.ChineseDate(vdd.getId().getReturnedDat()));
+		dbd.setReturn_dat_chinese(com.cqqyd2014.util.DateUtil.getLocalFullString(vdd.getId().getReturnedDat()));
 		dbd.setReceiver_full_addr(vdd.getId().getAddrProvince()+" "+vdd.getId().getAddrCity()+" "+vdd.getId().getAddrDistrict()+" "+vdd.getId().getCUserAddr()+" ");
 		dbd.setReceiver_addr(vdd.getId().getCUserAddr());
 		dbd.setReceiver_city(vdd.getId().getAddrCity());

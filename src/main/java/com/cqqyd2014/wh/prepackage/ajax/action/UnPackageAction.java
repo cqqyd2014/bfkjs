@@ -83,6 +83,7 @@ sm.setAuth_success(true);
 			}
 
 			sm.setSuccess(true);
+			sm.setBody("预包装解包成功");
 
 			sm.setSound("picked_ok");
 
