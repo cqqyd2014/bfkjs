@@ -178,7 +178,7 @@
 
 		<dependency>
 			<groupId>com.cqqyd2014.font</groupId>
-			<artifactId>MsYh</artifactId>
+			<artifactId>MSYH</artifactId>
 			<version>1</version>
 		</dependency>
 		<dependency>
