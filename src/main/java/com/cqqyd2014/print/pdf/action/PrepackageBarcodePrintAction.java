@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import org.apache.struts2.util.ServletContextAware;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import com.cqqyd2014.common.action.PdfPrintInitAbstractAction;
+import com.cqqyd2014.common.action.UserLoginedPdfAbastractAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.wh.model.Goods;
 import com.opensymphony.xwork2.ActionContext;
@@ -33,124 +36,78 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 @ParentPackage("struts-default")
 @Namespace("/wh")
 
-@Results({@Result(name = "success", type = "stream", params = {  
-        "contentType", "application/pdf",  
-        "inputName", "inputStream", "contentDisposition",  
-        "attachment;filename=\"${file_name}\"", "bufferSize",  
-        "4096" })})  
 
-public class PrepackageBarcodePrintAction   extends ActionSupport implements ServletResponseAware, ServletContextAware {
+
+public class PrepackageBarcodePrintAction   extends UserLoginedPdfAbastractAction{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	HttpServletResponse response;
-	ServletContext servletContext;
-	InputStream inputStream;
 	
 
-	public String getFile_name() throws UnsupportedEncodingException {
-		return URLEncoder.encode("预包装条码"+com.cqqyd2014.util.DateUtil.JDateToFullCompatString(new java.util.Date()), "UTF-8") + ".pdf";
-	}
-
-	public void setFile_name(String file_name) {
-		this.file_name = file_name;
-	}
-
-
-
-	String file_name;
-
-
-
-	public void setServletResponse(HttpServletResponse response) {
+	@Override
+	public String setDownloadFileName() {
 		// TODO Auto-generated method stub
-		this.response = response;
+		return "预包装条码.pdf";
 	}
 
-	public void setServletContext(ServletContext servletContext) {
+	@Override
+	public String setJasperPath() {
 		// TODO Auto-generated method stub
-		this.servletContext = servletContext;
-
+		return "/jasper/barcode/";
 	}
 
-	public InputStream getInputStream()  {
-		Map<String,Object> session_http = ActionContext.getContext().getSession();
-
-		String user = (String) session_http.get("USER");
-		String user_name = (String) session_http.get("USER_NAME");
-		String user_id = (String) session_http.get("USER_ID");
-		String com_id = (String) session_http.get("com_code");
-		
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
-		try {
-
-			String reportDestination = null;
-
-			reportDestination = servletContext.getRealPath("/jasper/barcode/prepackage_barcode.jasper");
-
-
-			// 获得jasper报表文件的输入流
-			InputStream inputStreamJasper = new FileInputStream(reportDestination);
-
-			HashMap<String,Object> map=new HashMap<>();
-			JRDataSource dataSource = createReportDataSource(session,user_id,com_id);
-			inputStream = new ByteArrayInputStream(JasperRunManager.runReportToPdf(inputStreamJasper, map, dataSource));
-			tx.commit();
-			
-		}
-		
-catch (Exception e) {
-			
-			if (null != tx) {
-				tx.rollback();// 撤销事务
-
-			}
-			
-			
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-			
-		}
-		
-
-		 finally {
-				HibernateSessionFactory.closeSession();
-			}
-		return inputStream;
+	@Override
+	public String setJasperFileName() {
+		// TODO Auto-generated method stub
+		return "prepackage_barcode.jasper";
 	}
 
-	public void setInputStream(InputStream inputStream) {
-		this.inputStream = inputStream;
+	@Override
+	public String setImagesPath() {
+		// TODO Auto-generated method stub
+		return "";
 	}
 	@Action(value="prepackage_barcode_print", results = { @Result(name = "success", type = "stream", params = {  
 	        "contentType", "application/pdf",  
 	        "inputName", "inputStream", "contentDisposition",  
 	        "attachment;filename=\"${file_name}\"", "bufferSize",  
 	        "4096"  }) })  
-	public String prepackage_barcode_print() throws Exception {  
-        
-        return SUCCESS;  
-    }  
-
-
-	
-
-	private JRDataSource createReportDataSource(Session session,String user_id,String com_id) throws Exception {
-		JRBeanCollectionDataSource  dataSource;
-		java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> reportRows = initializeBeanArray(session,user_id,com_id);
-		dataSource = new JRBeanCollectionDataSource (reportRows);
-		return dataSource;
+	@Override
+	public String execute_pdf_print() {
+		// TODO Auto-generated method stub
+		super.execute();
+		return SUCCESS;
 	}
 
-	public   java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> initializeBeanArray(Session session,String user_id,String com_id) throws Exception{
+	@Override
+	public ArrayList<? extends Object> initializeBeanArray() {
+		// TODO Auto-generated method stub
+		session = HibernateSessionFactory.getSession();
+		java.util.ArrayList<com.cqqyd2014.wh.model.PrePackageM> ppms=null;
+		try {
+		
 		com.cqqyd2014.hibernate.dao.PrePackageDAO gdao=new com.cqqyd2014.hibernate.dao.PrePackageDAO();
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.PrePackageM> goodsList=gdao.getUnPrintPreSn(session, com_id, user_id);
 		
-		return com.cqqyd2014.wh.logic.PrePackageMLogic.getArrayListModelFromArrayListEntity(goodsList);
+		ppms= com.cqqyd2014.wh.logic.PrePackageMLogic.getArrayListModelFromArrayListEntity(goodsList);
+		}
 		
+		catch (Exception e) {
+					
+					
+					
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+					
+				}
+				
+
+				 finally {
+						HibernateSessionFactory.closeSession();
+					}
+		return ppms;
 	}
 
 }
