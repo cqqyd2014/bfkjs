@@ -130,6 +130,7 @@
         <mapping class="com.cqqyd2014.hibernate.entities.VUserPickingWorking"/>
         <mapping class="com.cqqyd2014.hibernate.entities.UserPar"/>
         <mapping class="com.cqqyd2014.hibernate.entities.Goods"/>
+        <mapping class="com.cqqyd2014.hibernate.entities.VComInfo"/>
         <mapping class="com.cqqyd2014.hibernate.entities.COrderMain"/>
         <mapping class="com.cqqyd2014.hibernate.entities.GoodsMove"/>
         <mapping class="com.cqqyd2014.hibernate.entities.WarehouseStorage"/>

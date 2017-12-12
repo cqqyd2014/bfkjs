@@ -25,13 +25,14 @@ public class TaskJobOrderAssign  {
 		Transaction tx = session.beginTransaction();
 		try {
 			// 针对所有单位进行处理，先得到单位列表
-			com.cqqyd2014.hibernate.dao.ComInfoDAO cidao = new com.cqqyd2014.hibernate.dao.ComInfoDAO();
+			
 			com.cqqyd2014.hibernate.dao.SysUserDAO sudao = new com.cqqyd2014.hibernate.dao.SysUserDAO();
 			com.cqqyd2014.hibernate.dao.OrderMainDAO omdao = new com.cqqyd2014.hibernate.dao.OrderMainDAO();
 			com.cqqyd2014.hibernate.dao.DeliverMDAO dmdao = new com.cqqyd2014.hibernate.dao.DeliverMDAO();
 			com.cqqyd2014.hibernate.dao.VUserPickingDAO updao = new com.cqqyd2014.hibernate.dao.VUserPickingDAO();
 			com.cqqyd2014.hibernate.dao.VUserSendingDAO usdao = new com.cqqyd2014.hibernate.dao.VUserSendingDAO();
-			java.util.ArrayList<com.cqqyd2014.hibernate.entities.ComInfo> cis = cidao.getList(session);
+			java.util.ArrayList<com.cqqyd2014.system.model.ComInfo> cis = com.cqqyd2014.system.logic.ComInfoLogic.getArrayListModelFromArrayListView(
+					com.cqqyd2014.hibernate.dao.VComInfoDAO.getArrayListEntity(session));
 			//1、清理未付款订单，看看能否足够付款
 			//com.cqqyd2014.hibernate.dao.OrderMainDAO omdao=new com.cqqyd2014.hibernate.dao.OrderMainDAO();
 			java.util.Date paid_time=new java.util.Date();
@@ -55,18 +56,18 @@ public class TaskJobOrderAssign  {
 			
 			// System.out.println("单位个数"+cis.size());
 			for (int i = 0; i < cis.size(); i++) {
-				com.cqqyd2014.hibernate.entities.ComInfo ci = cis.get(i);
+				com.cqqyd2014.system.model.ComInfo ci = cis.get(i);
 				// 1、清理不在线的用户
-				sudao.setTimeOutForceOffline(session, ci.getCId());
+				sudao.setTimeOutForceOffline(session, ci.getCom_code());
 				// 分配“已经生成订单，未拣货的”
 				// 得到未拣货的订单
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain> oms_pickup = omdao
-						.getListUnAssignedPackager(session, ci.getCId());
+						.getListUnAssignedPackager(session, ci.getCom_code());
 
 				// System.out.println("需要拣货"+oms_pickup.size());
 				// 得到有拣货资质的用户清单
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPicking> ups = updao.getListByComId(session,
-						ci.getCId());
+						ci.getCom_code());
 				if (ups.size() != 0 && oms_pickup.size() != 0) {
 
 					// 这些用户正在处理的订单数量总计
@@ -116,12 +117,12 @@ public class TaskJobOrderAssign  {
 				// 分配“已经生成订单，未发货的”
 				// 得到未发货的订单
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VDeliverNeedAssign> oms_send = omdao
-						.getListUnAssignedSender(session, ci.getCId());
+						.getListUnAssignedSender(session, ci.getCom_code());
 
 				// System.out.println("需要发货 "+oms_send.size());
 				// 得到有拣货资质的用户清单
 				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserSending> uss = usdao.getListByComId(session,
-						ci.getCId());
+						ci.getCom_code());
 				if (uss.size() != 0 && oms_send.size() != 0) {
 					// 这些用户正在处理的订单数量总计
 					long sum2 = 0;
@@ -156,7 +157,7 @@ public class TaskJobOrderAssign  {
 									continue;
 								com.cqqyd2014.hibernate.entities.VDeliverNeedAssign dna = oms_send.get(flag2);
 								com.cqqyd2014.hibernate.entities.DeliverM dm = dmdao.getDeliverM(session,
-										dna.getId().getOrderNo(), dna.getId().getSeq(), ci.getCId());
+										dna.getId().getOrderNo(), dna.getId().getSeq(), ci.getCom_code());
 								dm.setSendUserid(up.getId().getId());
 								dm.setSendUserAssignTime(new java.util.Date());
 								dm.setDeliverBillStatus("分派发货");

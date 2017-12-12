@@ -117,18 +117,18 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.2.9.Final</version>
+			<version>5.2.12.Final</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-c3p0</artifactId>
-			<version>5.2.9.Final</version>
+			<version>5.2.12.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
-			<version>5.2.9.Final</version>
+			<version>5.2.12.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>c3p0</groupId>

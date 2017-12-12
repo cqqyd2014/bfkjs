@@ -45,8 +45,9 @@ public class ManualInitAction extends ActionSupport {
 
 		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
 		try {
-			com.cqqyd2014.hibernate.dao.ComInfoDAO cidao=new com.cqqyd2014.hibernate.dao.ComInfoDAO();
-			ArrayList<ComInfo> cis=cidao.getList(session);
+			
+			ArrayList<com.cqqyd2014.system.model.ComInfo> cis=com.cqqyd2014.system.logic.ComInfoLogic.getArrayListModelFromArrayListView(
+					com.cqqyd2014.hibernate.dao.VComInfoDAO.getArrayListEntity(session));
 			coms_map=HashMapTools.convertArrayListToHashMap(cis, "getCId", "getCName");
 			
 			

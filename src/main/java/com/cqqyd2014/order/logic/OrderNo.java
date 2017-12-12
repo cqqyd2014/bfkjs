@@ -6,9 +6,10 @@ public class OrderNo {
 	public static  String createNo(Session session, String channel,String com_id) {
 		
 		String orderNo;
-		com.cqqyd2014.hibernate.dao.ComInfoDAO cidao=new com.cqqyd2014.hibernate.dao.ComInfoDAO();
-		String orderHead=cidao.getOrderHead(session, com_id);
-		cidao=null;
+		
+		String orderHead=com.cqqyd2014.system.logic.ComInfoLogic.getModelFromView(
+				com.cqqyd2014.hibernate.dao.VComInfoDAO.getViewByComId(session, com_id)).getOrder_head();
+		
 		do {
 			orderNo = getNo(session, channel,orderHead,com_id);
 		} while (orderNo == null);

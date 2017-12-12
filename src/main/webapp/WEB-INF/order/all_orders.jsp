@@ -552,7 +552,7 @@
 			<tr>
 				<td colspan='2' align="right"><a id="b_new_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#new_deliver_order_no').val(),$('#new_deliver_logistics').val(),$('#new_deliver_logistics_vehicle').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
+					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
 					iconCls="qyd">打印多联纸质快递单</a> <a id="b_electric_express"
 					href="javascript:void(0)" class="easyui-linkbutton"
 					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
