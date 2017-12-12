@@ -1,0 +1,79 @@
+@CHARSET "UTF-8";
+.box {
+ border-top-width: 1px;
+ border-right-width: 0px;
+ border-bottom-width: 0px;
+ border-left-width: 1px;
+ border-top-style: solid;
+ border-right-style: solid;
+ border-bottom-style: solid;
+ border-left-style: solid;
+ border-top-color: #999999;
+ border-right-color: #999999;
+ border-bottom-color: #999999;
+ border-left-color: #999999;
+}
+.box td {
+ border-top-width: 0px;
+ border-right-width: 1px;
+ border-bottom-width: 1px;
+ border-left-width: 0px;
+ border-top-style: solid;
+ border-right-style: solid;
+ border-bottom-style: solid;
+ border-left-style: solid;
+ border-top-color: #999999;
+ border-right-color: #999999;
+ border-bottom-color: #999999;
+ border-left-color: #999999;
+ font-size: 13px;
+ 
+ word-break:   break-all;
+}
+
+
+.wh_list{
+	float:none;
+	width:100%;
+	
+	
+}
+.clear{ clear:both}
+.storage_list{
+	border: 1px solid #CCC;
+	
+	
+}
+.storage_list dl dt {
+	height: 110px;
+	width: 120px;
+	padding: 0px;
+	margin: 0px;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+
+.storage_list dl {
+	
+	width: 120px;
+	border: 1px solid #CCC;
+	margin: 10px;
+	padding: 0px;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.storage_list dl dd {
+	height: 90px;
+	width: 120px;
+	margin: 0px;
+	padding: 0px;
+	font-style: normal;
+	line-height: normal;
+	font-variant: normal;
+	border: thin none #CCC;
+	text-align: center;
+	 background-color:#FFFFCC;
+}
+

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+
+	<package name="bfkjs-print" namespace="/print" extends="struts-default">
+
+		<action name="custom_logistics_print"
+			class="com.cqqyd2014.print.pdf.action.CutomLogisticsPrint">
+		</action>
+		<action name="sf_elec_logistics_print"
+			class="com.cqqyd2014.print.pdf.action.SfLogisticsElecPrint">
+		</action>
+		<action name="order_logistics_print"
+			class="com.cqqyd2014.print.pdf.action.OrderLogisticsPrint">
+		</action>
+		<action name="deliverToPDF" class="com.cqqyd2014.print.pdf.action.DeliverToPDF">
+		</action>
+		<action name="*">
+			<result>/WEB-INF/pdf/{1}.jsp</result>
+		</action>
+	</package>
+</struts>    

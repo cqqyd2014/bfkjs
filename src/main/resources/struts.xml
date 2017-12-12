@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN" "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+<!-- 设置该应用使用的解码集 -->
+     <constant name="struts.i18n.encoding" value="utf-8"/>
+      <!-- 上传的全部文件的最大限制-->
+     <constant name="struts.multipart.maxSize" value="1024102400"/>
+     <!-- 设置存放临时文件的文件夹 -->
+    <constant name="struts.multipart.saveDir" value="/tmp"></constant>
+	<constant name="struts.action.extension" value="action" />
+	<constant name="struts.locale" value="zh_CN" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.ui.theme" value="simple" />
+
+<package name="bfkjs-default"  extends="struts-default">
+
+		 <interceptors>  
+            <interceptor name="authorityInterceptor" class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>  
+            <!-- 一个拦截器栈中可以定义多个拦截器 -->  
+            <interceptor-stack name="authorityStack">  
+             <interceptor-ref name="defaultStack" />  
+                <interceptor-ref name="authorityInterceptor" />  
+               
+            </interceptor-stack>  
+        </interceptors>  
+        <!--全局结果处理  -->  
+        <global-results>  
+            <result name="authority_error">/WEB-INF/authoryity_error/authority_error.jsp</result>
+             <result name="authority_web_error">/WEB-INF/authoryity_error/authority_web_error.jsp</result>
+        </global-results>  
+
+	</package>
+<package name="bfkjs-json-default"  extends="json-default">
+
+		 <interceptors>  
+            <interceptor name="authorityInterceptor" class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>  
+            <!-- 一个拦截器栈中可以定义多个拦截器 -->  
+            <interceptor-stack name="authorityStack"> 
+             <interceptor-ref name="defaultStack" />   
+                <interceptor-ref name="authorityInterceptor" />  
+                 
+            </interceptor-stack>  
+        </interceptors>  
+        <!--全局结果处理  -->  
+        <global-results>  
+            <result name="authority_ajax_error">/WEB-INF/authority_error/authority_error.json</result>
+              
+        </global-results>  
+
+	</package>
+
+
+<include file="struts-module-print.xml"></include>
+
+
+
+</struts>
