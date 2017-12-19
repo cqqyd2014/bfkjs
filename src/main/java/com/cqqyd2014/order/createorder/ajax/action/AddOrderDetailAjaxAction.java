@@ -95,19 +95,19 @@ sm.setAuth_success(true);
 		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 				.get("temp_order_detail");
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+		session = HibernateSessionFactory.getSession();
+		
 		
 		try {
 			//得到商品基本信息
-			com.cqqyd2014.hibernate.dao.VGoodsInfoDAO vgidao=new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
-			com.cqqyd2014.hibernate.entities.VGoodsInfo vgi=vgidao.getGoodsInfo(goods_id, session, com_id);
+			//com.cqqyd2014.hibernate.dao.VGoodsInfoDAO vgidao=new com.cqqyd2014.hibernate.dao.VGoodsInfoDAO();
+			com.cqqyd2014.hibernate.entities.VGoodsInfo vgi=com.cqqyd2014.hibernate.dao.VGoodsInfoDAO.getGoodsInfo(goods_id, session, com_id);
 			com.cqqyd2014.wh.model.GoodsInfo gi=com.cqqyd2014.wh.logic.GoodsInfoLogic.getModelFromView(vgi);
 		//得到税费信息
-			com.cqqyd2014.hibernate.dao.EcsTaxRateDAO etrdao = new com.cqqyd2014.hibernate.dao.EcsTaxRateDAO();
-			java.util.ArrayList<java.math.BigDecimal> ert = etrdao.getRegTax(session, vgi.getId().getCHs());
-		com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO fgpdao = new com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO();
-		com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupadao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
+			//com.cqqyd2014.hibernate.dao.EcsTaxRateDAO etrdao = new com.cqqyd2014.hibernate.dao.EcsTaxRateDAO();
+			java.util.ArrayList<java.math.BigDecimal> ert = com.cqqyd2014.hibernate.dao.EcsTaxRateDAO.getRegTax(session, vgi.getId().getCHs());
+		//com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO fgpdao = new com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO();
+		//com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupadao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
 		java.util.LinkedHashMap<String, java.math.BigDecimal> odis_map=com.cqqyd2014.util.HashMapTools.convertArrayListStringNToMap(odis, "getGoods_id", "getNum");
 		// 先看看这个goods_id是否在订单明细中是否存在
 		if (odis_map.get(goods_id)!=null) {
@@ -116,8 +116,9 @@ sm.setAuth_success(true);
 			java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods_by_goodsid=(java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>)
 					com.cqqyd2014.util.ArrayListTools.searchStringField(odis, "getGoods_id", goods_id);
 			com.cqqyd2014.order.model.OrderDetail od=ods_by_goodsid.get(0);
-			od.setNum(c_count);
-			od.setTotal1(c_price.multiply(c_count));
+			java.math.BigDecimal new_count=od.getNum().add(c_count);
+			od.setNum(new_count);
+			od.setTotal1(c_price.multiply(new_count));
 			java.math.BigDecimal goods_finace_price=od.getPrice2();
 			od.setTotal2(c_count.multiply(goods_finace_price));
 			
@@ -146,11 +147,11 @@ sm.setAuth_success(true);
 			od.setOrder_no("");
 			java.util.Date now=new java.util.Date();
 			//得到客户价格
-			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=vupadao.getGoodsInfos(session, goods_id, com_id, user_id,now);
+			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfos(session, goods_id, com_id, user_id,now);
 			
 			od.setPrice(vupa.getId().getUserPrice());
 			//得到财务入账价格
-			com.cqqyd2014.hibernate.entities.FinanceGoodsPrice fgp=fgpdao.getEntityByGoodsIdDate(session, com_id, goods_id, now);
+			com.cqqyd2014.hibernate.entities.FinanceGoodsPrice fgp=com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO.getEntityByGoodsIdDate(session, com_id, goods_id, now);
 			if (fgp == null) {
 				throw new com.cqqyd2014.util.exception.AjaxSuccessMessageException(goods_id + "无可用的财务入账价格");
 				
@@ -188,7 +189,7 @@ sm.setAuth_success(true);
 			sm.setO(odis);
 			sm.setSuccess(true);
 			
-			tx.commit();
+			
 			// session.close();
 		}
 

@@ -141,6 +141,7 @@ public class DeliverDLogic {
 		dbd.setReceiver_district(vdd.getId().getAddrDistrict());
 		dbd.setReceiver_province(vdd.getId().getAddrProvince());
 		dbd.setReceiver(vdd.getId().getCUserName());
+		
 
 		/*
 		//得到商品的重量

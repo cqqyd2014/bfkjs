@@ -7,14 +7,7 @@
 <head>
 
 <title><s:property value="#request.com_name" /></title>
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../js/qyd.js"></script>
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 
 <script language='javascript' type='text/javascript'>
 
@@ -22,7 +15,7 @@ function login(){
 
 	
 
-	$.getJSON("../login/login.action", {"user_name":$("#user_name").val(),"password":$("#password").val()
+	$.getJSON("../login/login.action", {"user_name":$("#user_name").textbox('getValue'),"password":$("#password").passwordbox('getValue')
 	}, function(result) {
 		
 		$.each(result, function(i, field) {
@@ -50,6 +43,16 @@ $(document).ready(function() {
 	//$("#login_dialog").panel("move",{top:$(document).scrollTop() + ($(window).height()-250) * 0.5});  
 	dialog_init_mid('login_dialog');
 	$('#login_dialog').dialog('open');
+	//移动焦点
+	easyui_textbox_focus('user_name');
+	easyui_textbox_enter('user_name',function(){
+		easyui_textbox_focus('password');
+		
+		});
+	easyui_textbox_enter('password',function(){
+		login();
+		});
+
 
 });
 
@@ -61,53 +64,46 @@ function root(){
 
 </head>
 
-<body style="width:98%;height:98%;">
+<body style="width: 98%; height: 98%;">
 
 
 
-	<div id="login_dialog" 
-		style="width: 450px; height: 220px;"
+	<div id="login_dialog" style="width: 450px; height: 220px;"
 		class="easyui-dialog" title="登录系统" iconCls="qyd"
-		data-options="	iconCls: 'qyd',	buttons: '#login_buttons'"
-		>
-		
-	<table style="width: 100%">
-	<tr>
-		<td width="30%">公司名称：
-		</td>
-		<td width="70%"><s:property value="#request.com_name" />
-		</td>
-	</tr>
-	<tr>
-		<td>服务器时间：
-		</td>
-		<td><span id="time">
-		</td>
-	</tr>
-	<tr>
-		<td>用户名:
-		</td>
-		<td><s:textfield id="user_name" name="userName" style="width 250px;"/>
-		</td>
-	</tr>
-	<tr>
-		<td>密码：
-		</td>
-		<td><s:password id ="password" name="pwd" label="密码" style="width 250px;"/>
-		</td>
-	</tr>
-	</table>
-			
-			
-			
+		data-options="	iconCls: 'qyd',	buttons: '#login_buttons'">
 
-		
+		<table style="width: 100%">
+			<tr>
+				<td width="30%">公司名称：</td>
+				<td width="70%"><s:property value="#request.com_name" /></td>
+			</tr>
+			<tr>
+				<td>服务器时间：</td>
+				<td><span id="time"></td>
+			</tr>
+			<tr>
+				<td>用户名:</td>
+				<td><input id="user_name" class="easyui-textbox" style="" /></td>
+			</tr>
+			<tr>
+				<td>密码：</td>
+				<td><input id="password" class="easyui-passwordbox" style="" />
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
 	</div>
 
 	<div id="login_buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:login()"
-					icon="icon-ok">登录</a> <a href="
-					javascript:void(0)"" class="easyui-linkbutton" icon="icon-cancel" onclick="javascript:root()">取消</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			onclick="javascript:login()" icon="icon-ok">登录</a> <a
+			href="
+					javascript:void(0)" " class="easyui-linkbutton"
+			icon="icon-cancel" onclick="javascript:root()">取消</a>
 	</div>
 
 

@@ -79,6 +79,13 @@ public class LoginAjaxAction extends ActionSupport {
 				session_http.put("user_name", b.getName());
 				session_http.put("user_login", b.getUserLogin());
 				session_http.put("user_id", b.getId());
+				//设置用户参数
+				java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPar> ups=com.cqqyd2014.usergroup.logic.UserParLogic.getArrayListModelEntityFromArrayListEntity(com.cqqyd2014.hibernate.dao.UserParDAO.getArrayListEntityByUserId(session, com_id, b.getId()));
+				for (int i=0,len=ups.size();i<len;i++){
+					com.cqqyd2014.usergroup.model.UserPar up=ups.get(i);
+					session_http.put(up.getParam(),up.getValue());
+				}
+				
 				//设置权限
 				com.cqqyd2014.hibernate.dao.MenuDDAO mddao=new com.cqqyd2014.hibernate.dao.MenuDDAO();
 				java.util.ArrayList<com.cqqyd2014.system.model.MenuD> menuds=mddao.getMenuDAll(session, com_id,b.getId());

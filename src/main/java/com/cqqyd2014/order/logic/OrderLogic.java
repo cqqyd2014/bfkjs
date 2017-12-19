@@ -206,10 +206,10 @@ else{
 
 	
 	
-	public static java.util.ArrayList<com.cqqyd2014.order.model.Order> getOrderArrayFromView(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> vorders){
+	public static java.util.ArrayList<com.cqqyd2014.order.model.Order> getArrayListModelFromArrayListView(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> vorders){
 		java.util.ArrayList<com.cqqyd2014.order.model.Order > orders=new java.util.ArrayList<>();
 		for (int i=0;i<vorders.size();i++){
-			com.cqqyd2014.order.model.Order order=getOrderModelFromHiberanteEntities(vorders.get(i));
+			com.cqqyd2014.order.model.Order order=getModelFromView(vorders.get(i));
 			orders.add(order);
 		}
 		return orders;
@@ -285,7 +285,7 @@ if (vods==null) {
 	//将数据库对象装换为订单模型队形_类型1,订单
 	
 	
-	public static com.cqqyd2014.order.model.Order getOrderModelFromHiberanteEntities(com.cqqyd2014.hibernate.entities.VOrderMain om){
+	public static com.cqqyd2014.order.model.Order getModelFromView(com.cqqyd2014.hibernate.entities.VOrderMain om){
 		com.cqqyd2014.order.model.Order order=new com.cqqyd2014.order.model.Order();
 		order.setCancel_status(om.getId().getCancelStatus());
 		order.setCancel_confirm_memo(om.getId().getCancelConfirmMemo());
@@ -346,7 +346,7 @@ if (vods==null) {
 	
 	//将数据库对象订单转换为订单模型对象_类型2，订单与订单明细
 	public static com.cqqyd2014.order.model.Order getOrderModelFromHiberanteEntities(com.cqqyd2014.hibernate.entities.VOrderMain om,java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderDetail> vods){
-		com.cqqyd2014.order.model.Order order=getOrderModelFromHiberanteEntities(om);
+		com.cqqyd2014.order.model.Order order=getModelFromView(om);
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> ods=getOrderDetailsModelFromHiberanteEntities(vods);
 		
 		order.setDetails(ods);
@@ -380,7 +380,7 @@ if (vods==null) {
 	}
 	//将数据库对象订单转换为订单模型对象_类型6，订单、发货人信息
 	public static com.cqqyd2014.order.model.Order getOrderModelFromHiberanteEntities(com.cqqyd2014.hibernate.entities.VOrderMain om,com.cqqyd2014.hibernate.entities.OrderFrom of){
-		com.cqqyd2014.order.model.Order order=getOrderModelFromHiberanteEntities(om);
+		com.cqqyd2014.order.model.Order order=getModelFromView(om);
 		order=getSenderFormHibernateEntities(order,of);
 		
 		return order;

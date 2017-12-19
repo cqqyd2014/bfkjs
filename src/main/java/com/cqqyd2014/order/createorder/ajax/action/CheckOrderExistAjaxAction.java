@@ -54,26 +54,31 @@ public class CheckOrderExistAjaxAction extends UserLoginedAction {
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+@Authority(module = "check_order_exist", privilege = "[00010001]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub
 super.execute();
 sm.setAuth_success(true);
 		
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+		session = HibernateSessionFactory.getSession();
+		
 		try {
-			com.cqqyd2014.hibernate.dao.OrderMainDAO omdao=new com.cqqyd2014.hibernate.dao.OrderMainDAO();
 			
+			int days=30;
 			
-			IfMessage ir=omdao.ifExist(session,field,value,com_id);
+			java.util.ArrayList<com.cqqyd2014.order.model.Order> orders=com.cqqyd2014.order.logic.OrderLogic.getArrayListModelFromArrayListView(
+					com.cqqyd2014.hibernate.dao.VOrderMainDAO.getViewByPars(session,field,value,days,com_id));
 			
-			sm.setSuccess(ir.isIf_ok());
-			sm.setO(ir.getMessage());
-			
-			
-			tx.commit();
+			if (orders.size()==0){
+				sm.setSuccess(false);
+				
+			}
+			else{
+				sm.setSuccess(true);
+				sm.setO(orders);
+			}
+		
 			
 		}
 

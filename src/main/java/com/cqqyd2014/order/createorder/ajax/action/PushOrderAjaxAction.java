@@ -17,7 +17,7 @@ import org.hibernate.Transaction;
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.order.logic.LogisticsLogic;
+
 import com.cqqyd2014.order.logic.OrderLogic;
 import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
 
@@ -194,7 +194,7 @@ sm.setAuth_success(true);
 				
 				
 		order.setQty(qty);
-		java.math.BigDecimal ship_fee=LogisticsLogic.getFeeByLogisticsVehicleNum(session, order.getCom_id(), order.getLogistics(), order.getVehicle(), order.getQty());
+		java.math.BigDecimal ship_fee=com.cqqyd2014.logistics.logic.LogisticsComLogic.getFeeByLogisticsVehicleNum(session, order.getCom_id(), order.getLogistics(), order.getVehicle(), order.getQty());
 		order.setShip_fee(ship_fee);
 		com.cqqyd2014.hibernate.dao.OrderLogDAO oldao=new com.cqqyd2014.hibernate.dao.OrderLogDAO();
 		

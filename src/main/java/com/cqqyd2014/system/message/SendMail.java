@@ -21,11 +21,11 @@ public abstract class SendMail {
 	public SendMail(org.hibernate.Session session) {
 		super();
 		this.session=session;
-		com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
 		
-		this.smtp_server = spdao.getSmtpServer(session);
-		this.user =spdao.getSmtpUser(session);
-		this.password = spdao.getSmtpPwd(session);
+		
+		this.smtp_server = com.cqqyd2014.system.logic.SysParLogic.getSmtpServer(session);
+		this.user =com.cqqyd2014.system.logic.SysParLogic.getSmtpUser(session);
+		this.password = com.cqqyd2014.system.logic.SysParLogic.getSmtpPwd(session);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -48,8 +48,8 @@ public abstract class SendMail {
 		
 		// from=user;
 		Properties props = new Properties();
-		com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
-		props.put("mail.smtp.host", spdao.getSmtpServer(session)); // 指定SMTP服务器
+		//com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
+		props.put("mail.smtp.host", smtp_server); // 指定SMTP服务器
 		props.put("mail.smtp.auth", "true"); // 指定是否需要SMTP验证
 		try {
 			Session mailSession = Session.getDefaultInstance(props);
@@ -66,8 +66,8 @@ public abstract class SendMail {
 			message.setHeader("X-Priority", priority);
 			message.saveChanges();
 			Transport transport = mailSession.getTransport("smtp");
-			transport.connect(spdao.getSmtpServer(session), spdao.getSmtpUser(session),
-					spdao.getSmtpPwd(session));
+			transport.connect(smtp_server, user,
+					password);
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 		} catch (Exception e) {

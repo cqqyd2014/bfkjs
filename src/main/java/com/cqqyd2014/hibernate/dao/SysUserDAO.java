@@ -45,8 +45,8 @@ public class SysUserDAO {
 		q.setParameter("com_id", com_id);
 		java.util.Date now=new java.util.Date();
 		//得到参数，多少秒不更新在线时间，强制下线
-		com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
-		int offline_time=spdao.getOffLineTime(session);
+		
+		int offline_time=com.cqqyd2014.system.logic.SysParLogic.getOfflineTime(session).intValue();
 		
 		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysUser> sus2=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysUser>)q.list();

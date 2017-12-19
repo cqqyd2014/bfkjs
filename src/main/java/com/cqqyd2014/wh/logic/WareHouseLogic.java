@@ -24,6 +24,8 @@ public class WareHouseLogic {
 	
 	
 	
+	
+	
 	//不同仓库之间移动商品（订单锁定除外）,原理是移动库位，所以直接调用移动库位
 		public static void moveBetweenWarehouse(Session session,String goodsId,String fromWhId,String toWhId,java.math.BigDecimal num,String com_id) throws com.cqqyd2014.util.exception.AjaxSuccessMessageException{
 			com.cqqyd2014.wh.logic.Storage.moveBetweenStorage(session, goodsId, fromWhId, toWhId, num, "DEFAUL", "DEFAUL", com_id);

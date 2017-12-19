@@ -3,7 +3,80 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class VOrderMainDAO {
+import com.cqqyd2014.util.message.IfMessage;
+
+public final class VOrderMainDAO {
+	
+	
+	
+	//检测各种重复订单
+		public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> getViewByPars(Session session,String field,String value,int days,String com_id){
+
+			
+			String hql = "from VOrderMain where ";
+			switch(field){
+			case "original_no":
+				hql=hql+"id.originalId=:originalId and ";
+				break;
+			case "tell":
+				hql=hql+"id.receiverMobile=:tell and ";
+				break;
+			case "user_name":
+				hql=hql+"id.CUserName=:user_name and ";
+				break;
+			case "user_addr":
+				hql=hql+"id.CUserAddr=:user_addr and ";
+				break;
+			}
+			hql=hql+"id.effective=true  and id.comId=:com_id and id.CTime between \'"+com.cqqyd2014.util.DateUtil.JDateToSimpleString(com.cqqyd2014.util.DateUtil.getNearDays(new java.util.Date(), days*(-1)))
+			+"\' and \'"+com.cqqyd2014.util.DateUtil.JDateToSimpleString(new java.util.Date())+"\' order by id.CTime desc";
+			Query q = session.createQuery(hql);
+			switch (field){
+			case "original_no":
+				q.setParameter("originalId", value);
+				break;
+			case "tell":
+				q.setParameter("tell", value);
+				break;
+			case "user_name":
+				q.setParameter("user_name", value);
+				break;
+			case "user_addr":
+				q.setString("user_addr", value);
+				break;
+				
+			
+			}
+			
+			q.setParameter("com_id", com_id);
+			
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> oms = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain>) q
+					.list();
+			return oms;
+			
+		}
+		
+	
+	// 原始单号
+		public static com.cqqyd2014.hibernate.entities.VOrderMain getViewByOriginalNo(Session session, String original_no,
+				 String com_id) {
+			String hql = "from VOrderMain where id.originalId=:original_no and id.effective=true and id.comId=:com_id";
+			Query q = session.createQuery(hql);
+			q.setParameter("original_no", original_no);
+			q.setParameter("com_id", com_id);
+			
+			@SuppressWarnings("unchecked")
+			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> oms = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain>) q
+					.list();
+			if (oms.size() > 0) {
+				return oms.get(0);
+			} else {
+				return null;
+			}
+		}
+	
+	
 	
 	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> getUnPaidArrayListView(Session session,String com_id){
 		String hql="from VOrderMain where id.comId=:com_id and id.paid=false and id.effective=true ";

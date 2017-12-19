@@ -3,8 +3,8 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class EcsTaxRateDAO {
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.EcsTaxRate> getEcs(Session session,String hs_code){
+public final class EcsTaxRateDAO {
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.EcsTaxRate> getEcs(Session session,String hs_code){
 		String hql="from EcsTaxRate where hsCode=:hs_code";
 		Query q = session.createQuery(hql);
 		q.setParameter("hs_code", hs_code);
@@ -13,7 +13,7 @@ public class EcsTaxRateDAO {
 		return etrs;
 	}
 	//得到一个商品的增值税税率，消费税税率，和净值率
-	public java.util.ArrayList<java.math.BigDecimal> getRegTax(Session session,String hs_code){
+	public static java.util.ArrayList<java.math.BigDecimal> getRegTax(Session session,String hs_code){
 		String hql="from EcsTaxRate where hsCode=:hs_code";
 		Query q = session.createQuery(hql);
 		q.setParameter("hs_code", hs_code);

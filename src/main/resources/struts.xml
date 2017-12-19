@@ -11,41 +11,45 @@
 	<constant name="struts.locale" value="zh_CN" />
 	<constant name="struts.i18n.encoding" value="UTF-8" />
 	<constant name="struts.ui.theme" value="simple" />
+<package name="bfkjs-default" extends="struts-default">
 
-<package name="bfkjs-default"  extends="struts-default">
+		<interceptors>
+			<interceptor name="authorityInterceptor"
+				class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>
+			<!-- 一个拦截器栈中可以定义多个拦截器 -->
+			<interceptor-stack name="authorityStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="authorityInterceptor" />
 
-		 <interceptors>  
-            <interceptor name="authorityInterceptor" class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>  
-            <!-- 一个拦截器栈中可以定义多个拦截器 -->  
-            <interceptor-stack name="authorityStack">  
-             <interceptor-ref name="defaultStack" />  
-                <interceptor-ref name="authorityInterceptor" />  
-               
-            </interceptor-stack>  
-        </interceptors>  
-        <!--全局结果处理  -->  
-        <global-results>  
-            <result name="authority_error">/WEB-INF/authoryity_error/authority_error.jsp</result>
-             <result name="authority_web_error">/WEB-INF/authoryity_error/authority_web_error.jsp</result>
-        </global-results>  
+			</interceptor-stack>
+		</interceptors>
+		<!--全局结果处理 -->
+		<global-results>
+			
+			<result name="authority_error">/WEB-INF/authority_error/authority_error.jsp
+			</result>
+			
+		</global-results>
 
 	</package>
-<package name="bfkjs-json-default"  extends="json-default">
+	<package name="bfkjs-json-default" extends="json-default">
 
-		 <interceptors>  
-            <interceptor name="authorityInterceptor" class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>  
-            <!-- 一个拦截器栈中可以定义多个拦截器 -->  
-            <interceptor-stack name="authorityStack"> 
-             <interceptor-ref name="defaultStack" />   
-                <interceptor-ref name="authorityInterceptor" />  
-                 
-            </interceptor-stack>  
-        </interceptors>  
-        <!--全局结果处理  -->  
-        <global-results>  
-            <result name="authority_ajax_error">/WEB-INF/authority_error/authority_error.json</result>
-              
-        </global-results>  
+		<interceptors>
+			<interceptor name="authorityInterceptor"
+				class="com.cqqyd2014.interceptor.AuthorityInterceptor"></interceptor>
+			<!-- 一个拦截器栈中可以定义多个拦截器 -->
+			<interceptor-stack name="authorityStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="authorityInterceptor" />
+
+			</interceptor-stack>
+		</interceptors>
+		<!--全局结果处理 -->
+		<global-results>
+			<result name="authority_ajax_error">/WEB-INF/authority_error/authority_error.json
+			</result>
+
+		</global-results>
 
 	</package>
 

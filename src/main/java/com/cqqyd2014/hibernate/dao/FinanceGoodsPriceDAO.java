@@ -3,8 +3,8 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class FinanceGoodsPriceDAO {
-	public com.cqqyd2014.hibernate.entities.FinanceGoodsPrice getEntityByGoodsIdDate(Session session,String com_id,String goods_id,java.util.Date dat){
+public final class FinanceGoodsPriceDAO {
+	public static com.cqqyd2014.hibernate.entities.FinanceGoodsPrice getEntityByGoodsIdDate(Session session,String com_id,String goods_id,java.util.Date dat){
 		String hqlString = "from FinanceGoodsPrice where id.comId=:com_id and goodsId=:goods_id and startDat<:dat and endDat>:dat";
 
 		Query query = session.createQuery(hqlString);
@@ -20,7 +20,7 @@ public class FinanceGoodsPriceDAO {
 		}
 		
 	}
-	public com.cqqyd2014.hibernate.entities.FinanceGoodsPrice getEntityByGoodsIdDateNotUuid(Session session,String com_id,String goods_id,java.util.Date dat,String uuid){
+	public static com.cqqyd2014.hibernate.entities.FinanceGoodsPrice getEntityByGoodsIdDateNotUuid(Session session,String com_id,String goods_id,java.util.Date dat,String uuid){
 		String hqlString = "from FinanceGoodsPrice where id.comId=:com_id and id.uuid<>:uuid and goodsId=:goods_id and startDat<:dat and endDat>:dat";
 
 		Query query = session.createQuery(hqlString);

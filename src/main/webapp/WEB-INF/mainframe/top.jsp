@@ -4,16 +4,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-
-
-</script>
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css">
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-
-<script type="text/javascript" src="../js/qyd.js"></script>
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 
 <script language='javascript' type='text/javascript'>
 	function exit() {
@@ -53,7 +44,7 @@
 	 * jquery 定时刷新
 	 * edit 
 	 */
-	setInterval("Push()", <s:property value="#request.interval_time" /> * 1000);
+	setInterval("Push()", <s:property value="#application.interval_time" /> * 1000);
 	function Push() {
 		
 		$.ajax({
@@ -63,7 +54,7 @@
             dataType: "json",
 			success : function(data) {
 				var field=data.msg;
-				ajax_authority2(field);
+				ajax_authority(field);
 					
 					
 						$('#current_time').text(field.o);

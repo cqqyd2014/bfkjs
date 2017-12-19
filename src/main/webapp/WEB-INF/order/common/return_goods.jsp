@@ -10,12 +10,13 @@
 		<div>商品编码/名称：<span id='return_goods_id'></span>/<span id='return_goods_name'></span></div>
 		<div>退货商品条码：<span id='return_goods_barcode'></span></div>
 		<div>退货至仓库：<s:select id="wh_id"
-						name="wh_id" list="wh_map" listKey="key"
-						listValue="value" style=" width: 150px;" /><a href="javascript:void(0)" class="easyui-linkbutton"
+						list="wh_list" listKey="wh_id"
+						listValue="wh_name" cssStyle=" width: 150px;"    /><a href="javascript:void(0)" class="easyui-linkbutton"
 				onclick="javascript:set_default('default_warehouse',$('#wh_id').val())"
 				iconCls="qyd">默认</a></div>
 		<div>备注</div>
-		<div><textarea rows="3" cols="40" id='return_memo'></textarea></div>
+		<div><input class="easyui-textbox" data-options="multiline:true"
+					style="width: 100%;height:50px" id='return_memo'/></div>
 		
 
 	</div>
@@ -26,10 +27,28 @@
 		 <a
 			href="javascript:void(0)" class="easyui-linkbutton"
 			onclick="javascript:return_goods_ok()">确认退货</a>
+			<a></a>
 	</div>
 <script language='javascript' type='text/javascript'>
 
 
+var after_return_goods;
+
+	function return_goods_ready(after_return_goods){
+		after_return_goods=after_return_goods;
+
+		dialog_init_mid('return_div');
+
+
+		$('#wh_id').combobox({
+			required : true,
+			multiple : false, //多选
+			editable : false //是否可编辑
+			
+			
+		});
+		}
+	
 
 
 		function return_goods(barcode,order_no,seq){
@@ -53,7 +72,7 @@ $.getJSON("return_goods_init.action", {
 		$('#return_goods_name').text(o.goods_name);
 		$('#return_goods_barcode').text(o.goods_barcode);
 		$('#return_seq').text(seq);
-		dialog_init_mid('return_div');
+		
 		$('#return_div').dialog('open');
 
 		} else {
@@ -79,9 +98,9 @@ $.getJSON("return_goods_init.action", {
 				order_no : $('#return_order_info').text(),
 				goods_barcode : $('#return_goods_barcode').text(),
 				seq:$('#return_seq').text(),
-				memo:$('#return_memo').text(),
+				memo:$('#return_memo').textbox('getValue'),
 				goods_id:$('#return_goods_id').text(),
-				wh_id:$('#wh_id').val()
+				wh_id:$('#wh_id').combobox('getValue')
 
 			}, function(result) {
 				var field=result.msg;
@@ -91,8 +110,8 @@ $.getJSON("return_goods_init.action", {
 					$.messager.alert("操作提示", "退货成功",
 					"info");
 					$('#return_div').dialog('close');
-					view_deliver_div($('#return_order_info').text(),$('#return_seq').text());
-
+					//view_deliver_div($('#return_order_info').text(),$('#return_seq').text());
+					after_return_goods($('#return_order_info').text(),$('#return_seq').text());
 					} else {
 						$.messager.alert("操作提示", "退货出错！原因：" + field.body,
 						"error");

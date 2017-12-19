@@ -3,11 +3,11 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class VUserPriceAvailableDAO {
+public final class VUserPriceAvailableDAO {
 
 	
 	//模糊查询
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> getGoodsInfosLike(Session session,String goods_id,String com_id,String user_id,java.util.Date date){
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> getGoodsInfosLike(Session session,String goods_id,String com_id,String user_id,java.util.Date date){
 		String hql="from VUserPriceAvailable where id.comId=:com_id and id.userId=:user_id and id.startTime<=:t1 and id.endTime>=:t2 and id.goodsId like :goods_id";
 		Query q = session.createQuery(hql);
 		q.setParameter("user_id", user_id);
@@ -20,7 +20,7 @@ public class VUserPriceAvailableDAO {
 				.list();
 		return rs;
 	}
-	public com.cqqyd2014.hibernate.entities.VUserPriceAvailable getGoodsInfos(Session session,String goods_id,String com_id,String user_id,java.util.Date date) {
+	public static com.cqqyd2014.hibernate.entities.VUserPriceAvailable getGoodsInfos(Session session,String goods_id,String com_id,String user_id,java.util.Date date) {
 		String hql="from VUserPriceAvailable where id.comId=:com_id and id.userId=:user_id and id.startTime<=:t1 and id.endTime>=:t2 and id.goodsId=:goods_id";
 		Query q = session.createQuery(hql);
 		q.setParameter("user_id", user_id);

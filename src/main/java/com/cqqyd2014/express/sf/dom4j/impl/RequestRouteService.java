@@ -18,7 +18,7 @@ public class RequestRouteService  extends Request{
 		order_e.addAttribute("method_type", "1");
 		String mail_nos="";
 		
-			mail_nos=com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(this.getDbs(), "getExpress_no");
+			mail_nos=com.cqqyd2014.util.ArrayTools.convertFieldToArrayString(this.getDbs(), "getExpress_no",String.class);
 		
 		mail_nos=mail_nos.substring(1, mail_nos.length()-1);
 		

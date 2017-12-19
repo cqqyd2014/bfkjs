@@ -4,12 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 public class RegionDAO {
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> getProvince(Session session){
-		String hql="from Region where parentId=1";
-		Query q = session.createQuery(hql);
-		return (java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
-	}
-	
+
 	public com.cqqyd2014.hibernate.entities.Region getCity(Session session,java.math.BigDecimal id){
 		String hql="from Region where regionId=:id";
 		Query q=session.createQuery(hql);

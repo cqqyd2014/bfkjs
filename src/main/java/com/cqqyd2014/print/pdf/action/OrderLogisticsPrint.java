@@ -26,7 +26,7 @@ public class OrderLogisticsPrint extends PrintLogisticsBilUsingPDF{
 			com.cqqyd2014.hibernate.dao.VDeliverMDAO dmdao=new com.cqqyd2014.hibernate.dao.VDeliverMDAO();
 
 			
-			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getOrderModelFromHiberanteEntities(om);
+			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getModelFromView(om);
 			NormalBill bs=new NormalBill();
 			bs.transOrderDeliverModelToExpressBillModel(session, order, null);
 			reportRows[0] = bs;

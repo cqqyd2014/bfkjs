@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-13 2:42:12 by Hibernate Tools 5.2.3.Final
+// Generated 2017-12-16 20:52:26 by Hibernate Tools 5.2.3.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,7 +24,6 @@ public class DeliverD implements java.io.Serializable {
 	private String seq;
 	private String goodsId;
 	private String goodsBarcode;
-	private BigDecimal num;
 	private BigDecimal netWeight;
 	private BigDecimal grossWeight;
 	private BigDecimal packageWeight;
@@ -44,7 +43,7 @@ public class DeliverD implements java.io.Serializable {
 		this.goodsBarcode = goodsBarcode;
 	}
 
-	public DeliverD(DeliverDId id, String orderNo, String seq, String goodsId, String goodsBarcode, BigDecimal num,
+	public DeliverD(DeliverDId id, String orderNo, String seq, String goodsId, String goodsBarcode,
 			BigDecimal netWeight, BigDecimal grossWeight, BigDecimal packageWeight, Boolean returned,
 			String returnedUserid, Date returnedDat, String returnedMemo) {
 		this.id = id;
@@ -52,7 +51,6 @@ public class DeliverD implements java.io.Serializable {
 		this.seq = seq;
 		this.goodsId = goodsId;
 		this.goodsBarcode = goodsBarcode;
-		this.num = num;
 		this.netWeight = netWeight;
 		this.grossWeight = grossWeight;
 		this.packageWeight = packageWeight;
@@ -109,15 +107,6 @@ public class DeliverD implements java.io.Serializable {
 
 	public void setGoodsBarcode(String goodsBarcode) {
 		this.goodsBarcode = goodsBarcode;
-	}
-
-	@Column(name = "num", precision = 131089, scale = 0)
-	public BigDecimal getNum() {
-		return this.num;
-	}
-
-	public void setNum(BigDecimal num) {
-		this.num = num;
 	}
 
 	@Column(name = "net_weight", precision = 131089, scale = 0)

@@ -16,9 +16,9 @@
 $(document).ready(function() {
 	//$("#login_dialog").panel("move",{top:$(document).scrollTop() + ($(window).height()-250) * 0.5});  
 
-	$.messager.confrim('错误','未授权访问，将返回登录窗口',function(r){
-		window.parent.parent.location.href="/Bfkjs"
-		});
+	
+		window.top.location.href="/finance"
+		
 });
 </script>
 <title>Insert title here</title>

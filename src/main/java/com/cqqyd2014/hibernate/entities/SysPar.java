@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-13 2:42:12 by Hibernate Tools 5.2.3.Final
+// Generated 2017-12-16 20:52:26 by Hibernate Tools 5.2.3.Final
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +16,7 @@ public class SysPar implements java.io.Serializable {
 	private String code;
 	private String codeDesc;
 	private String value;
+	private String selectItems;
 
 	public SysPar() {
 	}
@@ -24,10 +25,11 @@ public class SysPar implements java.io.Serializable {
 		this.code = code;
 	}
 
-	public SysPar(String code, String codeDesc, String value) {
+	public SysPar(String code, String codeDesc, String value, String selectItems) {
 		this.code = code;
 		this.codeDesc = codeDesc;
 		this.value = value;
+		this.selectItems = selectItems;
 	}
 
 	@Id
@@ -57,6 +59,15 @@ public class SysPar implements java.io.Serializable {
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	@Column(name = "select_items", length = 1024)
+	public String getSelectItems() {
+		return this.selectItems;
+	}
+
+	public void setSelectItems(String selectItems) {
+		this.selectItems = selectItems;
 	}
 
 }

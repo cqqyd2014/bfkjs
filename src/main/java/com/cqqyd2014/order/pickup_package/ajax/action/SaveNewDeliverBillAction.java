@@ -89,23 +89,23 @@ public class SaveNewDeliverBillAction extends UserLoginedAction{
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
+@Authority(module = "save_new_deliver_bill", privilege = "[00010003]", error_url = "authority_ajax_error")
 @Override
 public String execute() {
 // TODO Auto-generated method stub
 super.execute();
 sm.setAuth_success(true);
-Session session = HibernateSessionFactory.getSession();
+session = HibernateSessionFactory.getSession();
 
 
-Transaction tx = session.beginTransaction();
+tx = session.beginTransaction();
 		try {
 			
 			
 			com.cqqyd2014.hibernate.dao.VOrderMainDAO vomdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
 			com.cqqyd2014.hibernate.entities.VOrderMain vom=vomdao.getVOrderMain(session, com_id, order_no);
 			
-			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getOrderModelFromHiberanteEntities(vom);
+			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getModelFromView(vom);
 			if (com.cqqyd2014.order.logic.OrderLogic.check_if_cancel(session, order, user_id, "保存发货单")){
 				sm.setSuccess(false);
 				sm.setBody("订单已经被客户申请取消");
@@ -200,8 +200,8 @@ Transaction tx = session.beginTransaction();
 			db.setVehicle_id(vehicle);
 			db.setWh_id(wh_id);
 			db.setSend_userid("");
-			db.setMemo_barcodes(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getBarcode"));
-			db.setMemo_names(com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getGoods_name"));
+			db.setMemo_barcodes(((String[])com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getBarcode",String.class)).toString());
+			db.setMemo_names(((String[])com.cqqyd2014.util.ArrayListTools.convertFieldsToArray(odis, "getGoods_name",String.class)).toString());
 
 			com.cqqyd2014.order.logic.DeliverMLogic.save(session, db);
 			

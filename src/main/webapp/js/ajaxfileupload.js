@@ -1,5 +1,15 @@
 jQuery
 		.extend({
+			handleError: function( s, xhr, status, e )      {  
+	            // If a local callback was specified, fire it  
+	                    if ( s.error ) {  
+	                        s.error.call( s.context || s, xhr, status, e );  
+	                    }  
+	                    // Fire the global callback  
+	                    if ( s.global ) {  
+	                        (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );  
+	                    }  
+	        } ,
 
 			createUploadIframe : function(id, uri) {
 				//create frame
@@ -35,6 +45,7 @@ jQuery
 				var form = $('<form  action="" method="POST" name="' + formId
 						+ '" id="' + formId
 						+ '" enctype="multipart/form-data"></form>');
+				
 				for(var i in fileElementId){    
 				    var oldElement = jQuery('#' + fileElementId[i]);    
 				    var newElement = jQuery(oldElement).clone();    
@@ -43,6 +54,7 @@ jQuery
 				    jQuery(oldElement).appendTo(form);    
 				}   
 				//add paramter
+				
 				if (data) {  
 				    for (var i in data) {  
 				        $('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);  
@@ -66,7 +78,7 @@ jQuery
 						'name' : name,
 						'value' : value
 					});
-					$(cloneElement).appendTo(form);
+					//$(cloneElement).appendTo(form);
 				}
 				return form;
 			},
@@ -210,7 +222,7 @@ jQuery
 					jQuery.globalEval(data);
 				// Get the JavaScript object, if JSON is used.
 				if (type == "json") {
-					 ////////////以下为新增代码///////////////  
+		////////////以下为新增代码///////////////  
 		             data = r.responseText;  
 		             var start = data.indexOf(">");  
 		             if(start != -1) {  

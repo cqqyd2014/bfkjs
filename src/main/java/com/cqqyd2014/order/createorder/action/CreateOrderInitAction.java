@@ -29,44 +29,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	String logistics;
 
-	String vehicle;
-	java.util.LinkedHashMap<String, String> vehicle_map;
-
-	public String getVehicle() {
-		return vehicle;
-	}
-
-	public void setVehicle(String vehicle) {
-		this.vehicle = vehicle;
-	}
-
-	public java.util.LinkedHashMap<String, String> getVehicle_map() {
-		return vehicle_map;
-	}
-
-	public void setVehicle_map(java.util.LinkedHashMap<String, String> vehicle_map) {
-		this.vehicle_map = vehicle_map;
-	}
-
-	public String getLogistics() {
-		return logistics;
-	}
-
-	public void setLogistics(String logistics) {
-		this.logistics = logistics;
-	}
-
-	java.util.LinkedHashMap<String, String> logistics_map;
-
-	public java.util.LinkedHashMap<String, String> getLogistics_map() {
-		return logistics_map;
-	}
-
-	public void setLogistics_map(java.util.LinkedHashMap<String, String> logistics_map) {
-		this.logistics_map = logistics_map;
-	}
 
 	private Map<String, Object> msg;
 
@@ -92,15 +55,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 	String ship_fee;
 	String card_pay;
 	java.util.ArrayList<OrderFromUser> ofus;
-	java.util.ArrayList<com.cqqyd2014.order.model.OrderTypeLen> otls;
-
-	public java.util.ArrayList<com.cqqyd2014.order.model.OrderTypeLen> getOtls() {
-		return otls;
-	}
-
-	public void setOtls(java.util.ArrayList<com.cqqyd2014.order.model.OrderTypeLen> otls) {
-		this.otls = otls;
-	}
+	
 
 	public java.util.ArrayList<OrderFromUser> getOfus() {
 		return ofus;
@@ -110,7 +65,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		this.ofus = ofus;
 	}
 
-	java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> provinces;
+
 
 	@Actions({
 
@@ -139,14 +94,13 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		odis.clear();
 		session_http.put("temp_order_detail", odis);
 
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+		session = HibernateSessionFactory.getSession();
+		
 		try {
 			// com.cqqyd2014.hibernate.dao.UserParDAO cpcdao=new
 			// com.cqqyd2014.hibernate.dao.UserParDAO();
 
-			com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO lcdao = new com.cqqyd2014.hibernate.dao.LogisticsCompanyDAO();
-			logistics_map = lcdao.getNameMap(session);
+			
 
 			discount = "0";
 			ship_fee = "0";
@@ -159,33 +113,14 @@ public class CreateOrderInitAction extends UserLoginedAction {
 			ofus = com.cqqyd2014.order.logic.OrderFromUserLogic.getArrayModelFromArrayEntityView(vofus);
 			com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO vfldao = new com.cqqyd2014.hibernate.dao.VOrderFromUserLenDAO();
 
-			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderFromUserLen> vofuls = vfldao
-					.getArrayViewByUserID(session, com_id, user_id);
-			otls = com.cqqyd2014.order.logic.OrderTypeLenLogic.getArrayModelArraryEntityView(vofuls);
+			
 
-			vfdao = null;
-			com.cqqyd2014.hibernate.dao.RegionDAO rdao = new com.cqqyd2014.hibernate.dao.RegionDAO();
 
-			provinces = rdao.getProvince(session);
-			rdao = null;
+
 
 			// com.cqqyd2014.hibernate.dao.SysCodeDAO scdao=new
 			// com.cqqyd2014.hibernate.dao.SysCodeDAO();
 
-			com.cqqyd2014.hibernate.dao.UserParDAO updao = new com.cqqyd2014.hibernate.dao.UserParDAO();
-
-			orderFrom = updao.getValue(session, user_id, com_id, "default_order_from");
-			logistics = updao.getValue(session, user_id, com_id, "default_logistics_com");
-			com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO lvdao = new com.cqqyd2014.hibernate.dao.LogisticsVehicleDAO();
-			java.util.ArrayList<com.cqqyd2014.hibernate.entities.LogisticsVehicle> lvs = lvdao
-					.getArrayEntities(session);
-
-			vehicle_map = com.cqqyd2014.util.HashMapTools.convertArrayListToHashMap(lvs, "getVehicleId",
-					"getVehicleName");
-
-			vehicle = updao.getValue(session, user_id, com_id, "default_logistics_vehicle");
-
-			tx.commit();
 		}
 
 		catch (HibernateException e) {
@@ -227,13 +162,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 		this.card_pay = card_pay;
 	}
 
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> getProvinces() {
-		return provinces;
-	}
 
-	public void setProvinces(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> provinces) {
-		this.provinces = provinces;
-	}
 
 	public String getOrderFrom() {
 		return orderFrom;

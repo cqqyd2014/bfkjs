@@ -30,7 +30,7 @@ public class AllOrdersPagesInitAction  extends OrderPagesInit{
             }
     )    
 
-})  @Authority(module="mainframe", privilege="[00010002]",error_url="login") 
+})  @Authority(module="all_orders_init", privilege="[00010002]",error_url="login") 
 	
 	public String all_orders_init(){
 		execute();

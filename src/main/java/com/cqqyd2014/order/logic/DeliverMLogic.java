@@ -172,7 +172,7 @@ public class DeliverMLogic {
 				dd.setGrossWeight(dbd.getGross_weight());
 				dd.setId(new com.cqqyd2014.hibernate.entities.DeliverDId(dbd.getCom_id(), com.cqqyd2014.util.StringUtil.getUUID()));
 				dd.setNetWeight(dbd.getNet_weight());
-				dd.setNum(new java.math.BigDecimal(1));
+				
 				dd.setOrderNo(dbd.getOrder_no());
 				dd.setPackageWeight(dbd.getPackage_weight());
 				dd.setSeq(dbd.getSeq());

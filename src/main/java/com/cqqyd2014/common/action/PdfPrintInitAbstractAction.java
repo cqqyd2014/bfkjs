@@ -56,18 +56,7 @@ public abstract class PdfPrintInitAbstractAction extends PdfPrintAbstractAction{
 	}
 
 	
-	public void init_js_par(Session session) {
-	com.cqqyd2014.hibernate.dao.SysParDAO spdao=new com.cqqyd2014.hibernate.dao.SysParDAO();
-	com.cqqyd2014.hibernate.entities.SysPar sp_jquery_ver=spdao.getEntityByCode(session, "jquery_ver");
-		jquery_version=sp_jquery_ver.getValue();
-		com.cqqyd2014.hibernate.entities.SysPar sp_jquery_ui_ver=spdao.getEntityByCode(session, "jquery_ui_ver");
-		jquery_ui_version=sp_jquery_ui_ver.getValue();
-		com.cqqyd2014.hibernate.entities.SysPar sp_easyui_ver=spdao.getEntityByCode(session, "easyui_ver");
-		easyi_version=sp_easyui_ver.getValue();
-		com.cqqyd2014.hibernate.entities.SysPar sp_temp_save_time=spdao.getEntityByCode(session, "temp_save_time");
-		
-		temp_save_time=sp_temp_save_time.getValue();
-	}
+	
 	
 
 }

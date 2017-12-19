@@ -60,7 +60,7 @@ Transaction tx = session.beginTransaction();
 			com.cqqyd2014.hibernate.dao.VOrderMainDAO vcmdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> vcms=vcmdao.getPackageUseridDoingList(session, com_id, package_userid);
 			
-			java.util.ArrayList<com.cqqyd2014.order.model.Order> orders=com.cqqyd2014.order.logic.OrderLogic.getOrderArrayFromView(vcms);
+			java.util.ArrayList<com.cqqyd2014.order.model.Order> orders=com.cqqyd2014.order.logic.OrderLogic.getArrayListModelFromArrayListView(vcms);
 			
 				
 				sm.setSuccess(true);

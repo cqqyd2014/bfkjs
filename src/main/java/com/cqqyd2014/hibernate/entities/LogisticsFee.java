@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-13 2:42:12 by Hibernate Tools 5.2.3.Final
+// Generated 2017-12-16 20:52:26 by Hibernate Tools 5.2.3.Final
 
 import java.math.BigDecimal;
 import javax.persistence.AttributeOverride;
@@ -19,6 +19,7 @@ public class LogisticsFee implements java.io.Serializable {
 	private LogisticsFeeId id;
 	private BigDecimal nextFee;
 	private BigDecimal firstFee;
+	private Boolean effective;
 
 	public LogisticsFee() {
 	}
@@ -27,10 +28,11 @@ public class LogisticsFee implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public LogisticsFee(LogisticsFeeId id, BigDecimal nextFee, BigDecimal firstFee) {
+	public LogisticsFee(LogisticsFeeId id, BigDecimal nextFee, BigDecimal firstFee, Boolean effective) {
 		this.id = id;
 		this.nextFee = nextFee;
 		this.firstFee = firstFee;
+		this.effective = effective;
 	}
 
 	@EmbeddedId
@@ -63,6 +65,15 @@ public class LogisticsFee implements java.io.Serializable {
 
 	public void setFirstFee(BigDecimal firstFee) {
 		this.firstFee = firstFee;
+	}
+
+	@Column(name = "effective")
+	public Boolean getEffective() {
+		return this.effective;
+	}
+
+	public void setEffective(Boolean effective) {
+		this.effective = effective;
 	}
 
 }

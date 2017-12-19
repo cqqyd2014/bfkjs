@@ -2,6 +2,11 @@ package com.cqqyd2014.common.action;
 
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.interceptor.ServletResponseAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -10,7 +15,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings("serial")
-public class UserLoginedAction extends ActionSupport {
+public class UserLoginedAction extends ActionSupport implements ServletResponseAware, ServletContextAware{
 	
 	public com.cqqyd2014.util.AjaxSuccessMessage sm;
 	public String user_id;
@@ -21,14 +26,25 @@ public class UserLoginedAction extends ActionSupport {
 	
 	public Session session;
 	public Transaction tx;
-
+	public ServletContext servletContext;
+	public HttpServletResponse response;
 
 	public String getUser_id() {
 		return user_id;
 	}
 
 
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		// TODO Auto-generated method stub
+		this.servletContext = servletContext;
+	}
 
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		this.response = response;
+	}
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;

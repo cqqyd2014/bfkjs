@@ -2,10 +2,10 @@ package com.cqqyd2014.usergroup.logic;
 
 import org.hibernate.Session;
 
-public class UserParLogic {
+public final class UserParLogic {
 	
 	
-	public void save(Session session,com.cqqyd2014.usergroup.model.UserPar up) {
+	public static void save(Session session,com.cqqyd2014.usergroup.model.UserPar up) {
 		com.cqqyd2014.hibernate.entities.UserPar up_h=new com.cqqyd2014.hibernate.entities.UserPar();
 		up_h.setId(new com.cqqyd2014.hibernate.entities.UserParId(up.getUserid(),up.getCom_id(),up.getParam()));
 		up_h.setParDesc(up.getParam_desc());
@@ -13,7 +13,7 @@ public class UserParLogic {
 		session.saveOrUpdate(up_h);
 	}
 	
-	public java.util.LinkedHashMap<String, String> getMapFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> ups_h){
+	public static java.util.LinkedHashMap<String, String> getMapFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> ups_h){
 		java.util.LinkedHashMap<String, String> map=new java.util.LinkedHashMap<>();
 for (int i=0;i<ups_h.size();i++) {
 			
@@ -23,7 +23,7 @@ for (int i=0;i<ups_h.size();i++) {
 return map;
 	}
 	
-	public java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPar> getArrayListModelEntityFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> ups_h){
+	public static java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPar> getArrayListModelEntityFromArrayListEntity(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> ups_h){
 		java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPar> ups=new java.util.ArrayList<>();
 		for (int i=0;i<ups_h.size();i++) {
 			
@@ -33,7 +33,7 @@ return map;
 		return ups;
 	}
 	
-	public com.cqqyd2014.usergroup.model.UserPar getModelFromEntity(com.cqqyd2014.hibernate.entities.UserPar up_h){
+	public static com.cqqyd2014.usergroup.model.UserPar getModelFromEntity(com.cqqyd2014.hibernate.entities.UserPar up_h){
 		com.cqqyd2014.usergroup.model.UserPar up=new com.cqqyd2014.usergroup.model.UserPar();
 		up.setCom_id(up_h.getId().getComId());
 		up.setParam(up_h.getId().getParCode());

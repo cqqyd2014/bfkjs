@@ -13,105 +13,22 @@
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-
-
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<script type="text/javascript" src="../js/qyd.js"></script>
-
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../js/qyd.css">
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 
 
 
-<script type="text/javascript" src="../js/print_logistics_bill.js"></script>
 
 <script language='javascript' type='text/javascript'>
 
 
 
-	var current_page = 1;
+	var current_page ;
+	var rows_in_page;
 
 
-
-
-	function view_deliver_div(order_no, seq) {
-
-		$('#view_deliver_order_no').val(order_no);
-		$('#view_deliver_seq').val(seq);
-
-		$.getJSON("view_deliver_bill_init.action", {
-			"order_no" : order_no,
-			"seq" : seq
-
-		}, function(result) {
-			var field=result.msg;
-			
-
-			if (field.success) {
-				var deliver_bill = field.o;
-				var goods = field.o2;
-
-				$('#deliver_status').text(deliver_bill.deliver_bill_status);
-				$("#deliver_no2").val(deliver_bill.deliver_no);
-
-				$("#order_no2").val(deliver_bill.order_no);
-				$("#express_com2").val(deliver_bill.express_com_name);
-				$("#express_no2").val(deliver_bill.express_no);
-				$('#express_code2').val(deliver_bill.express_com);
-				$('#view_prepack_sn').val(deliver_bill.pre_package_barcode);
-				$('#view_deliver_seq').val(deliver_bill.seq);
-				$('#view_logistics_id').val(deliver_bill.express_com);
-				$('#view_vehicle_id').val(deliver_bill.vehicle_id);
-				
-				var n = deliver_bill.dbds.length;
-
-				$("#deliverViewPickupTable").datagrid('loadData', {
-					total : n,
-					rows : deliver_bill.dbds
-				});
-
-				var n2 = goods.length;
-
-				$("#deliverViewBarcodeTable").datagrid('loadData', {
-					total : n2,
-					rows : goods
-				});
-
-				
-				/*
-				
-				
-				
-				
-				 
-
-				
-
-				 //var dataJson=JSON.parse(list1.list);
-				
-				 */
-
-				 dialog_init('view_deliver_div');
-				
-
-				 
-
-				 
-				$('#view_deliver_div').dialog('open');
-
-			}
-			else{
-
-				$.messager.alert("操作提示", "获取运单基本信息出错！原因：" + field.body,
-				"error");
-			}
-		});
-	}
+	function page_init(){
+		show_order_list_table(current_page,rows_in_page);
+		}
 
 
 
@@ -210,7 +127,7 @@
 																				deliver) {
 																			cc.push('<a href=\'javascript:void(0)\' id=\'b_'
 																							+ deliver.express_com
-																							+ '\' class=\"easyui-linkbutton\" onclick=\'javascript:view_deliver_div(\"'
+																							+ '\' class=\"easyui-linkbutton\" onclick=\'javascript:view_deliver_init(\"'
 																							+ deliver.order_no
 																							+ '\",\"'
 																							+ deliver.seq
@@ -251,7 +168,7 @@
 																		+ '<br>备注：<font color=\'red\'>'
 																		+ rowData.memo
 																		+ '</font><br>'
-																		+'<div>操作：<a	href="javascript:void(0)" id=\"cancel_order\" class="easyui-linkbutton"	onclick="javascript:cancel_order(\''+rowData.order_no+'\')">取消订单</a></div>');
+																		+'<div>操作：<a	href="javascript:void(0)" id=\"cancel_order\" class="easyui-linkbutton"	onclick="javascript:cancel_order_init(\''+rowData.order_no+'\')">取消订单</a></div>');
 
 														cc.push('</td></tr>')
 
@@ -371,45 +288,22 @@
 
 	$(document).ready(
 					function() {
-						dialog_init_mid('cancel_order_div');
-						 dialog_init_little('change_express_div');
-						dialog_init('view_route_div');
-						dialog_init('view_deliver_div');
-						dialog_init_mid('return_div');
+						current_page = 1;
+						rows_in_page=<s:property value="#session.default_rows_in_page"/>;
+
+						$('#rows_in_page').val(rows_in_page);
+
+						view_deliver_ready();
+						
+
+						
+						cancel_order_ready(page_init);
+						
+						
+						
 						dialog_init('print_logistics_bill');
-						$('#wh_id').val('<s:property value="#request.default_warehouse" />');
-						$('#deliverViewBarcodeTable').datagrid({  
-						    //border:false,  
-						    fitColumns:true,  
-						    singleSelect: true,  
-						    title:'商品列表',
-						    rownumbers:true,
-						    columns:[[  
-						        {field:'goods_barcode',title:'商品条码'},  
-						        {field:'goods_id',title:'商品编码'},
-						        {field:'goods_name',title:'商品名称'},
-						        {field:'returned',title:'退货标志'},
-						        {field:'return_dat_chinese',title:'退货时间'},
-						        {field:'returned_memo',title:'退货备注'},
-						        
-						        
-
-
-						        
-						        {field:'opt',title:'操作',width:'100px',align:'center',  
-						            formatter:function(value,rec){  
-						                var btn = '<a class="return_goods" onclick="return_goods(\''+rec.goods_barcode+'\',\''+rec.order_no+'\',\''+rec.seq+'\')" href="javascript:void(0)">退货</a>';  
-						                return btn;  
-						            }  
-						        }  
-						    ]],  
-						    onLoadSuccess:function(data){  
-						        $('.return_goods').linkbutton({text:'退货',plain:true,iconCls:'icon-undo'});
-						        
-						        
-						    }  
-						});  
-
+						$('#wh_id').val('<s:property value="#session.default_warehouse" />');
+			
 
 
 						
@@ -432,7 +326,7 @@
 													iconCls : 'icon-cancel'
 												});
 
-												<s:iterator value="logisticsList" var="entry">
+												<s:iterator value="logistics_map" var="entry">
 												$(
 														"a#b_<s:property value="key"/>")
 														.linkbutton(
@@ -444,9 +338,8 @@
 											}
 										});
 
-						show_order_list_table(current_page, $('#rows_in_page')
-								.val());
-
+						
+												page_init();
 
 
 
@@ -461,6 +354,7 @@
 </head>
 
 <body style="width: 95%; height: 95%;">
+
 	<h2>所有订单</h2>
 	
 
@@ -481,7 +375,7 @@
 						6、商品条码：<input id="goods_barcode" type="text" />
 						6、商品名称：<input id="goods_name" type="text" />
 
-			每页显示<input style="width: 50px"   id="rows_in_page" value=<s:property value="pageSize" /> type="text"
+			每页显示<input style="width: 50px"   id="rows_in_page" value=<s:property value="#session.default_rows_in_page" /> type="text"
 					class="easyui-numberbox" precision="0" />行
 					<a href="javascript:void(0)" class="easyui-linkbutton"
 				onclick="javascript:set_default('default_rows_in_page',$('#rows_in_page').numberbox('getValue'))"
@@ -509,150 +403,11 @@
 
 
 
-
-	<div id="view_deliver_div" class="easyui-dialog" title="发货单"
-		style="width: 600px; height: 400px; padding: 10px"
-		data-options="	iconCls: 'qyd',	buttons: '#view_deliver_buttons'">
-
-		<input type="hidden" id="view_deliver_order_no"><input
-			type="hidden" id="view_deliver_seq"><input type="hidden"
-			id="view_logistics_id"><input type="hidden"
-			id="view_vehicle_id">
-
-
-		<table width="100%" class='box'>
-			<tr>
-				<td colspan='2'>发货仓库：<span id="view_deliver_div_wh_name"></span>发货单状态：<span id="deliver_status">发货单 </span></td>
-			</tr>
-			<tr>
-				<td width="50%">订单编号：<input type="text" name="order_no2"
-					id="order_no2" readonly="readonly" /></td>
-				<td width="50%" colspan="2">发货单号：<input type="text"
-					name="deliver_no2" id="deliver_no2" style="width: 250px;"
-					readonly="readonly" /></td>
-
-			</tr>
-			<tr>
-				<td>快递公司：<input type="text" name="express_com2"
-					id="express_com2" readonly="readonly" /> <input type="hidden"
-					name="express_code2" id="express_code2">
-				</td>
-				<td>快递单号：<input type="text" name="express_no2"
-					id="express_no2" readonly="readonly" /> <input type="hidden"
-					name="seq" id="seq">
-				</td>
-
-
-
-			</tr>
-			<tr>
-				<td colspan='2'>预包装编号：<input type="text" name="view_prepack_sn"
-					id="view_prepack_sn" readonly="readonly" /></td>
-				
-			<tr>
-				<td colspan='2' align="right"><a id="b_new_express"
-					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'BIG_',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
-					iconCls="qyd">打印多联纸质快递单</a> <a id="b_electric_express"
-					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_express($('#view_deliver_order_no').val(),$('#view_deliver_seq').val(),$('#view_logistics_id').val(),$('#view_vehicle_id').val(),'ELEC',$('#wh_id').val(),'<s:property value="#request.user_id" />')"
-					iconCls="qyd">打印电子面单</a><a 
-					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:view_route($('#order_no2').val(),$('#view_deliver_seq').val())" iconCls="qyd">查看顺丰路由</a>
-					<a 
-					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:change_express_init($('#order_no2').val(),$('#view_deliver_seq').val())" iconCls="qyd">变更物流信息</a>
-					<a 
-					href="javascript:void(0)" class="easyui-linkbutton"
-					onclick="javascript:print_deliver_bill($('#order_no2').val(),$('#view_deliver_seq').val())"
-					iconCls="qyd">查看发货单</a>
-					</td>
-
-			</tr>
-
-
-
-		</table>
-		<hr>
-		<table id="deliverViewPickupTable" class="easyui-datagrid" title="发货清单"
-			style="width: 95%;" true" rownumbers="true" fitColumns="true">
-			<thead>
-				<tr>
-					<th field="goods_id">商品编码</th>
-					<th field="goods_name">品名</th>
-					<th field="num">应发数量</th>
-					<th field="sended_count">本次发货</th>
-					<th field="unit">单位</th>
-
-				</tr>
-			</thead>
-
-		</table>
-		<hr>
-
-		<table id="deliverViewBarcodeTable" class="easyui-datagrid"
-			title="条码清单" style="width: 95%;" true" rownumbers="true"
-			fitColumns="true">
-			
-
-		</table>
-		<div id='change_express_message'></div>
-
-	</div>
-
-
-	<div id="view_deliver_buttons">
-
-		 <a
-			href="javascript:void(0)" class="easyui-linkbutton"
-			onclick="javascript:$('#view_deliver_div').dialog('close')">关闭</a>
-	</div>
-	
 	
 	
 	<script language='javascript' type='text/javascript'>
 
 
-	
-		//$("#deliverView").dialog('close');
-		
-		
-		function view_route(order_no,seq){
-
-
-
-			clearDataTable('view_route_table');
-			//只对顺丰电子面单有效
-			$.getJSON("../express/sf/get_route.action", {
-				
-				order_no :order_no,
-				seq : seq
-
-			}, function(result) {
-				var field=result.msg;
-				
-
-				if (field.success) {
-					var data=field.o;
-					
-					
-						
-					$('#view_route_table').datagrid('loadData', data);
-					dialog_init_mid('view_route_div');
-						$('#view_route_div').dialog('open');
-
-					} else {
-						$.messager.alert("操作提示", "查询顺丰路由出错！原因：" + field.body,
-						"error");
-						
-
-					}
-					
-
-				
-			});
-			
-			}
 		
 		function cancel_deliver_bill(order_no,seq){
 			//没有发出，或者发货清单为空的可以作废
@@ -689,122 +444,15 @@
 
 
 	</script>
-	<div id="view_route_div" class="easyui-dialog" title="查看路由"
-		style="width: 600px; height: 400px; padding: 10px"
-		data-options="	iconCls: 'qyd',	buttons: '#view_deliver_buttons'">
-
-		<table id="view_route_table" class="easyui-datagrid" title="查看路由"
-			style="width: 95%;" true" rownumbers="true" fitColumns="true">
-			<thead>
-				<tr>
-					<th field="accept_time">时间</th>
-					<th field="accept_addr">地址</th>
-					<th field="remark">描述</th>
-					
-
-				</tr>
-			</thead>
-
-		</table>
-
-
-	</div>
-
-
-	<div id="view_route_buttons">
-
-		 <a
-			href="javascript:void(0)" class="easyui-linkbutton"
-			onclick="javascript:$('#view_route_div').dialog('close')">关闭</a>
-	</div>
 	
 	
 	
 	
-		<div id="change_express_div" class="easyui-dialog"	title="更新物流信息" style="width: 600px; height: 400px; padding: 10px" data-options="	iconCls: 'qyd',	buttons: '#change_express_buttons'">
-		<div>订单编号：<input type="text" readonly="readonly" id ="change_order_no" style=" width: 150px;" /> </div>
-		<div>发货序号：<input type="text" readonly="readonly" id ="change_seq" style=" width: 150px;" /></div>
-		<div>物流企业：<s:select id="change_express_logistics"	name="change_express_logistics" list="logisticsList" listKey="key" listValue="value" style=" width: 150px;" /></div>
-		<div>物流单号：<input type="text" id ="change_express_no" style=" width: 150px;" /></div>
+	
 		
 	
-	</div>
-	<div id="change_express_buttons">
-	<a href="javascript:void(0)" class="easyui-linkbutton"	onclick="javascript:change_express()">确定更新</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton"	onclick="javascript:$('#change_express_div').dialog('close')">取消关闭</a>
-	</div>
-	
-	<script language='javascript' type='text/javascript'>
-		//$("#deliverView").dialog('close');
-		<s:iterator value="experss_no_len_map" var="entry">
 
-	var express_no_len_<s:property value="key"/> = <s:property value="value"/>;
-
-	</s:iterator>
-		
-		
-		
-		function change_express_init(order_no,seq){
-			$('#change_order_no').val(order_no);
-			$('#change_express_no').val("");
-			$('#change_seq').val(seq);
-			$('#change_express_logistics').val('<s:property value="#request.default_logistics" />')
-			dialog_init_little('change_express_div');
-			$('#change_express_div').dialog('open');
-			
-
-
-
-			
-			}
-		
-
-		function change_express(){
-			var logistics=$('#change_express_logistics').val();
-			
-			var len=eval('express_no_len_'+logistics);
-			if ($("#change_express_no").val().length == len) {
-
-				//符合长度要求
-
-				
-				$.getJSON("change_express.action", {
-					"order_no" : $("#change_order_no").val(),
-					logistics:$('#change_express_logistics').val(),
-					seq:$('#change_seq').val(),
-					express_no:$('#change_express_no').val()
-				}, function(result) {
-					var field=result.msg;
-						if (field.success) {
-							alert('更新成功');
-							$('#change_express_div').dialog('close');
-							show_order_list_table(current_page,$('#rows_in_page').val());
-							view_deliver_div( $("#change_order_no").val(),$('#change_seq').val());
-
-						} else {
-							$('#change_express_message').html('<audio autoplay><source src=\'../sound/'+field.sound+'.mp3\'><source src=\'../sound/'+field.sound+'.ogg\'></audio>');
-							$.messager.alert("操作提示", "更新快递信息出错！原因：" + field.body,
-							"error");
-						}
-
-					
-				});
-				
-			}
-			else{
-				$.messager.alert("操作提示", '物流单号长度不对，应该为'+len+'位',
-				"error");
-				 }
-
-
-			
-
-
-			}
-
-	</script>
-	
-	<s:action name="return_goods_div_init" executeResult="true" namespace="/order/common"> </s:action>
+<jsp:include page="common/view_deliver.jsp" flush="true" />
 
 <jsp:include page="common/cancel_order.jsp" flush="true" />
 <jsp:include page="common/deliver_bill.jsp" flush="true" />

@@ -3,9 +3,9 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class UserParDAO {
+public final class UserParDAO {
 
-	public String getValue(Session session,String user_id,String com_id,String par_code){
+	public static String getValue(Session session,String user_id,String com_id,String par_code){
 		com.cqqyd2014.hibernate.entities.UserPar o=getParCodeObject(session,user_id,com_id,par_code);
 		if (o==null){
 			return "";
@@ -14,7 +14,7 @@ public class UserParDAO {
 			return o.getParValue();
 		}
 	}
-	public void setValue(Session session,String user_id,String com_id,String par_code,String par_value){
+	public static void setValue(Session session,String user_id,String com_id,String par_code,String par_value){
 		com.cqqyd2014.hibernate.entities.UserPar o=getParCodeObject(session,user_id,com_id,par_code);
 		if (o==null){
 			com.cqqyd2014.hibernate.entities.UserPar up=new com.cqqyd2014.hibernate.entities.UserPar();
@@ -37,7 +37,7 @@ public class UserParDAO {
 		}
 	}
 	
-	public com.cqqyd2014.hibernate.entities.UserPar getParCodeObject(Session session,String user_id,String com_id,String par_code){
+	public static com.cqqyd2014.hibernate.entities.UserPar getParCodeObject(Session session,String user_id,String com_id,String par_code){
 		String hql="from UserPar where id.userId=:user_id and id.comId=:com_id and id.parCode=:par_code";
 		Query q = session.createQuery(hql);
 		q.setParameter("com_id", com_id);
@@ -54,7 +54,7 @@ public class UserParDAO {
 			return null;
 		}
 	}
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> getArrayListEntityByUserId(Session session,String com_id,String userid){
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPar> getArrayListEntityByUserId(Session session,String com_id,String userid){
 		String hql="from UserPar where id.userId=:userid and id.comId=:com_id";
 		Query q = session.createQuery(hql);
 		q.setParameter("com_id", com_id);

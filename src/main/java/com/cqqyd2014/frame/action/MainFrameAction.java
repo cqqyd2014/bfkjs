@@ -18,7 +18,7 @@ import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
 @SuppressWarnings("serial")
 @Scope("prototype")//支持多例  
-@ParentPackage("struts-default")  //表示继承的父包  
+@ParentPackage("bfkjs-default")  //表示继承的父包  
 @Namespace(value="/mainframe") //表示当前Action所在命名空间  
 public class MainFrameAction extends UserLoginedAction {
 	@Actions({     

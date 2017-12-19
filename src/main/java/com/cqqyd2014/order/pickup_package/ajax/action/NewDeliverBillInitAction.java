@@ -60,7 +60,7 @@ sm.setAuth_success(true);
 			com.cqqyd2014.hibernate.dao.VOrderMainDAO vomdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
 			com.cqqyd2014.hibernate.entities.VOrderMain vom=vomdao.getVOrderMain(session, com_id, order_no);
 			
-			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getOrderModelFromHiberanteEntities(vom);
+			com.cqqyd2014.order.model.Order order=com.cqqyd2014.order.logic.OrderLogic.getModelFromView(vom);
 			//如果是已经申请取消的，确认取消
 			if (com.cqqyd2014.order.logic.OrderLogic.check_if_cancel(session, order, user_id, "初始化发货单")){
 				sm.setSuccess(false);

@@ -1,17 +1,17 @@
 package com.cqqyd2014.usergroup.logic;
 
-public class UserPriceLogic {
+public final class UserPriceLogic {
 	
-	public java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayModelFromArrayEntities(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> vupas,java.util.Date now) throws Exception{
+	public static java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayListModelFromArrayListView(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> vupas,java.util.Date now) throws Exception{
 		java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> ups=new java.util.ArrayList<>();
 		for (int i=0;i<vupas.size();i++) {
-			com.cqqyd2014.usergroup.model.UserPrice up=getModelFromEntityView(vupas.get(i),now);
+			com.cqqyd2014.usergroup.model.UserPrice up=getModelFromView(vupas.get(i),now);
 			ups.add(up);
 		}
 		return ups;
 		
 	}
-	public com.cqqyd2014.usergroup.model.UserPrice getModelFromEntityView(com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa,java.util.Date now) throws Exception{
+	public static com.cqqyd2014.usergroup.model.UserPrice getModelFromView(com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa,java.util.Date now) throws Exception{
 		com.cqqyd2014.usergroup.model.UserPrice up=new com.cqqyd2014.usergroup.model.UserPrice();
 		up.setYue(vupa.getId().getSumAvailable());
 		up.setCom_id(vupa.getId().getComId());
@@ -48,7 +48,7 @@ public class UserPriceLogic {
 	}
 	
 	
-	public java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayModelFromArrayEnties(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPrice> ups_h,java.util.Date now) throws Exception{
+	public static java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayModelFromArrayEnties(java.util.ArrayList<com.cqqyd2014.hibernate.entities.UserPrice> ups_h,java.util.Date now) throws Exception{
 		java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> ups=new java.util.ArrayList<>();
 		com.cqqyd2014.usergroup.logic.UserPriceLogic upl=new com.cqqyd2014.usergroup.logic.UserPriceLogic();
 		for (int i=0;i<ups_h.size();i++){
@@ -58,7 +58,7 @@ public class UserPriceLogic {
 		}
 		return ups;
 	}
-	public java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayModelFromArrayEntiesV(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPrice> ups_h,java.util.Date now) throws Exception{
+	public static java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getArrayModelFromArrayEntiesV(java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPrice> ups_h,java.util.Date now) throws Exception{
 		java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> ups=new java.util.ArrayList<>();
 		com.cqqyd2014.usergroup.logic.UserPriceLogic upl=new com.cqqyd2014.usergroup.logic.UserPriceLogic();
 		for (int i=0;i<ups_h.size();i++){
@@ -69,7 +69,7 @@ public class UserPriceLogic {
 		return ups;
 	}
 	
-	public com.cqqyd2014.usergroup.model.UserPrice getModelFromEnties(com.cqqyd2014.hibernate.entities.VUserPrice up_h,java.util.Date now) throws Exception{
+	public static com.cqqyd2014.usergroup.model.UserPrice getModelFromEnties(com.cqqyd2014.hibernate.entities.VUserPrice up_h,java.util.Date now) throws Exception{
 		com.cqqyd2014.usergroup.model.UserPrice up=new com.cqqyd2014.usergroup.model.UserPrice();
 		up.setCom_id(up_h.getId().getComId());
 		up.setEnd_time(up_h.getId().getEndTime());
@@ -106,7 +106,7 @@ public class UserPriceLogic {
 	}
 	
 	
-	public com.cqqyd2014.usergroup.model.UserPrice getModelFromEnties(com.cqqyd2014.hibernate.entities.UserPrice up_h,java.util.Date now) throws Exception{
+	public static com.cqqyd2014.usergroup.model.UserPrice getModelFromEnties(com.cqqyd2014.hibernate.entities.UserPrice up_h,java.util.Date now) throws Exception{
 		com.cqqyd2014.usergroup.model.UserPrice up=new com.cqqyd2014.usergroup.model.UserPrice();
 		up.setCom_id(up_h.getId().getComId());
 		up.setEnd_time(up_h.getEndTime());

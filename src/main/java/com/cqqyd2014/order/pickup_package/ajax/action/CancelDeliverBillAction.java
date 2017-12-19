@@ -68,8 +68,8 @@ public String execute() {
 // TODO Auto-generated method stub
 super.execute();
 sm.setAuth_success(true);
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+		session = HibernateSessionFactory.getSession();
+		tx = session.beginTransaction();
 		try {
 			
 			

@@ -15,7 +15,7 @@ import com.cqqyd2014.hibernate.entities.*;
 import com.cqqyd2014.util.message.IfMessage;
 
 
-public class OrderMainDAO {
+public final class OrderMainDAO {
 	
 	
 	
@@ -26,7 +26,7 @@ public class OrderMainDAO {
 	
 	//得到所有未付款订单
 	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain> getEntityUnPaid(Session session){
-		String hql = "from COrderMain where effective=true and paid=false";
+		String hql = "from COrderMain where effective=true and paid=false and CStatus='订单生成' and cancelStatus=''";
 		Query q = session.createQuery(hql);
 		
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain> oms = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain>) q.list();
@@ -54,62 +54,6 @@ public class OrderMainDAO {
 	
 		
 	
-	//检测各种重复订单
-	public IfMessage ifExist(Session session,String field,String value,String com_id){
-
-		IfMessage msg=new IfMessage();
-		String hql = "from COrderMain where ";
-		switch(field){
-		case "original_id":
-			hql=hql+"originalId=:originalId and ";
-			break;
-		case "tell":
-			hql=hql+"CTell=:tell and ";
-			break;
-		case "user_name":
-			hql=hql+"CUserName=:user_name and ";
-			break;
-		case "user_addr":
-			hql=hql+"CUserAddr=:user_addr and ";
-			break;
-		}
-		hql=hql+"effective=true and id.comId=:com_id order by CTime desc";
-		Query q = session.createQuery(hql);
-		switch (field){
-		case "original_id":
-			q.setParameter("originalId", value);
-			break;
-		case "tell":
-			q.setParameter("tell", value);
-			break;
-		case "user_name":
-			q.setParameter("user_name", value);
-			break;
-		case "user_addr":
-			q.setString("user_addr", value);
-			break;
-			
-		
-		}
-		
-		q.setParameter("com_id", com_id);
-		
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain> oms = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain>) q
-				.list();
-		if (oms.size() > 0) {
-			msg.setIf_ok(true);
-			com.cqqyd2014.hibernate.entities.COrderMain om=oms.get(0);
-			msg.setMessage("字段\'"+com.cqqyd2014.util.field.OrderField.getName(field)+"\'共有重复订单"+String.valueOf(oms.size())+"个，"+
-			"其中，最近的订单，录入日期为"+com.cqqyd2014.util.DateUtil.getLocalFullString(om.getCTime())+"订单号："+om.getOriginalId()+"，收货人："+om.getCUserName()+
-			"，联系电话1（手机）"+om.getCTell()+"，地址："+om.getAddrProvince()+om.getAddrCity()+om.getAddrDistrict()+om.getCUserAddr());
-			//msg.setO(oms);
-			return msg;
-		} else {
-			msg.setIf_ok(false);
-			return msg;
-		}
-		
-	}
 	
 	
 
@@ -133,22 +77,7 @@ public class OrderMainDAO {
 
 	
 
-	// 原始单号重复
-	public com.cqqyd2014.hibernate.entities.COrderMain getByOriginalNo(Session session, String originalId,
-			 String com_id) {
-		String hql = "from COrderMain where originalId=:originalId and effective=true and id.comId=:com_id";
-		Query q = session.createQuery(hql);
-		q.setParameter("originalId", originalId);
-		q.setParameter("com_id", com_id);
-		
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain> oms = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.COrderMain>) q
-				.list();
-		if (oms.size() > 0) {
-			return oms.get(0);
-		} else {
-			return null;
-		}
-	}
+	
 	/*
 
 	// 得到订单"取消标志位"的状态
