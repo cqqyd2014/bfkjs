@@ -217,6 +217,7 @@
 		//alert($('input[name="order_status"]:checked ').val());
 		current_page = page;
 
+		ajax_start();
 		$.getJSON("get_all_orders_pages.action", {
 			"page" : page,
 			"rows" : rows,
@@ -230,6 +231,7 @@
 			barcode:$('#goods_barcode').val()
 
 		}, function(result) {
+			ajax_stop();
 			//alert("sdfsfds");
 			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
 			$('#order_list_table').datagrid('loadData', result);

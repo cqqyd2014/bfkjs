@@ -84,12 +84,12 @@
 	function new_deliver_init(order_no, logistics, logistics_name, vehicle,
 			vehicle_name, wh_id, wh_name) {
 
-		//$("#new_deliver_bill_logistics ").combobox('select','<s:property value="#session.default_logistics_com" />');
-		//alert('1111');
+		ajax_start();
 		$.getJSON("new_deliver_bill_init.action", {
 			"order_no" : order_no
 
 		}, function(result) {
+			ajax_stop();
 
 			var field = result.msg;
 			ajax_authority(field);
@@ -136,10 +136,11 @@
 
 	function show_new_deliver_picked_barcode_table() {
 
+		ajax_start();
 		$.getJSON("get_picked_barcode.action", {
 
 		}, function(result) {
-
+			ajax_stop();
 			var field = result.msg;
 			ajax_authority(field);
 
@@ -159,10 +160,11 @@
 
 	function show_new_deliver_need_table() {
 
+		ajax_start();
 		$.getJSON("get_need_pickup.action", {
 			order_no : $("#new_deliver_order_no").val()
 		}, function(result) {
-
+			ajax_stop();
 			var field = result.msg;
 			ajax_authority(field);
 			var o = field.o;
@@ -181,6 +183,7 @@
 			alert("快递单号不能为空");
 			return;
 		}
+		ajax_start();
 		//检查发货sn不能为空
 		$.ajax({
 			type : "post",
@@ -188,6 +191,7 @@
 
 			async : false,
 			success : function(result) {
+				ajax_stop();
 
 				var field = result.msg;
 				ajax_authority(field);
@@ -205,7 +209,7 @@
 
 			}
 		});
-		//alert($("#new_deliver_div_wh_id").val());
+		ajax_start();
 		$.getJSON("save_new_deliver_bill.action",
 				{
 					"order_no" : $("#new_deliver_order_no").val(),
@@ -218,6 +222,7 @@
 					"vehicle" : $('#new_deliver_bill_vehicle').combobox(
 							'getValue')
 				}, function(result) {
+					ajax_stop();
 					var field = result.msg;
 					ajax_authority(field);
 
@@ -243,8 +248,7 @@
 
 		if (barcode.length != 14 && barcode.length != 22
 				&& barcode.length != 18) {
-			$.messager
-					.alert("操作提示", "请确认条码长度，商品条码长度为14或者22，预包装条码为18！", "error");
+			$("#message").html("<font color='red'>请确认条码长度，商品条码长度为14或者22，预包装条码为18！</font>");
 			easyui_textbox_focus("new_deliver_pickup_barcode");
 
 			return;

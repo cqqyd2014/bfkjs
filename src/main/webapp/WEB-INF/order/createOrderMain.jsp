@@ -16,11 +16,13 @@
 	function check_order_exist(field, value) {
 		//判断该订单是否已经录入过
 
+		ajax_start();
 		$.getJSON("check_order_exist.action", {
 			"field" : field,
 			"value" : value
 		}, function(result) {
 
+			ajax_stop();
 			var rs=result.msg;
 
 				if (rs.success) {
@@ -177,6 +179,7 @@
 			return;
 		} 
 
+		ajax_start();
 		$.getJSON("push_order.action", {
 			original_no : $("#original_no").textbox('getValue'),
 			OrderFrom : $('#order_from').combobox("getValue"),
@@ -200,6 +203,7 @@
 
 		}, function(result) {
 
+			ajax_stop();
 			var field=result.msg;
 			ajax_authority(field);
 

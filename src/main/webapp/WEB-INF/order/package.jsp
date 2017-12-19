@@ -237,7 +237,8 @@
 	function show_order_list_table(page, rows) {
 		//alert($('input[name="order_status"]:checked ').val());
 		current_page = page;
-	
+
+		ajax_start();
 		$.getJSON("get_wait_package_pages.action", {
 			"page" : page,
 			"rows" : rows,
@@ -249,6 +250,7 @@
 			order_status:$('#order_status').val()
 
 		}, function(result) {
+			ajax_stop();
 			var field=result.msg;
 			ajax_authority(field);
 			
