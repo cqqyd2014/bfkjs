@@ -435,10 +435,10 @@
 <div id="new_deliver_div_buttons">
 	<a id="b_new_express" href="javascript:void(0)"
 		class="easyui-linkbutton"
-		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'BIG_',wh_id,'<s:property value="#session.user_id" />')"
+		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'BIG_',$('#wh_id').combobox('getValue'),'<s:property value="#session.user_id" />')"
 		iconCls="qyd">打印纸质面单</a> <a id="b_electric_express"
 		href="javascript:void(0)" class="easyui-linkbutton"
-		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'ELEC',wh_id,'<s:property value="#session.user_id" />')"
+		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'ELEC',$('#wh_id').combobox('getValue'),'<s:property value="#session.user_id" />')"
 		iconCls="qyd">打印电子面单</a> <a href="javascript:void(0)"
 		class="easyui-linkbutton"
 		onclick="javascript:new_deliver_init($('#new_deliver_order_no').val())">清空发货单</a>
