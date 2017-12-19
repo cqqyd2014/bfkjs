@@ -25,6 +25,7 @@
 function page_init(){
 	//获取数据
 	show_order_list_table("get_my_orders_pages.action","get_my_ordres_count.action");
+	//"get_all_orders_pages.action","get_all_ordres_count.action"
 	}
 
 
@@ -133,7 +134,7 @@ function page_init(){
 																							+ deliver.order_no
 																							+ '\",\"'
 																							+ deliver.seq
-																							+ '\")\'>发货单'
+																							+ '\")\'>包裹'
 																							+ deliver.seq
 																							+ '<font color=\"');
 																			/*
@@ -156,7 +157,7 @@ function page_init(){
 																			*/
 																			cc.push('black');
 
-																			cc.push('\"> [发货单状态：'
+																			cc.push('\"> [包裹状态：'
 																							+ deliver.deliver_bill_status
 																							+ ']</font></a><br>');
 
@@ -290,10 +291,6 @@ function page_init(){
 
 	
 <jsp:include page="common/search_order.jsp" flush="true" />
-	
-	
-		
-	
 
 <jsp:include page="common/view_deliver.jsp" flush="true" />
 

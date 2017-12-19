@@ -41,7 +41,7 @@ public class GetWaitPackagePagesAction extends com.cqqyd2014.order.common.ajax.a
 			@InterceptorRef("authorityInterceptor") })
 @Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
 	@Override
-	public String getJson() throws Exception {
+	public String getJson()  {
 		// TODO Auto-generated method stub
 		setMsg(getList());
 		return SUCCESS;

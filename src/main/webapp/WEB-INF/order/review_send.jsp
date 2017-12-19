@@ -16,216 +16,28 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 
-
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<script type="text/javascript" src="../js/qyd.js"></script>
-<script type="text/javascript" src="../js/print_logistics_bill.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../js/qyd.css">
-<link rel="stylesheet" type="text/css" href="../js/print_logistics_bill.css">
-
-
-<script type="text/javascript" src="../js/datagrid-detailview.js"></script>
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 
 <script language='javascript' type='text/javascript'>
-
-
-function deliverViewKd100(){
-	
-	window.open("http://www.kuaidi100.com/chaxun?com="+$("#express_com2").val()+"&nu="+$("#express_no2").val());
-}
 
 
 
 var current_page=1;
 
 
-
-
-
-
-	
-function save_deliver_from_pre_package_div(){
-
-	$('#save_deliver_from_pre_package_button_ok').linkbutton('disable');
-	
-
-	if($('#new_deliver_express_no2').val()==''){
-		alert(快递单号不能为空);
-		return ;
-		
-	}
-	$.getJSON("DeliverUsingPrepackage.action", {
-		pickup_prepac : $("#pickup_prepac").val(),
-		order_no : $("#new_deliver_prepackage_order_no2").val(),
-		new_deliver_logistics2:$('#new_deliver_logistics2').val(),
-		new_deliver_express_no2:$('#new_deliver_express_no2').val()
-
-	}, function(result) {
-		$.each(result, function(i, field) {
-			
-			if (field.success) {
-				alert("发货成功");
-				$('#new_deliver_prepackage_div').dialog('close');
-				show_order_list_table(current_page,$('#rows_in_page').val());
-
-			} else {
-				alert("用预包装包裹发货错误"+field.body);
-				
-
-			}
-			$('#save_deliver_from_pre_package_button_ok').linkbutton('enable');
-			
-
-		});
-	});
-	
-}
-
-function show_deliverPrePacTable(o){
-
-	var n = o.length;
-
-	$("#deliverPrePacTable").datagrid('loadData', {
-		total : n,
-		rows : o
-	})
-	
-}
-
-function new_deliver_from_pre_package_div(order_no){
-
-	$('#new_deliver_prepackage_order_no2').val(order_no);
-	$('#save_deliver_from_pre_package_button_ok').linkbutton('disable');
-	$('#new_deliver_express_no2').val("");
-	$('#pickup_prepac').val("");
-	$("#pickup_prepac").removeAttr("disabled");
-	clearDataTable('deliverPrePacTable');
-	$('#new_deliver_logistics2').val('<s:property value="default_logistics" />')
-
-	
-	$('#pre_message').text("");
-	
-	
-	$('#new_deliver_prepackage_div').dialog('open');
-	$("#new_deliver_prepackage_div").panel("move",{top:$(document).scrollTop() + ($(window).height()-400) * 0.5}); 
-	
-}
-
-
-	function view_deliver_div(order_no, seq) {
-
-		$('#view_deliver_order_no').val(order_no);
-		$('#view_deliver_seq').val(seq);
-
-		$.getJSON("DeliverViewInit.action", {
-			"order_no" : order_no,
-			"seq" : seq
-
-		}, function(result) {
-			$.each(result, function(i, x) {
-				var field=x.o;
-				var barcodes=x.o2;
-
-				$('#deliver_status').text(field.if_send);
-				$("#deliver_no2").val(field.deliver_no);
-				
-				$("#order_no2").val(field.order_no);
-				$("#express_com2").val(field.express_com);
-				$("#express_no2").val(field.express_no);
-				$('#express_code2').val(field.express_code);
-				$('#view_prepack_sn').val(field.prepack_sn);
-				if (field.sended) {
-					//已发
-
-					$("#weight").numberbox('setValue',field.weight);
-					$("#weight").numberbox('disable',true);
-					$("#b_w").hide();
-					
-					
-				}
-				else{
-					//未发
-					$("#weight").numberbox('enable',true);
-
-					$("#weight").numberbox('setValue',field.weight);
-					$("#b_w").show();
-					
-				}
-				var n = field.length;
-
-				$("#deliverViewSnTable").datagrid('loadData', {
-					total : n,
-					rows : field.list
-				});
-
-				var n2 = barcodes.length;
-
-				$("#deliverViewBarcodeTable").datagrid('loadData', {
-					total : n2,
-					rows : barcodes
-				});
-				
-				
-
-				$("#view_logistics_id").val(field.express_com_id);
-				/*
-				
-				
-				
-				
-				 
-
-				
-
-				 //var dataJson=JSON.parse(list1.list);
-				
-				 */
-				
-				$("#view_deliver_div").panel("move",{top:$(document).scrollTop() + ($(window).height()-400) * 0.5}); 
-				$('#view_deliver_div').dialog('open');
-
-			});
-		});
+function page_init(){
+	//获取数据
+	show_package_list_table("get_all_orders_pages.action","get_all_ordres_count.action");
 	}
 
-	function new_deliver_div(order_no) {
 
-		$.getJSON("NewDeliverInit.action", {
 
-		}, function(result) {
-			$.each(result, function(i, field) {
-				$('#new_deliver_order_no').val(order_no);
-				$('#new_deliver_express_no').val("");
-				$('#pickup_barcode').val("");
-				
-				$('#new_deliver_logistics').val('<s:property value="default_logistics" />')
-				clearDataTable("new_deliver_picked_sn_table");
-				if (field.success) {
-					//初始化成功，清空session中的拣货sn清单
-					
-					
-					show_new_deliver_need_table();
-					$('#message').text('');
-					$('#new_deliver_div').dialog('open');
-					$("#new_deliver_div").panel("move",{top:$(document).scrollTop() + ($(window).height()-400) * 0.5}); 
 
-				} else {
-					alert("初始化session拣货清单出错");
-					alert(field.body);
 
-				}
-			});
-		});
 
-	}
 
-	var order_list_table_view = $.extend(		{},
+
+	var package_list_table_view = $.extend(		{},
 					$.fn.datagrid.defaults.view,
 					{
 						renderRow : function(target, fields, frozen, rowIndex,
@@ -344,95 +156,12 @@ function new_deliver_from_pre_package_div(order_no){
 				   
 					
 					});
-</script>
-<script language='javascript' type='text/javascript'>
-	function show_order_list_table(page, rows) {
-		//alert($('input[name="order_status"]:checked ').val());
-		current_page=page;
 
-		$.getJSON("GetWaitReviewSendList.action", {
-			"page" : page,
-			"rows" : rows
-			
-		}, function(result) {
-			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
-			$('#order_list_table').datagrid('loadData', result);
-
-			show_order_list_table_pages(page);
-
-		});
-	}
-	function show_order_list_table_pages(page) {
-		$.getJSON("GetWaitReviewSendListPages.action", {
-
-		}, function(result) {
-			$.each(result, function(i, field) {
-
-				if (field.success) {
-					var count = parseInt(field.body,10);
-					var rows_in_page=parseInt($('#rows_in_page').val(),10);
-					
-					var pages = Math.ceil(count /rows_in_page);
-					//alert(pages);
-					var p = $('#order_list_table').datagrid('getPager');
-					//alert(page);
-					$(p).pagination({
-						pageNumber : page,
-						total : count,
-						pageSize : rows_in_page,//每页显示的记录条数，默认为10   
-						pageList : [ rows_in_page ],//可以设置每页记录条数的列表   
-						beforePageText : '第',//页数文本框前显示的汉字   
-						afterPageText : '页    共 {pages} 页',
-						displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
-						onSelectPage : function(pageNumber, pageSize) {
-							current_page=pageNumber;
-
-							show_order_list_table(pageNumber, pageSize);
-							$("html,body").finish().animate({"scrollTop":"0px"},900); 
-						}
-
-					});
-
-				} else {
-					alert("错误" + field.body);
-				}
-
-			});
-		});
-
-		
-		
-
-	}
 
 	function order_list_table_Dclick(rowData) {
 
 	}
 
-	function weight_deliverd() {
-		if ($("#weight").val() == "") {
-			alert("发货重量不能为空");
-			return;
-		}
-
-		$.ajax({
-			type : "post",
-			url : "SaveWeightAndDeliverd.action",
-			data : {
-				"order_no" : $("#view_deliver_order_no").val(),
-				"seq" : $("#view_deliver_seq").val(),
-				"weight" : $("#weight").val()
-			},
-			async : false,
-			success : function(data) {
-
-				
-				$('#view_deliver_div').dialog('close');
-				show_order_list_table(current_page,$('#rows_in_page').val());
-
-			}
-		});
-	}
 	<s:iterator value="experss_no_len_map" var="entry">
     
     
@@ -440,13 +169,7 @@ function new_deliver_from_pre_package_div(order_no){
     
    </s:iterator>
 	$(document).ready(function() {
-		$('#print_logistics_bill').dialog('close');
-		$('#new_deliver_div').dialog('close');
 
-		$('#view_deliver_div').dialog('close');
-		$('#change_express_div').dialog('close');
-		$('#new_deliver_prepackage_div').dialog('close');
-		$('#order_return_div').dialog('close');
 		 
 	     
 
@@ -454,8 +177,8 @@ function new_deliver_from_pre_package_div(order_no){
 
 	     
 
-						$('#order_list_table').datagrid({
-							view : order_list_table_view,
+						$('#package_list_table').datagrid({
+							view : package_list_table_view,
 
 							onDblClickRow : function(rowIndex, rowData) {
 								order_list_table_Dclick(rowData);
@@ -470,7 +193,7 @@ function new_deliver_from_pre_package_div(order_no){
 								
 								$("a#b_qyd").linkbutton({  iconCls:'qyd' });
 
-								<s:iterator value="logisticsList" var="entry">  
+								<s:iterator value="logistics_map" var="entry">  
 								$("a#b_<s:property value="key"/>").linkbutton({  iconCls:'express_<s:property value="key"/>' });
 							     </s:iterator>
 

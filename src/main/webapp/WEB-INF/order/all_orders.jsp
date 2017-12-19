@@ -131,7 +131,7 @@
 																							+ deliver.order_no
 																							+ '\",\"'
 																							+ deliver.seq
-																							+ '\")\'>发货单'
+																							+ '\")\'>包裹'
 																							+ deliver.seq
 																							+ '<font color=\"');
 																			/*
@@ -153,7 +153,7 @@
 																			*/
 																			cc.push('black')
 
-																			cc.push('\"> [发货单状态：'
+																			cc.push('\"> [包裹状态：'
 																							+ deliver.deliver_bill_status
 																							+ ']</font></a><br>');
 
@@ -290,63 +290,25 @@
 <body style="width: 95%; height: 95%;">
 
 	<h2>所有订单</h2>
-	
 
 
 
-	
-	
-	<script language='javascript' type='text/javascript'>
 
 
-		
-		function cancel_deliver_bill(order_no,seq){
-			//没有发出，或者发货清单为空的可以作废
-
-			cancel_deliver_bill
-			$.getJSON("cancel_deliver_bill.action", {
-				
-				order_no : $("#view_deliver_order_no").val(),
-				seq : $("#view_deliver_seq").val()
-
-			}, function(result) {
-				var field=result.msg;
-				
-
-				if (field.success) {
-					$.messager.alert('操作提示','"取消成功','info');
-						//alert("取消成功");
-						$('#view_deliver_div').dialog('close');
-						show_order_list_table(current_page, $('#rows_in_page')
-								.val());
-
-					} else {
-						$.messager.alert("操作提示", "取消运单出错！原因：" + field.body,
-						"error");
-						
-
-					}
-					
-
-				
-			});
-
-			}
 
 
-	</script>
-	
-	
-<jsp:include page="common/search_order.jsp" flush="true" />
-	
-	
-		
-	
 
-<jsp:include page="common/view_deliver.jsp" flush="true" />
 
-<jsp:include page="common/cancel_order.jsp" flush="true" />
-<jsp:include page="common/deliver_bill.jsp" flush="true" />
+	<jsp:include page="common/search_order.jsp" flush="true" />
+
+
+
+
+
+	<jsp:include page="common/view_deliver.jsp" flush="true" />
+
+	<jsp:include page="common/cancel_order.jsp" flush="true" />
+	<jsp:include page="common/deliver_bill.jsp" flush="true" />
 	<jsp:include page="../common/print_logistics_bill.jsp" flush="true" />
 </body>
 </html>

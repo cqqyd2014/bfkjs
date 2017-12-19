@@ -32,8 +32,8 @@ public class GetAllOrdersPagesAction extends com.cqqyd2014.order.common.ajax.act
 			orders.add(order_status);
 		}
 		
-		com.cqqyd2014.hibernate.dao.VOrderMainGoodsBarcodeDAO vomgbdao=new com.cqqyd2014.hibernate.dao.VOrderMainGoodsBarcodeDAO();
-		java.util.ArrayList<String> order_no_list=vomgbdao.getOrderNos(session, start_date, end_date, com_id, rows, page, orders, user_name, user_tell, goods_name, original_id, barcode, express_no,null,null,gts,emss);
+		
+		java.util.ArrayList<String> order_no_list=com.cqqyd2014.hibernate.dao.VOrderMainGoodsBarcodeDAO.getOrderNos(session, start_date, end_date, com_id, rows, page, orders, user_name, user_tell, goods_name, original_id, barcode, express_no,null,null,gts,emss);
 		
 		
 		return order_no_list;
@@ -44,7 +44,7 @@ public class GetAllOrdersPagesAction extends com.cqqyd2014.order.common.ajax.act
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
 @Authority(module = "get_all_orders_pages", privilege = "[00010002]", error_url = "authority_ajax_error")
-	public String getJson() throws Exception {
+	public String getJson()  {
 		// TODO Auto-generated method stub
 		setMsg(getList());
 		return SUCCESS;

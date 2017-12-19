@@ -41,7 +41,7 @@ public class ReturnGoodsDivInitAction extends UserLoginedAction {
 
 	})
 
-	@Authority(module = "mainframe", privilege = "[00010001]", error_url = "authority_error")
+	@Authority(module = "return_goods_div_init", privilege = "[00010001]", error_url = "authority_error")
 	@Override
 	public String execute() {
 		// TODO Auto-generated method stub

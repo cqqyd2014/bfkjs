@@ -49,15 +49,77 @@
 
 <script type='text/javascript'>
 
+
 	var current_page;
 	var rows_in_page;
 
+
+
+	function show_package_list_table(page, rows) {
+		//alert($('input[name="order_status"]:checked ').val());
+		current_page=page;
+
+		$.getJSON("GetWaitReviewSendList.action", {
+			"page" : page,
+			"rows" : rows
+			
+		}, function(result) {
+			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
+			$('#order_list_table').datagrid('loadData', result);
+
+			show_order_list_table_pages(page);
+
+		});
+	}
+	function show_order_list_table_pages(page) {
+		$.getJSON("GetWaitReviewSendListPages.action", {
+
+		}, function(result) {
+			$.each(result, function(i, field) {
+
+				if (field.success) {
+					var count = parseInt(field.body,10);
+					var rows_in_page=parseInt($('#rows_in_page').val(),10);
+					
+					var pages = Math.ceil(count /rows_in_page);
+					//alert(pages);
+					var p = $('#order_list_table').datagrid('getPager');
+					//alert(page);
+					$(p).pagination({
+						pageNumber : page,
+						total : count,
+						pageSize : rows_in_page,//每页显示的记录条数，默认为10   
+						pageList : [ rows_in_page ],//可以设置每页记录条数的列表   
+						beforePageText : '第',//页数文本框前显示的汉字   
+						afterPageText : '页    共 {pages} 页',
+						displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+						onSelectPage : function(pageNumber, pageSize) {
+							current_page=pageNumber;
+
+							show_order_list_table(pageNumber, pageSize);
+							$("html,body").finish().animate({"scrollTop":"0px"},900); 
+						}
+
+					});
+
+				} else {
+					alert("错误" + field.body);
+				}
+
+			});
+		});
+
+		
+		
+
+	}
 	
-	function search_order_ready() {
+	
+	function search_package_ready() {
 		current_page = 1;
 		rows_in_page = <s:property value="#session.default_rows_in_page" />;
 		$('#rows_in_page').val(rows_in_page);
-		$('#search_order_order_status').combobox({
+		$('#search_package_package_status').combobox({
 			required : true,
 			multiple : false, //多选
 			editable : false //是否可编辑
@@ -68,7 +130,7 @@
 	var rowaction_handler;
 	var pagesaction_handler;
 	//获取明细记录
-	function show_order_list_table(rowaction, pagesaction) {
+	function show_package_list_table(rowaction, pagesaction) {
 
 		rowaction_handler = rowaction;
 		pagesaction_handler = pagesaction;

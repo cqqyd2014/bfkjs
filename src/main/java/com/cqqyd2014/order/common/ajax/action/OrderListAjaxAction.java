@@ -3,6 +3,7 @@ package com.cqqyd2014.order.common.ajax.action;
 
 
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -115,9 +116,9 @@ public abstract class OrderListAjaxAction extends UserLoginedAction{
 	public void setEnd_dat(String end_dat) {
 		this.end_dat = end_dat;
 	}
-	public abstract String getJson() throws Exception;
+	public abstract String getJson() ;
 	public abstract java.util.ArrayList<String> getOrders(Session session, java.util.Date start_date,java.util.Date end_date,String com_id,String rows,String page,String order_status,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String send_user,String user_id); 
-	public java.util.ArrayList<com.cqqyd2014.order.model.Order> getList() throws Exception {
+	public java.util.ArrayList<com.cqqyd2014.order.model.Order> getList()  {
 		
 		
 		//查询条件预处理
@@ -132,10 +133,10 @@ public abstract class OrderListAjaxAction extends UserLoginedAction{
 
 		super.execute();
 		
-		Session session = HibernateSessionFactory.getSession();
+		session = HibernateSessionFactory.getSession();
 
 		java.util.ArrayList<com.cqqyd2014.order.model.Order> items=new java.util.ArrayList<>();
-		Transaction tx = session.beginTransaction();
+		
 		try {
 			java.util.Date start_date=null;
 			java.util.Date end_date=null;
@@ -189,11 +190,11 @@ public abstract class OrderListAjaxAction extends UserLoginedAction{
 			
 			
 			
-			tx.commit();
+			
 			
 		}
 
-		catch (Exception e) {
+		catch (HibernateException e) {
 			
 			if (null != tx) {
 				tx.rollback();// 撤销事务

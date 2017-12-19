@@ -228,5 +228,8 @@ function view_deliver_init(order_no, seq) {
 		onclick="javascript:$('#view_deliver_div').dialog('close')" iconCls="icon-ok">关闭查看包裹窗口</a>
 </div>
 <jsp:include page="change_express.jsp" flush="true" />
+<jsp:include page="return_goods.jsp" flush="true" />
+
 <jsp:include page="view_route.jsp" flush="true" />
-	<s:action name="return_goods_div_init" executeResult="true" namespace="/order/common"> </s:action>
+
+

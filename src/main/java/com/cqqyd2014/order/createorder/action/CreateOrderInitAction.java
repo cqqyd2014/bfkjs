@@ -77,7 +77,7 @@ public class CreateOrderInitAction extends UserLoginedAction {
 
 	})
 
-	@Authority(module = "mainframe", privilege = "[00010001]", error_url = "authority_error")
+	@Authority(module = "create_order_init", privilege = "[00010001]", error_url = "authority_error")
 	@Override
 	public String execute() {
 		// TODO Auto-generated method stub

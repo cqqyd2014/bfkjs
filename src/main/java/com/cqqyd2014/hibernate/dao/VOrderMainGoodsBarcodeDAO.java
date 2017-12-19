@@ -3,14 +3,14 @@ package com.cqqyd2014.hibernate.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public class VOrderMainGoodsBarcodeDAO {
+public final class VOrderMainGoodsBarcodeDAO {
 	
 	
 	
 	
 	//订单数量的查询
 	
-	public java.math.BigInteger getOrderNoCount(Session session, java.util.Date start_dat,java.util.Date end_dat,String com_id,java.util.ArrayList<String> order_statuss,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String user_id,java.util.ArrayList<String> gt_statuss,java.util.ArrayList<String> ems_statuss){
+	public static java.math.BigInteger getOrderNoCount(Session session, java.util.Date start_dat,java.util.Date end_dat,String com_id,java.util.ArrayList<String> order_statuss,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String user_id,java.util.ArrayList<String> gt_statuss,java.util.ArrayList<String> ems_statuss){
 		String hql="select count(*) from ( select order_no from v_order_main_goods_barcode where";
 
 		if (order_statuss.size()>0){
@@ -61,7 +61,7 @@ public class VOrderMainGoodsBarcodeDAO {
 	
 	
 	//订单列表的查询
-	public java.util.ArrayList<String> getOrderNos(Session session, java.util.Date start_dat,java.util.Date end_dat,String com_id,String rows,String page,java.util.ArrayList<String> order_statuss,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String user_id,java.util.ArrayList<String> gt_statuss,java.util.ArrayList<String> ems_statuss){
+	public static java.util.ArrayList<String> getOrderNos(Session session, java.util.Date start_dat,java.util.Date end_dat,String com_id,String rows,String page,java.util.ArrayList<String> order_statuss,String user_name,String user_tell,String goods_name,String original_id,String barcode,String express_no,String package_user,String user_id,java.util.ArrayList<String> gt_statuss,java.util.ArrayList<String> ems_statuss){
 		int currentPage=Integer.parseInt(page);
 		int pageSize=Integer.parseInt(rows);
 		String hql="select id.orderNo from VOrderMainGoodsBarcode where id.comId=:com_id and id.orderDat between :start_dat and :end_dat ";
@@ -138,7 +138,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		
 	}
 	
-	public java.util.ArrayList<com.cqqyd2014.wh.model.OrderBarcode> getOrderBarcodes(Session session,String com_id,String barcode){
+	public static java.util.ArrayList<com.cqqyd2014.wh.model.OrderBarcode> getOrderBarcodes(Session session,String com_id,String barcode){
 		java.util.ArrayList<com.cqqyd2014.wh.model.OrderBarcode> obs=new java.util.ArrayList<>();
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> list=getByBarcodesAll(session,com_id,barcode);
 		for (int i=0;i<list.size();i++){
@@ -159,7 +159,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		return obs;
 		
 	}
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getByBarcodesAll(Session session,String com_id,String barcode){
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getByBarcodesAll(Session session,String com_id,String barcode){
 		String hql="from VOrderMainGoodsBarcode where id.comId=:com_id and id.barcode=:barcode";
 		Query q = session.createQuery(hql);
 		q.setParameter("barcode",barcode);
@@ -168,7 +168,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		return list;
 	}
 	
-	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getByBarcodes(Session session,String com_id,String barcode){
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getByBarcodes(Session session,String com_id,String barcode){
 		String hql="from VOrderMainGoodsBarcode where id.comId=:com_id and id.barcode=:barcode and id.returnFlag=false";
 		Query q = session.createQuery(hql);
 		q.setParameter("barcode",barcode);
@@ -177,7 +177,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		return list;
 	}
 	
-	public java.util.ArrayList<String> getArrayListOrderNosByGoodsBarcode(Session session,String com_id,String barcode){
+	public static java.util.ArrayList<String> getArrayListOrderNosByGoodsBarcode(Session session,String com_id,String barcode){
 		String hql="select id.orderNo from VOrderMainGoodsBarcode where id.comId=:com_id and id.goodsBarcode=:barcode group by id.orderNo";
 		Query q = session.createQuery(hql);
 		q.setParameter("barcode",barcode);
@@ -187,7 +187,7 @@ public class VOrderMainGoodsBarcodeDAO {
 	}
 	
 	
-	public com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode getByBarcode(Session session,String com_id,String barcode){
+	public static com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode getByBarcode(Session session,String com_id,String barcode){
 		java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> list=getByBarcodes(session,com_id,barcode);
 		if (list.size()>0){
 			return list.get(0);
@@ -198,7 +198,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		
 		
 	}
-	public java.math.BigDecimal getDeliverGoodsCount(Session session,String com_id,String order_no){
+	public static java.math.BigDecimal getDeliverGoodsCount(Session session,String com_id,String order_no){
 		String hql="select count(*) from VOrderMainGoodsBarcode where id.comId=:com_id and id.orderNo=:order_no";
 		
 		Query q=session.createQuery(hql);
@@ -208,7 +208,7 @@ public class VOrderMainGoodsBarcodeDAO {
 		return new java.math.BigDecimal(((Long) q.iterate().next()));
 	}
 	
-	private java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getBarcodeReturnFlag(Session session,String com_id,String order_no,boolean return_flag){
+	private static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getBarcodeReturnFlag(Session session,String com_id,String order_no,boolean return_flag){
 		String hqlString="from VOrderMainGoodsBarcode where id.sended=true and id.comId=:com_id and id.orderNo=:order_no and id.returnFlag=:return_flag";
 		Query query = session.createQuery(hqlString);
 		query.setParameter("com_id", com_id);
@@ -219,13 +219,13 @@ public class VOrderMainGoodsBarcodeDAO {
 	}
 	
 	
-	private java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getUnReturnBarcode(Session session,String com_id,String order_no){
+	private static java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> getUnReturnBarcode(Session session,String com_id,String order_no){
 	
 	return getBarcodeReturnFlag(session,com_id,order_no,false);
 }
 	
 	
-	public java.util.ArrayList<com.cqqyd2014.wh.model.Goods> getUnReturnBarcodeModel(Session session,String com_id,String order_no){
+	public static java.util.ArrayList<com.cqqyd2014.wh.model.Goods> getUnReturnBarcodeModel(Session session,String com_id,String order_no){
 		 java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode> vodrbs=getUnReturnBarcode(session,com_id,order_no);
 		java.util.ArrayList<com.cqqyd2014.wh.model.Goods> gbs=new java.util.ArrayList<>();
 		for (int i=0;i<vodrbs.size();i++){

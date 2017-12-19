@@ -25,7 +25,7 @@ public class GetMyOrdersCountAction extends OrderCountAjaxAction{
 			
 			@InterceptorRef("defaultStack"),
 			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010003]", error_url = "authority_ajax_error")
+@Authority(module = "get_my_ordres_count", privilege = "[00010000]", error_url = "authority_ajax_error")
 	@Override
 	public String getJson() throws Exception {
 		// TODO Auto-generated method stub

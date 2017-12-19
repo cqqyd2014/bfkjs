@@ -6,21 +6,7 @@
 <script language='javascript' type='text/javascript'>
 	var new_deliver_handler;
 
-	function change_logistics_check() {
-
-		var logistics = $('#new_deliver_logistics').combobox('getValue');
-
-		var len = eval('express_no_len_' + logistics);
-
-		
-		easyui_textbox_type_len("new_deliver_express_no", len, function() {
-
-			easyui_textbox_focus("new_deliver_pickup_barcode");
-			pickup_barcode();
-
-		});
-	}
-
+	
 	function new_deliver_ready(page_init) {
 		new_deliver_handler = page_init;
 		dialog_init('new_deliver_div');
@@ -46,12 +32,18 @@
 			}
 		});
 
+
+
+		$("#new_deliver_express_no").textbox('textbox').css("font-size", "18pt");
+		$("#new_deliver_pickup_barcode").textbox('textbox').css("font-size", "18pt");
+
 		easyui_textbox_enter("new_deliver_pickup_barcode", function() {
 			easyui_textbox_focus("new_deliver_pickup_barcode");
 			
 			//如果单号长度为22
 			if ($("#new_deliver_pickup_barcode").textbox('getValue').length == 22) {
 				pickup_barcode();
+				easyui_textbox_focus("new_deliver_express_no");
 			}
 			else{
 				easyui_textbox_focus("new_deliver_pickup_barcode");
@@ -60,20 +52,21 @@
 
 		easyui_textbox_enter("new_deliver_express_no", function() {
 			
-			easyui_textbox_focus("new_deliver_pickup_barcode");
+			
 			
 
 			var logistics = $('#new_deliver_bill_logistics').combobox('getValue');
 			var len = eval('express_no_len_' + logistics);
 
 			
-			
-			if ($('#new_deliver_express_no').textbox('getValue').length == len) {
+			if ($('#new_deliver_express_no').textbox('getValue').length != len) {
+				$('#message').html('<font color=red>快递单号长度应该为'+len+'当前录入的快递单号长度为'+$('#new_deliver_express_no').textbox('getValue').length);
+				easyui_textbox_focus("new_deliver_express_no");
 				
 				
-				pickup_barcode();
 			}
 			else{
+				pickup_barcode();
 				
 				easyui_textbox_focus("new_deliver_pickup_barcode");
 				}
@@ -417,7 +410,7 @@
 	</div>
 	<div>
 		<a href="javascript:void(0)" class="easyui-linkbutton"
-			onclick="javascript:pickup_barcode()">拣货这个商品</a>
+			onclick="javascript:pickup_barcode()"  icon-cancel="qyd">拣货这个商品</a>
 	</div>
 	<div id="message"></div>
 	<div>
@@ -440,14 +433,16 @@
 	<a id="b_new_express" href="javascript:void(0)"
 		class="easyui-linkbutton"
 		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'BIG_',$('#wh_id').combobox('getValue'),'<s:property value="#session.user_id" />')"
-		iconCls="qyd">打印纸质面单</a> <a id="b_electric_express"
+		iconCls="icon-print">打印纸质面单</a> <a id="b_electric_express"
 		href="javascript:void(0)" class="easyui-linkbutton"
 		onclick="javascript:print_express($('#new_deliver_order_no').val(),'0000',$('#new_deliver_bill_logistics').combobox('getValue'),$('#new_deliver_bill_vehicle').combobox('getValue'),'ELEC',$('#wh_id').combobox('getValue'),'<s:property value="#session.user_id" />')"
-		iconCls="qyd">打印电子面单</a> <a href="javascript:void(0)"
+		iconCls="icon-print">打印电子面单</a> <a href="javascript:void(0)"
 		class="easyui-linkbutton"
-		onclick="javascript:new_deliver_init($('#new_deliver_order_no').val())">清空发货单</a>
+		onclick="javascript:new_deliver_init($('#new_deliver_order_no').val())"
+		
+		iconCls="icon-clear">清空发货单</a>
 	<a href="javascript:void(0)" class="easyui-linkbutton"
-		onclick="javascript:new_deiliver_save()">部分拣货并打印发货单</a> <a
+		onclick="javascript:new_deiliver_save()"    iconCls="icon-save">部分拣货并打印发货单</a> <a
 		href="javascript:void(0)" class="easyui-linkbutton"
-		onclick="javascript:$('#new_deliver_div').dialog('close')">没想好先关闭</a>
+		onclick="javascript:$('#new_deliver_div').dialog('close')" iconCls="icon-ok">没想好先关闭</a>
 </div>
