@@ -49,7 +49,7 @@ public class GetUnpaidAction   extends ActionSupport {
 		try {
 			com.cqqyd2014.hibernate.dao.VOrderMainDAO vomdao=new com.cqqyd2014.hibernate.dao.VOrderMainDAO();
 			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VOrderMain> voms=vomdao.getUnPaidArrayListView(session, com_id);
-			java.util.ArrayList<com.cqqyd2014.order.model.Order> orders=com.cqqyd2014.order.logic.OrderLogic.getOrderArrayFromView(voms);
+			java.util.ArrayList<com.cqqyd2014.order.model.Order> orders=com.cqqyd2014.order.logic.OrderLogic.getArrayListModelFromArrayListView(voms);
 			sm.setO(orders);
 			tx.commit();
 			sm.setSuccess(true);
