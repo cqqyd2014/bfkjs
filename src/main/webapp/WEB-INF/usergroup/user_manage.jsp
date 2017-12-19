@@ -13,17 +13,7 @@
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<script type="text/javascript" src="../js/qyd.js">
-	
-</script>
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../js/qyd.css">
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 <script type="text/javascript">
 function new_user_price(){
 	$('#d_uuid').val('');

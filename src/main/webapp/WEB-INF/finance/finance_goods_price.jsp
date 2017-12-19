@@ -7,14 +7,7 @@
 <head>
 
 <title>进货到仓库</title>
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../js/qyd.css">
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 <title>商品财务入账单价</title>
 <script language='javascript' type='text/javascript'>
 
