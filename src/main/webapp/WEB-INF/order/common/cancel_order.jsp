@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-
+<%@taglib prefix="s" uri="/struts-tags"%>
 <div id="cancel_order_div" class="easyui-dialog" title="取消订单"
 	style="width: 600px; height: 400px; padding: 10px"
 	data-options="	iconCls: 'qyd',	buttons: '#cancel_order_buttons'">

@@ -22,12 +22,12 @@
 
 
 
-	var current_page ;
-	var rows_in_page;
+
 
 
 	function page_init(){
-		show_order_list_table(current_page,rows_in_page);
+		//获取数据
+		show_order_list_table("get_all_orders_pages.action","get_all_ordres_count.action");
 		}
 
 
@@ -213,76 +213,7 @@
 					});
 </script>
 <script language='javascript' type='text/javascript'>
-	function show_order_list_table(page, rows) {
-		//alert($('input[name="order_status"]:checked ').val());
-		current_page = page;
 
-		ajax_start();
-		$.getJSON("get_all_orders_pages.action", {
-			"page" : page,
-			"rows" : rows,
-
-			user_name : $('#user_name').val(),
-			goods_name : $('#goods_name').val(),
-			user_tell : $('#user_tell').val(),
-			original_id : $('#original_id').val(),
-			order_status:$('#order_status').val(),
-			express_no:$('#express_no').val(),
-			barcode:$('#goods_barcode').val()
-
-		}, function(result) {
-			ajax_stop();
-			//alert("sdfsfds");
-			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
-			$('#order_list_table').datagrid('loadData', result);
-
-			show_order_list_table_pages(page);
-
-		});
-	}
-	function show_order_list_table_pages(page) {
-		$.getJSON("get_all_ordres_count.action", {
-			user_name : $('#user_name').val(),
-			goods_name : $('#goods_name').val(),
-			user_tell : $('#user_tell').val(),
-			original_id : $('#original_id').val(),
-			order_status:$('#order_status').val(),
-			express_no:$('#express_no').val(),
-			barcode:$('#goods_barcode').val()
-
-		}, function(result) {
-			
-
-				
-					var count = parseInt(result, 10);
-					var rows_in_page = parseInt($('#rows_in_page').val(), 10);
-
-					var pages = Math.ceil(count / rows_in_page);
-					//alert(pages);
-					var p = $('#order_list_table').datagrid('getPager');
-					//alert(page);
-					$(p).pagination({
-						pageNumber : page,
-						total : count,
-						pageSize : rows_in_page,//每页显示的记录条数，默认为10   
-						pageList : [ rows_in_page ],//可以设置每页记录条数的列表   
-						beforePageText : '第',//页数文本框前显示的汉字   
-						afterPageText : '页    共 {pages} 页',
-						displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
-						onSelectPage : function(pageNumber, pageSize) {
-							current_page = pageNumber;
-
-							show_order_list_table(pageNumber, pageSize);
-							$("html,body").finish().animate({
-								"scrollTop" : "0px"
-							}, 900);
-						}
-
-					});
-
-		});
-
-	}
 
 	function order_list_table_Dclick(rowData) {
 
@@ -290,10 +221,11 @@
 
 	$(document).ready(
 					function() {
-						current_page = 1;
-						rows_in_page=<s:property value="#session.default_rows_in_page"/>;
 
-						$('#rows_in_page').val(rows_in_page);
+						search_order_ready();
+						page_init();
+
+						
 
 						view_deliver_ready();
 						
@@ -303,8 +235,8 @@
 						
 						
 						
-						dialog_init('print_logistics_bill');
-						$('#wh_id').val('<s:property value="#session.default_warehouse" />');
+						print_logistics_ready();
+						
 			
 
 
@@ -341,7 +273,7 @@
 										});
 
 						
-												page_init();
+											
 
 
 
@@ -359,49 +291,6 @@
 
 	<h2>所有订单</h2>
 	
-
-
-
-	<table class='box' style="width: 100%">
-		<tr>
-			<td>1、订单状态： <SELECT id="order_status">
-						<option VALUE="0" SELECTED>所有订单</option>
-						<option VALUE="订单生成">订单生成</option>
-						<option VALUE="订单已付">订单已付</option>
-						<option VALUE="订单处理">订单处理</option>
-						<option VALUE="发货完毕">发货完毕</option></SELECT>
-						2、收件人姓名:<input id="user_name" type="text" style="width: 70px"  />
-						3、收件人手机:<input id="user_tell" type="text" />
-						4、电商平台单号：<input id="original_id" type="text" />
-						5、运单号：<input id="express_no" type="text" />
-						6、商品条码：<input id="goods_barcode" type="text" />
-						6、商品名称：<input id="goods_name" type="text" />
-
-			每页显示<input style="width: 50px"   id="rows_in_page" value=<s:property value="#session.default_rows_in_page" /> type="text"
-					class="easyui-numberbox" precision="0" />行
-					<a href="javascript:void(0)" class="easyui-linkbutton"
-				onclick="javascript:set_default('default_rows_in_page',$('#rows_in_page').numberbox('getValue'))"
-				iconCls="qyd">默认</a>
-					
-					<a
-					href="javascript:void(0)" class="easyui-linkbutton"
-					iconcls="icon-search"
-					onclick="javascript:show_order_list_table(1, $('#rows_in_page').val())">查询</a>
-				</td>
-		</tr>
-		<tr>
-			<td>
-				<table id="order_list_table" style="width: 100%" pagination="true"
-					sortName="itemid" sortOrder="desc" singleSelect="true"
-					fitColumns="true">
-
-				</table>
-
-			</td>
-		</tr>
-	</table>
-
-
 
 
 
@@ -448,7 +337,7 @@
 	</script>
 	
 	
-	
+<jsp:include page="common/search_order.jsp" flush="true" />
 	
 	
 		

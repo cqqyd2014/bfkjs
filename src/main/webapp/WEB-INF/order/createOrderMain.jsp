@@ -481,7 +481,7 @@ function tell_check(){
 		});
 	} else {
 
-		check_order_exist("tell",value);
+		check_order_exist("tell",tell);
 		$('#memo_msg').text('');
 	}
 

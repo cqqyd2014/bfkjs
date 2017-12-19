@@ -4,6 +4,12 @@
 
 
 <script type='text/javascript'>
+
+
+
+function print_logistics_ready(){
+	dialog_init('print_logistics_bill');
+}
 /*
  * 电子面单
  */
