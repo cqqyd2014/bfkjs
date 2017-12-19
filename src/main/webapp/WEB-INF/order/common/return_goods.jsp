@@ -9,10 +9,10 @@
 		<div>发货序号：<span id='return_seq'></span></div>
 		<div>商品编码/名称：<span id='return_goods_id'></span>/<span id='return_goods_name'></span></div>
 		<div>退货商品条码：<span id='return_goods_barcode'></span></div>
-		<div>退货至仓库：<s:select id="wh_id"
+		<div>退货至仓库：<s:select id="return_goods_wh_id"
 						list="wh_list" listKey="wh_id"
 						listValue="wh_name" cssStyle=" width: 150px;"    /><a href="javascript:void(0)" class="easyui-linkbutton"
-				onclick="javascript:set_default('default_warehouse',$('#wh_id').val())"
+				onclick="javascript:set_default('default_warehouse',$('#return_goods_wh_id').val())"
 				iconCls="qyd">默认</a></div>
 		<div>备注</div>
 		<div><input class="easyui-textbox" data-options="multiline:true"
@@ -40,7 +40,7 @@ var after_return_goods;
 		dialog_init_mid('return_div');
 
 
-		$('#wh_id').combobox({
+		$('#return_goods_wh_id').combobox({
 			required : true,
 			multiple : false, //多选
 			editable : false //是否可编辑
@@ -100,7 +100,7 @@ $.getJSON("return_goods_init.action", {
 				seq:$('#return_seq').text(),
 				memo:$('#return_memo').textbox('getValue'),
 				goods_id:$('#return_goods_id').text(),
-				wh_id:$('#wh_id').combobox('getValue')
+				wh_id:$('#return_goods_wh_id').combobox('getValue')
 
 			}, function(result) {
 				var field=result.msg;

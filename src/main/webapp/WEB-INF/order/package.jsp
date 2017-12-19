@@ -321,6 +321,9 @@
 							
 				            });  
 
+						
+						
+
 						rows_in_page=<s:property value="#session.default_rows_in_page" />;
 						$('#rows_in_page').val(rows_in_page);
 						$('#wh_id').combobox('select','<s:property value="#session.default_warehouse" />');
@@ -375,8 +378,8 @@
 <body style="width: 95%; height: 95%;">
 	<h2>拣货打包列表</h2>
 	<div><span>当前仓库为</span><s:select id="wh_id"
-						list="wh_list" listKey="logistics_code"
-						listValue="logistics_name" style=" width: 150px;" /><a href="javascript:void(0)" class="easyui-linkbutton"
+						list="wh_list" listKey="wh_id"
+						listValue="wh_name" style=" width: 150px;" /><a href="javascript:void(0)" class="easyui-linkbutton"
 				onclick="javascript:set_default('default_warehouse',$('#wh_id').combobox('getValue'))"
 				iconCls="qyd">默认</a></div>
 
