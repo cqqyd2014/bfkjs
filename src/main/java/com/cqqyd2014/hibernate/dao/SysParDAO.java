@@ -4,6 +4,19 @@ import org.hibernate.Session;
 
 public final class SysParDAO {
 	
+	
+	public static java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysPar> getArrayListEntites(Session session){
+		String hql = "from SysPar";
+
+		Query q = session.createQuery(hql);
+		
+		
+		@SuppressWarnings("unchecked")
+		java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysPar> sws = (java.util.ArrayList<com.cqqyd2014.hibernate.entities.SysPar>) q
+				.list();
+		return sws;
+	}
+	
 	public static String getStringValueByCode(Session session, String code){
 		com.cqqyd2014.hibernate.entities.SysPar sp=getEntityByCode(session,code);
 		return sp.getValue();

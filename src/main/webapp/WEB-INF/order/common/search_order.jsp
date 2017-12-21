@@ -104,7 +104,7 @@
 	function show_order_list_table_pages(pagesaction) {
 		$
 				.getJSON(
-						"get_all_ordres_count.action",
+						pagesaction,
 						{
 							user_name : $('#search_order_user_name').textbox(
 									'getValue'),

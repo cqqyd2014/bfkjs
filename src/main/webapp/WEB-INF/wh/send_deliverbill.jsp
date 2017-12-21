@@ -14,28 +14,22 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 
-
-<script type="text/javascript" src="../js/jquery-2.1.4.min.js">
-	
-</script>
-<script type="text/javascript" src="../js/qyd.js"></script>
-
-<link rel="stylesheet" type="text/css"
-	href="../js/themes/default/easyui.css" />
-<link rel="stylesheet" type="text/css" href="../js/themes/icon.css" />
-<script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../js/qyd.css">
-
-
-
-<script type="text/javascript" src="../js/datagrid-detailview.js"></script>
+<jsp:include page="../common/include_easyui2.jsp" flush="true" />
 
 <script language='javascript' type='text/javascript'>
 
 
+var current_page=1;
+var rows_in_page;
+
+function page_init(){
+	//获取数据
+	show_package_list_table("get_wait_send_deliver_list.action","get_wait_send_deliver_count.action");
+	}
 
 
-	var current_page = 1;
+
+
 
 
 	function send(deliver_no){
@@ -47,15 +41,14 @@
 				$.getJSON("send_package.action", {
 					"deliver_no" : deliver_no,
 					"weight":$('#weight_'+deliver_no).val(),
-					"wh_id":$('#wh_id').val()
+					"wh_id":$('#wh_id').combobox('getValue')
 
 		}, function(result) {
 					var field=result.msg;
 					if (field.success){
 					$.messager.alert("操作提示", "发货成功：" + field.body,
 					"info");
-					show_deliverbill_list_table(current_page, $('#rows_in_page')
-							.val());
+					page_init();
 					}
 					else{
 
@@ -67,75 +60,11 @@
 		});
 	}
 
-	function view_deliver_div(order_no, seq) {
-
-		$('#view_deliver_order_no').val(order_no);
-		$('#view_deliver_seq').val(seq);
-
-		$.getJSON("view_deliver_bill_init.action", {
-			"order_no" : order_no,
-			"seq" : seq
-
-		}, function(result) {
-			var field=result.msg;
-			
-
-			if (field.success) {
-				var deliver_bill = field.o;
-				var goods = field.o2;
-
-				$('#deliver_status').text(deliver_bill.deliver_bill_status);
-				$("#deliver_no2").val(deliver_bill.deliver_no);
-
-				$("#order_no2").val(deliver_bill.order_no);
-				$("#express_com2").val(deliver_bill.express_com_name);
-				$("#express_no2").val(deliver_bill.express_no);
-				$('#express_code2').val(deliver_bill.express_com);
-				$('#view_prepack_sn').val(deliver_bill.pre_package_barcode);
-
-				var n = deliver_bill.dbds.length;
-
-				$("#deliverViewPickupTable").datagrid('loadData', {
-					total : n,
-					rows : deliver_bill.dbds
-				});
-
-				var n2 = goods.length;
-
-				$("#deliverViewBarcodeTable").datagrid('loadData', {
-					total : n2,
-					rows : goods
-				});
-
-				$("#view_logistics_id").val(field.express_com_id);
-				/*
-				
-				
-				
-				
-				 
-
-				
-
-				 //var dataJson=JSON.parse(list1.list);
-				
-				 */
-
-				 dialog_init('view_deliver_div');
-				$('#view_deliver_div').dialog('open');
-
-			}
-			else{
-
-				$.messager.alert("操作提示", "获取运单基本信息出错！原因：" + field.body,
-				"error");
-			}
-		});
-	}
 
 
 
-	var deliver_list_table_view = $
+
+	var package_list_table_view = $
 			.extend(
 					{},
 					$.fn.datagrid.defaults.view,
@@ -297,104 +226,26 @@
 					});
 </script>
 <script language='javascript' type='text/javascript'>
-	function show_deliverbill_list_table(page, rows) {
-		//alert($('input[name="order_status"]:checked ').val());
-		current_page = page;
 
-		$.getJSON("get_wait_send_deliver_list.action", {
-			"page" : page,
-			"rows" : rows,
 
-			reciever_addr : $('#reciever_addr').val(),
-			receiver_name : $('#receiver_name').val(),
-			receiver_mobile : $('#receiver_mobile').val(),
-			express_no : $('#express_no').val(),
-			
-			goods_barcode:$('#goods_barcode').val(),
-			original_id:$('#original_id').val(),
-			create_userid:$('#create_userid').val(),
-			order_no:$('#search_order_no').val()
-
-		}, function(result) {
-			//alert("sdfsfds");
-			//var field=result.msg;
-			//.each(data,function(i,item)//alert(item);//);.each(data,function(i,item)//alert(item);//);.messager.progress('close'); 
-			$('#deliver_list_table').datagrid('loadData', result);
-
-			show_deliverbill_list_table_pages(page);
-
-		});
-	}
-	function show_deliverbill_list_table_pages(page) {
-		$.getJSON("get_wait_send_deliver_count.action", {
-			"page" : page,
-	
-
-			reciever_addr : $('#reciever_addr').val(),
-			receiver_name : $('#receiver_name').val(),
-			receiver_mobile : $('#receiver_mobile').val(),
-			express_no : $('#express_no').val(),
-			
-			goods_barcode:$('#goods_barcode').val(),
-			original_id:$('#original_id').val(),
-			create_userid:$('#create_userid').val(),
-			order_no:$('#search_order_no').val()
-
-		}, function(result) {
-			
-
-				
-					var count = parseInt(result, 10);
-					var rows_in_page = parseInt($('#rows_in_page').val(), 10);
-
-					var pages = Math.ceil(count / rows_in_page);
-					//alert(pages);
-					var p = $('#deliver_list_table').datagrid('getPager');
-					//alert(page);
-					$(p).pagination({
-						pageNumber : page,
-						total : count,
-						pageSize : rows_in_page,//每页显示的记录条数，默认为10   
-						pageList : [ rows_in_page ],//可以设置每页记录条数的列表   
-						beforePageText : '第',//页数文本框前显示的汉字   
-						afterPageText : '页    共 {pages} 页',
-						displayMsg : '当前显示 {from} - {to} 条记录   共 {total} 条记录',
-						onSelectPage : function(pageNumber, pageSize) {
-							current_page = pageNumber;
-
-							show_deliverbill_list_table(pageNumber, pageSize);
-							$("html,body").finish().animate({
-								"scrollTop" : "0px"
-							}, 900);
-						}
-
-					});
-
-				
-
-			
-		});
-
-	}
-
-	function deliver_list_table_Dclick(rowData) {
+	function package_list_table_Dclick(rowData) {
 
 	}
 
 	$(document)			.ready(
 					function() {
 						
-						//dialog_init('view_route_div');
-						//dialog_init('view_deliver_div');
-						$('#wh_id').val('<s:property value="#request.default_warehouse" />');
+						
+						$('#wh_id').val('<s:property value="#session.default_warehouse" />');
+						page_init();
 
-						$('#deliver_list_table').datagrid(
+						$('#package_list_table').datagrid(
 										{
-											view : deliver_list_table_view,
+											view : package_list_table_view,
 
 											onDblClickRow : function(rowIndex,
 													rowData) {
-												deliver_list_table_Dclick(rowData);
+												package_list_table_Dclick(rowData);
 											},
 											pagination : true,
 											//rownumbers: true, 
@@ -429,8 +280,7 @@
 											}
 										});
 
-						show_deliverbill_list_table(current_page, $('#rows_in_page')
-								.val());
+					
 
 
 
@@ -448,47 +298,14 @@
 <body style="width: 95%; height: 95%;">
 	<h2>复核发货</h2>
 	<div><span>当前仓库为</span><s:select id="wh_id"
-						name="wh_id" list="wh_map" listKey="key"
-						listValue="value" style=" width: 150px;" /><a href="javascript:void(0)" class="easyui-linkbutton"
-				onclick="javascript:set_default('default_warehouse',$('#wh_id').val())"
+						 list="wh_list" listKey="wh_id"
+						listValue="wh_name" style=" width: 150px;" /><a href="javascript:void(0)" class="easyui-linkbutton"
+				onclick="javascript:set_default('default_warehouse',$('#wh_id').combobox('getValue'))"
 				iconCls="qyd">默认</a></div>
 
 
 
-	<table class='box' style="width: 100%">
-		<tr>
-			<td>1、收件人姓名:<input id="receiver_name" type="text" style="width: 70px"  />
-						2、收件人手机:<input id="receiver_mobile" type="text" />
-						3、收件人地址：<input id="reciever_addr" type="text" />
-						4、商品条码：<input id="goods_barcode" type="text" />
-						5、运单号：<input id="express_no" type="text" />
-						6、电商原始单号：<input id="original_id" type="text" />
-						7、订单录入：<input id="create_userid" type="text" />
-						8、系统订单号：<input id="search_order_no" type="text" />
-
-			每页显示<input style="width: 50px"   id="rows_in_page" value=<s:property value="pageSize" /> type="text"
-					class="easyui-numberbox" precision="0" />行
-					<a href="javascript:void(0)" class="easyui-linkbutton"
-				onclick="javascript:set_default('default_rows_in_page',$('#rows_in_page').numberbox('getValue'))"
-				iconCls="qyd">默认</a>
-					
-					<a
-					href="javascript:void(0)" class="easyui-linkbutton"
-					iconcls="icon-search"
-					onclick="javascript:show_deliverbill_list_table(1, $('#rows_in_page').val())">查询</a>
-				</td>
-		</tr>
-		<tr>
-			<td>
-				<table id="deliver_list_table" style="width: 100%" pagination="true"
-					sortName="itemid" sortOrder="desc" singleSelect="true"
-					fitColumns="true">
-
-				</table>
-
-			</td>
-		</tr>
-	</table>
+		<jsp:include page="common/search_package.jsp" flush="true" />
 
 
 

@@ -9,14 +9,15 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.context.annotation.Scope;
 
 import com.cqqyd2014.annotation.Authority;
-import com.cqqyd2014.wh.deliverbill.common.action.DeliverBillPagesInitAction;
+import com.cqqyd2014.order.common.OrderPagesInit;
+
 
 
 @SuppressWarnings("serial")
 @Scope("prototype")//支持多例  
 @ParentPackage("bfkjs-default")  
 @Namespace(value="/wh") //表示当前Action所在命名空间  
-public class SendDeliverBillInitAction extends DeliverBillPagesInitAction {
+public class SendDeliverBillInitAction extends OrderPagesInit {
 	@Actions({     
 	    
 		 @Action( //表示请求的Action及处理方法  
@@ -31,12 +32,12 @@ public class SendDeliverBillInitAction extends DeliverBillPagesInitAction {
     )    
 
 })  
-	@Authority(module="pickup_package", privilege="[00010004]",error_url="login") 
+	@Authority(module="send_deliverbill_init", privilege="[00010004]",error_url="login") 
 	
 
 	public String send_deliverbill_init()  {
-		super.init();
 		
+		execute();
 		
 		return "success";
 	}

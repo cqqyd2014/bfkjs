@@ -43,10 +43,11 @@
 					{
 						renderRow : function(target, fields, frozen, rowIndex,
 								rowData) {
+							
 
 							var cc = [];
 
-							cc.push('<table width=\'100%\' border=\'1\' class=\'box\'><tr><td colspan=\'6\' bgcolor=\'#cccccc\'><span style=\'color:white;background-color:');
+							cc.push('<td><table width=\'100%\' border=\'1\' class=\'box\'><tr><td colspan=\'6\' bgcolor=\'#cccccc\'><span style=\'color:white;background-color:');
 							switch (rowData.order_status) {
 							case '订单生成':
 								cc.push('#CC99CC');
@@ -225,7 +226,7 @@
 											+ rowData.district
 											+ ','
 											+ rowData.user_addr
-											+ '</td><tr><tr><td colspan=\'6\'>&nbsp</td></tr></table>');
+											+ '</td><tr><tr><td colspan=\'6\'>&nbsp</td></tr></table><td>');
 
 							//alert(cc.join(''));
 							return cc.join('');

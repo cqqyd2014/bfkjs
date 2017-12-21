@@ -63,7 +63,7 @@ public class VDeliverDDAO {
 		
 		public java.util.ArrayList<String> getDeliverNos(Session session,java.util.Date start_date,java.util.Date end_date, String goods_barcode, java.util.ArrayList<String> deliverbill_statuss,
 				String express_com, String express_no, String com_id, String rows, String receiver_name,
-				String receiver_mobile, String reciever_addr, String page, String send_user, String user_id,String order_no){
+				String receiver_mobile,  String page, String send_user, String user_id,String order_no){
 			int currentPage=Integer.parseInt(page);
 			int pageSize=Integer.parseInt(rows);
 			String hql="select id.deliverNo from VDeliverD where id.comId=:com_id and id.orderDat between :start_dat and :end_dat ";
@@ -89,6 +89,9 @@ public class VDeliverDDAO {
 				if (receiver_name!=null&&!receiver_name.equals("")){
 					hql=hql+"and id.CUserName like :receiver_name ";
 				}
+				if (receiver_mobile!=null&&!receiver_mobile.equals("")){
+					hql=hql+"and id.mobile like :mobile ";
+				}
 			
 			hql=hql+ "group by id.deliverNo,id.orderDat order by id.orderDat desc";
 			//System.out.print(hql);
@@ -113,6 +116,9 @@ public class VDeliverDDAO {
 			}
 			if (receiver_name!=null&&!receiver_name.equals("")){
 				q.setParameter("receiver_name", "%"+receiver_name+"%");
+			}
+			if (receiver_mobile!=null&&!receiver_mobile.equals("")){
+				q.setParameter("mobile", "%"+receiver_mobile+"%");
 			}
 	java.util.ArrayList<String> voms=(java.util.ArrayList<String>)q.list();
 			

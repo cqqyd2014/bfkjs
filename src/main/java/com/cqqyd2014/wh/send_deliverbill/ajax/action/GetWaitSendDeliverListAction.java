@@ -32,13 +32,16 @@ public class GetWaitSendDeliverListAction extends DeliverListAction{
 		return SUCCESS;
 	}
 
-	@Override
-	public ArrayList<String> getDelivers(Session session, Date start_date, Date end_date,String goods_barcode, String deliverbill_status,
-			String express_com, String express_no, String com_id, String rows, String receiver_name,
-			String receiver_mobile, String reciever_addr, String page, String send_user, String create_userid,String order_no) {
-		// TODO Auto-generated method stub
+	
 
-		
+
+
+	@Override
+	public ArrayList<String> getDelivers(Session session, Date start_date, Date end_date, String goods_barcode,
+			String deliverbill_status, String express_com, String express_no, String com_id, String rows,
+			String receiver_name, String receiver_mobile, String page, String send_user, String create_userid,
+			String order_no) {
+		// TODO Auto-generated method stub
 		java.util.ArrayList<String> bill_statuss=new java.util.ArrayList<>();
 		if (deliverbill_status!=null) {
 			bill_statuss.add(deliverbill_status);
@@ -47,10 +50,8 @@ public class GetWaitSendDeliverListAction extends DeliverListAction{
 		com.cqqyd2014.hibernate.dao.VDeliverDDAO vomgbdao=new com.cqqyd2014.hibernate.dao.VDeliverDDAO();
 		java.util.ArrayList<String> deliver_no_list=vomgbdao.getDeliverNos(session, start_date,end_date,goods_barcode, bill_statuss,
 				express_com, express_no, com_id, rows, receiver_name,
-				 receiver_mobile, reciever_addr,  page,  send_user,  create_userid,order_no);
+				 receiver_mobile,  page,  send_user,  create_userid,order_no);
 		
 		
 		return deliver_no_list;
-	}
-
-}
+	}}
