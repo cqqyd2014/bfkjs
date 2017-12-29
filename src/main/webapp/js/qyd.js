@@ -1,3 +1,6 @@
+
+
+
 //基础参数
 var dialog_width = "700px";
 var dialog_height = "400px";
@@ -52,7 +55,7 @@ function ajax_authority(field) {
 		return;
 	}
 	if (!field.auth_success) {
-		window.top.location.href = "/Bfkjs";
+		window.top.location.href = "/finance";
 	}
 
 }
@@ -86,13 +89,19 @@ function easyui_textbox_key(object,method){
 
 
 function ajax_start() {
-	var frame = window.top;
-	frame.frames["bottomFrame"].start();
+	$(".fakeloader").fakeLoader({  
+        timeToHide: 60000,  
+        bgColor: "#A8A8A8",  
+        spinner: "spinner2"  
+    });  
 
 }
 function ajax_stop() {
-	var frame = window.top;
-	frame.frames["bottomFrame"].stop();
+	$(".fakeloader").fakeLoader({  
+        timeToHide: 1,  
+        bgColor: "#A8A8A8",  
+        spinner: "spinner2"  
+    });  
 }
 function easyui_textbox_tirm(o){
 	var value=$('#'+o).textbox('getValue');
@@ -109,6 +118,91 @@ Array.prototype.removeByValue = function(val) {
 	    }
 	  }
 	}
+
+//
+/**
+ * 
+ * 测试数组中的对象是否都为空，一般是check_string_allowed_blank_not_length之后的判断
+ * 
+ * @method allEmpty
+ * 
+ * @for 所属类名
+ * 
+ * @param array
+ *            需要检查的字符串数组
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @return boolean 返回值说明
+ */
+
+function allEmpty(array){
+	for (var i=0;i<array.length;i++){
+		if ($('#'+array[i]).text()!=''){
+			return false;
+		}
+	}
+	return true;
+	
+}
+
+
+/*
+ * 测试，是否存在某一个为空
+ * 
+ */
+function anyEmpty(array){
+	for (var i=0;array.length;i++){
+		if ($('#'+array[i]).text()==''){
+			return true;
+		}
+	}
+	return false;
+	
+}
+
+
+/*
+ * 
+ * easyui 采用ajax加载出现对话框重复
+ * 
+ */
+function easyui_ajax_div_clean(div_id){
+	//console.log(div_id);
+	var picture_divs = $('*[id='+div_id+']')
+	var picture_divs_size=picture_divs.size();
+	//console.log(picture_divs_size);
+	
+	if (picture_divs_size>=2){
+		var flag=0;
+		$('*[id='+div_id+']').each(function(){
+		    
+		    if (flag>0){
+		    	$(this).dialog('destroy');
+		    }
+		    flag++;
+		  });
+		
+		
+		/*
+		console.log($('#'+div_id));
+		for (var i=0;i<picture_divs_size;i++){
+			//$('#'+div_id).dialog('destroy');
+			//console.log($('#'+div_id));
+			//picture_divs.eq(0).dialog('destroy');
+			}
+			*/
+		/*
+		console.log("del ok");
+		picture_divs = $('*[id='+div_id+']')
+		picture_divs_size=picture_divs.size();
+		console.log(picture_divs.size());
+		*/
+		}
+}
 
 // 
 /**
@@ -326,3 +420,19 @@ function setDisabled(target, disabled) {
 		var pattern = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 		return pattern.test(card);
 	}
+	jQuery.prototype.serializeObject=function(){  
+	    var a,o,h,i,e;  
+	    a=this.serializeArray();  
+	    o={};  
+	    h=o.hasOwnProperty;  
+	    for(i=0;i<a.length;i++){  
+	        e=a[i];  
+	        if(!h.call(o,e.name)){  
+	            o[e.name]=e.value;  
+	        }  
+	    }  
+	    return o;  
+	};  
+	
+	
+	

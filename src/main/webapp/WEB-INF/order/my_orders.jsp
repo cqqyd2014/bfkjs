@@ -173,7 +173,7 @@ function page_init(){
 																		+ '<br>备注：<font color=\'red\'>'
 																		+ rowData.memo
 																		+ '</font><br>'
-																		+'<div>操作：<a	href="javascript:void(0)" id=\"cancel_order\" class="easyui-linkbutton"	onclick="javascript:cancel_order(\''+rowData.order_no+'\')">取消订单</a></div>');
+																		+'<div>操作：<a	href="javascript:void(0)" id=\"cancel_order\" class="easyui-linkbutton"	onclick="javascript:cancel_order_init(\''+rowData.order_no+'\')">取消订单</a></div>');
 
 														cc.push('</td></tr>')
 
