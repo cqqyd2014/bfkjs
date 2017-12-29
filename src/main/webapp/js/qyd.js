@@ -89,19 +89,23 @@ function easyui_textbox_key(object,method){
 
 
 function ajax_start() {
+	/*
 	$(".fakeloader").fakeLoader({  
         timeToHide: 60000,  
         bgColor: "#A8A8A8",  
         spinner: "spinner2"  
     });  
+    */
 
 }
 function ajax_stop() {
+	/*
 	$(".fakeloader").fakeLoader({  
         timeToHide: 1,  
         bgColor: "#A8A8A8",  
         spinner: "spinner2"  
     });  
+    */
 }
 function easyui_textbox_tirm(o){
 	var value=$('#'+o).textbox('getValue');
