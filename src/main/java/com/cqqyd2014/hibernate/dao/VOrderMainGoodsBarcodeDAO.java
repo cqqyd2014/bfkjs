@@ -14,15 +14,15 @@ public final class VOrderMainGoodsBarcodeDAO {
 		String hql="select count(*) from ( select order_no from v_order_main_goods_barcode where";
 
 		if (order_statuss.size()>0){
-			hql=hql+" c_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(order_statuss);
+			hql=hql+" c_status in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(order_statuss);
 			
 		}
 		if (gt_statuss.size()>0){
-			hql=hql+" and gt_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(gt_statuss)+" ";
+			hql=hql+" and gt_status in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(gt_statuss)+" ";
 			
 		}
 		if (ems_statuss.size()>0){
-			hql=hql+" and ems_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(ems_statuss)+" ";
+			hql=hql+" and ems_status in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(ems_statuss)+" ";
 		}
 		if (package_user!=null){
 			hql=hql+" and package_user=\'"+package_user+"\'";
@@ -70,15 +70,15 @@ public final class VOrderMainGoodsBarcodeDAO {
 		}
 
 		if (order_statuss.size()>0){
-			hql=hql+"and id.CStatus in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(order_statuss);
+			hql=hql+"and id.CStatus in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(order_statuss);
 			
 		}
 		if (gt_statuss.size()>0){
-			hql=hql+"and id.gtStatus in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(gt_statuss);
+			hql=hql+"and id.gtStatus in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(gt_statuss);
 			
 		}
 		if (ems_statuss.size()>0){
-			hql=hql+"and id.emsStatus in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(ems_statuss);
+			hql=hql+"and id.emsStatus in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(ems_statuss);
 		}
 		if (user_id!=null){
 			hql=hql+"and id.userId=\'"+user_id+"\' ";

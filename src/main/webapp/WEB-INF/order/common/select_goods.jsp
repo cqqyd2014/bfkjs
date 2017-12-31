@@ -13,7 +13,7 @@
 
         //失去焦点事件绑定
 		$("input",$("#goods_id").next("span")).blur(function(){  
-			getGoodsPrice();
+			getGoodsPrice(true);
 		}) 
             
        
@@ -65,18 +65,18 @@
 	function DclickPrice(rowData) {
 		//alert(rowData.goods_id);
 		$("#goods_id").textbox('setValue',rowData.goods_id);
-		getGoodsPrice();
+		getGoodsPrice(false);
 		$('#find_goods_div').dialog('close');
 
 	}
 
 	//模糊/精确查询goods_id
-	function getGoodsPrice() {
+	function getGoodsPrice(fuzzy) {
 		
 
 		$.getJSON("<s:property value='#application.context_path'/>/wh/get_goods_info.action", {
-			goods_id:$("#goods_id").textbox('getValue')
-
+			goods_id:$("#goods_id").textbox('getValue'),
+			fuzzy:fuzzy
 		}, function(result) {
 
 			var field2=result.msg;

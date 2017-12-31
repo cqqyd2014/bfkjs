@@ -55,7 +55,7 @@ public class VDeliverMDAO {
 		
 		public java.util.ArrayList<com.cqqyd2014.hibernate.entities.DeliverM > getArrayListByDeliverNoArray(Session session, java.util.ArrayList<String> deliver_no_list,String com_id){
 			
-			String in_str=com.cqqyd2014.util.StringUtil.arrayListToSQLInString(deliver_no_list);
+			String in_str=com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(deliver_no_list);
 			
 			String hql="from DeliverM where effective=true and id.comId=:com_id and deliverNo in "+in_str;
 			Query q = session.createQuery(hql);
@@ -83,7 +83,7 @@ public class VDeliverMDAO {
 			return new java.util.ArrayList<>();
 		}
 		String hql="from VDeliverM where id.comId=:com_id and id.orderNo in ";
-		String order_no_in =com.cqqyd2014.util.StringUtil.arrayListToSQLInString(order_nos);
+		String order_no_in =com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(order_nos);
 		hql=hql+order_no_in;
 		Query q = session.createQuery(hql);
 		

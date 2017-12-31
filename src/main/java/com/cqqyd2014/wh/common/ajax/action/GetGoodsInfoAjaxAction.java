@@ -37,6 +37,15 @@ public class GetGoodsInfoAjaxAction extends UserLoginedAction {
 	String goods_id;
 
 
+	boolean fuzzy;
+
+	public boolean isFuzzy() {
+		return fuzzy;
+	}
+
+	public void setFuzzy(boolean fuzzy) {
+		this.fuzzy = fuzzy;
+	}
 
 	public String getGoods_id() {
 		return goods_id;
@@ -64,15 +73,26 @@ public class GetGoodsInfoAjaxAction extends UserLoginedAction {
 		
 		
 		try {
+			java.util.Date now=new java.util.Date();
 
-			
-			java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> gis = com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfosLike(session, goods_id, com_id, user_id, new java.util.Date());
-			
-			
-			ups = com.cqqyd2014.usergroup.logic.UserPriceLogic.getArrayListModelFromArrayListView(gis, new java.util.Date());
+			if (fuzzy){
+				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> gis = com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfosLike(session, goods_id, com_id, user_id, now);
+				
+				
+				ups = com.cqqyd2014.usergroup.logic.UserPriceLogic.getArrayListModelFromArrayListView(gis, now);
 
+				
+				sm.setO(ups);
+				
+			}
+			else{
+				com.cqqyd2014.usergroup.model.UserPrice up=com.cqqyd2014.usergroup.logic.UserPriceLogic.getModelFromView(com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfos(session, goods_id, com_id, user_id, now), now);
+				
+				ups.add(up);
+				sm.setO(ups);
+			}
 			sm.setSuccess(true);
-			sm.setO(ups);
+			
 
 			
 		}

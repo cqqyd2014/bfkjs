@@ -20,7 +20,7 @@ public class VDeliverDDAO {
 				hql=hql+"order_no like \'%"+order_no+"%\' and ";
 			}
 			if (deliverbill_statuss.size()>0){
-				hql=hql+" deliver_bill_status in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(deliverbill_statuss)+" and ";
+				hql=hql+" deliver_bill_status in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(deliverbill_statuss)+" and ";
 				
 			}
 			if (express_no!=null&&!express_no.equals("")){
@@ -74,7 +74,7 @@ public class VDeliverDDAO {
 				hql=hql+"and id.goodsBarcode like :goods_barcode ";
 			}
 			if (deliverbill_statuss.size()>0){
-				hql=hql+"and id.deliverBillStatus in "+com.cqqyd2014.util.StringUtil.arrayListToSQLInString(deliverbill_statuss)+" ";
+				hql=hql+"and id.deliverBillStatus in "+com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(deliverbill_statuss)+" ";
 				
 			}
 			if (express_com!=null&&!express_com.equals("")){

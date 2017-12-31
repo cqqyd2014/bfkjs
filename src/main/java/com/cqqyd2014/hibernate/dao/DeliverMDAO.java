@@ -27,7 +27,7 @@ public class DeliverMDAO {
 	
 	public java.util.ArrayList<com.cqqyd2014.hibernate.entities.DeliverM > getArrayListByDeliverNoArray(Session session, java.util.ArrayList<String> deliver_no_list,String com_id){
 		
-		String in_str=com.cqqyd2014.util.StringUtil.arrayListToSQLInString(deliver_no_list);
+		String in_str=com.cqqyd2014.util.ArrayListTools.arrayListToSQLInString(deliver_no_list);
 		
 		String hql="from DeliverM where effective=true and id.comId=:com_id and deliverNo in "+in_str;
 		Query q = session.createQuery(hql);

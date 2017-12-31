@@ -118,19 +118,19 @@ public class GoodsLogic {
 				String warehouse=g.getWh_id();
 				//如果whs_in是判断在某个仓库中
 				if (whs_in!=null) {
-					int wh_id=com.cqqyd2014.util.StringUtil.indexOfArray(whs_in, warehouse);
+					int wh_id=com.cqqyd2014.util.ArrayListTools.indexOfArrayList(whs_in, warehouse);
 					if (wh_id==-1) {
 						ir.setIf_ok(false);
-						ir.setMessage("该商品条码当前库房"+warehouse+"不在制定库房之内："+com.cqqyd2014.util.StringUtil.arrayListToArray(whs_in));
+						ir.setMessage("该商品条码当前库房"+warehouse+"不在制定库房之内："+com.cqqyd2014.util.ArrayListTools.arrayListToArray(whs_in));
 						return ir;
 					}
 				}
 				//如果whs_not_in是判断不再某仓库中
 				if (whs_not_in!=null) {
-					int wh_id=com.cqqyd2014.util.StringUtil.indexOfArray(whs_not_in, warehouse);
+					int wh_id=com.cqqyd2014.util.ArrayListTools.indexOfArrayList(whs_not_in, warehouse);
 					if (wh_id>-1) {
 						ir.setIf_ok(false);
-						ir.setMessage("该商品条码当前库房"+warehouse+"在制定库房之内："+com.cqqyd2014.util.StringUtil.arrayListToArray(whs_not_in));
+						ir.setMessage("该商品条码当前库房"+warehouse+"在制定库房之内："+com.cqqyd2014.util.ArrayListTools.arrayListToArray(whs_not_in));
 						return ir;
 					}
 				}
@@ -139,19 +139,19 @@ public class GoodsLogic {
 				String storage=g.getStorage_id();
 				//如果storage_in不为空，是判断在某库位中
 				if (storages_in!=null) {
-					int storage_id=com.cqqyd2014.util.StringUtil.indexOfArray(storages_in, storage);
+					int storage_id=com.cqqyd2014.util.ArrayListTools.indexOfArrayList(storages_in, storage);
 					if (storage_id==-1) {
 						ir.setIf_ok(false);
-						ir.setMessage("该商品条码当前库位"+storage_id+"不在制定库房之内："+com.cqqyd2014.util.StringUtil.arrayListToArray(storages_in));
+						ir.setMessage("该商品条码当前库位"+storage_id+"不在制定库房之内："+com.cqqyd2014.util.ArrayListTools.arrayListToArray(storages_in));
 						return ir;
 					}
 				}
 				//如果storage_in为空，是判断不在某库位中
 				if (storages_not_in!=null) {
-					int storage_id=com.cqqyd2014.util.StringUtil.indexOfArray(storages_not_in, storage);
+					int storage_id=com.cqqyd2014.util.ArrayListTools.indexOfArrayList(storages_not_in, storage);
 					if (storage_id>-1) {
 						ir.setIf_ok(false);
-						ir.setMessage("该商品条码当前库位"+storage_id+"不在制定库房之内："+com.cqqyd2014.util.StringUtil.arrayListToArray(storages_not_in));
+						ir.setMessage("该商品条码当前库位"+storage_id+"不在制定库房之内："+com.cqqyd2014.util.ArrayListTools.arrayListToArray(storages_not_in));
 						return ir;
 					}
 				}
