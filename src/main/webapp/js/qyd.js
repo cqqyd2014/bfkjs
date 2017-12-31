@@ -55,7 +55,7 @@ function ajax_authority(field) {
 		return;
 	}
 	if (!field.auth_success) {
-		window.top.location.href = "/finance";
+		window.top.location.href = "/Bfkjs";
 	}
 
 }
