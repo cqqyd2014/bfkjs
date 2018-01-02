@@ -156,7 +156,7 @@ Session session = HibernateSessionFactory.getSession();
 			}
 			
 			
-			System.out.println(e.getMessageString());
+			System.out.println(e.getMessage());
 			sm.setSuccess(false);
 			sm.setBody(e.toString());
 		}

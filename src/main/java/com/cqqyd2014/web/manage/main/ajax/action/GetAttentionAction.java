@@ -52,7 +52,7 @@ sm.setAuth_success(true);
 		
 		try {
 			com.cqqyd2014.hibernate.dao.MenuDDAO mddao=new com.cqqyd2014.hibernate.dao.MenuDDAO();
-			java.util.ArrayList<com.cqqyd2014.system.model.MenuD> mds=com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromView1(mddao.getWebAttentionMenuD(session, user_id, com_id));
+			java.util.ArrayList<com.cqqyd2014.system.model.MenuD> mds=com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromArrayListView(mddao.getWebAttentionMenuD(session, user_id, com_id));
 			java.util.ArrayList<com.cqqyd2014.web.manage.model.Attention> atts=com.cqqyd2014.web.manage.logic.AttentionLogic.getArrayListModelFromArrayListView(session, mds, user_id, com_id);
 			
 			sm.setO(atts);

@@ -209,7 +209,7 @@ public class SaveTempToWarehouseAction   extends UserLoginedAction {
 		
 		catch (com.cqqyd2014.util.exception.AjaxSuccessMessageException e){
 			sm.setSuccess(false);
-			sm.setBody(e.getMessageString());
+			sm.setBody(e.getMessage());
 			if (null != tx) {
 				tx.rollback();// 撤销事务
 

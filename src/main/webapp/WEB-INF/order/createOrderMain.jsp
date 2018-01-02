@@ -3,16 +3,41 @@
 
 
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-
-<title>创建订单</title>
-<jsp:include page="../common/include_easyui2.jsp" flush="true" />
-
 
 
 <script type="text/javascript">
+
+
+
+	function del_detail(detail_uuid){
+		$.messager.confirm('操作提示','确认删除这个订单明细?',function(r){
+		    if (r){
+				//alert('ok');
+				ajax_start();
+		    	$.getJSON("../order/del_order_detail.action", {
+					"detail_uuid" : detail_uuid
+
+				}, function(result) {
+
+					ajax_stop();
+					var field=result.msg;
+
+						if (field.success) {					
+							show_table_order_detail();
+
+						} else {
+							$.messager.alert("操作提示", "删除订单明细错误！原因：" + field2.body,
+									"error");
+
+						}
+
+					
+
+				});
+		    }
+		});
+
+		}
 	function check_order_exist(field, value) {
 		//判断该订单是否已经录入过
 
@@ -99,47 +124,16 @@
 
 	}
 
-	function change_amount() {
-		var amount_before = $('#amount_before').val();
-		var amount_end = $('#amount_end').val();
-		var diff = amount_end - amount_before;
-		if (diff > 0) {
-			//价格上涨，变为运费
-			$('#discount').numberbox('setValue', 0);
-			$('#ship_fee').numberbox('setValue', diff);
-		} else {
-			//价格下降，为优惠
 
-			$('#discount').numberbox('setValue', diff);
-			$('#ship_fee').numberbox('setValue', 0);
-
-		}
-		update_actual_amount();
-		$('#one_click_change_amount').dialog('close');
-
-	}
-
-	function one_click_change_amount() {
-		//alert($('#original_amount').val());
-
-		$('#amount_before').val($('#original_amount').numberbox('getValue'));
-		$('#amount_end').val($('#original_amount').numberbox('getValue'));
-		$('#one_click_change_amount').dialog('open');
-
-	}
 
 	function clear_order_detail() {
-		window.location.href = "createOrderInit.action";
+		$('#body').layout('panel','center').panel('refresh',"../order/create_order_init.action");
+		
 	}
 
 	function push_order() {
 		
-		if ($("#original_no").textbox('getValue') == '0000000000') {
-			
-			$.messager.alert("操作提示", "订单号不能为0000000000",
-			"error");
-			return;
-		}
+		
 
 		var user_addr=easyui_textbox_tirm('user_addr');
 		if (user_addr  == '') {
@@ -180,28 +174,10 @@
 		} 
 
 		ajax_start();
-		$.getJSON("push_order.action", {
-			original_no : $("#original_no").textbox('getValue'),
-			OrderFrom : $('#order_from').combobox("getValue"),
-			order_dat : $('#order_dat').datebox('getValue'),
-			userName : user_name,
-			tell :tell,
-			province : $('#province').combobox("getText"),
-			city : $('#city').combobox("getText"),
-			district : $('#district').combobox("getText"),
-			userAddr : $('#user_addr').textbox('getValue'),
-			original_amount : $('#original_amount').numberbox('getValue'),
-			discount : $('#discount').numberbox('getValue'),
-			card_pay : $('#card_pay').numberbox('getValue'),
-			ship_fee : $('#ship_fee').numberbox('getValue'),
-			actual_amount : $('#actual_amount').numberbox('getValue'),
-			memo : $('#memo').textbox('getValue'),
-			tell2 : $('#tell2').textbox('getValue'),
-			user_com : $('#user_com').textbox('getValue'),
-			logistics:$('#logistics_com').combobox(	'getValue'),
-			vehicle:$('#vehicle').combobox('getValue')
+		$.getJSON("../order/push_order.action", 
 
-		}, function(result) {
+				$('#new_order_form').serializeObject()
+				, function(result) {
 
 			ajax_stop();
 			var field=result.msg;
@@ -209,7 +185,8 @@
 
 				if (field.success) {
 					alert('保存成功');
-					window.location.href = "create_order_init.action";
+					$('#body').layout('panel','center').panel('refresh',"../order/create_order_init.action");
+					
 
 				} else {
 					alert(field.body);
@@ -225,46 +202,7 @@
 
 	
 		
-		
-
-	function del_order_detail() {
-		if ($("#goods_name").val() == "") {
-			alert("商品信息不能为空");
-			return;
-		}
-
-		$.messager.confirm('Confirm', '确认删除这个商品\'' + $("#goods_name").val()
-				+ '\'', function(r) {
-			if (r) {
-				
-				$.getJSON("del_order_detail.action", {
-					"goods_id" : $("#goods_id").val()
-
-				}, function(result) {
-
-					$.each(result, function(i, field2) {
-
-						if (field2.success) {
-							var o = field2.o;
-							updatePay(o);
-							show_table_order_detail();
-
-						} else {
-							$.messager.alert("操作提示", "删除商品错误！原因：" + field2.body,
-									"error");
-
-						}
-
-					});
-
-				});
-				
-				
-				
-			}
-		});
-
-	}
+	
 
 	function add_order_detail() {
 
@@ -333,6 +271,17 @@
 
 	function show_table_order_detail() {
 
+
+		var gridOpts = $('#order_detail_table').datagrid('options');   
+		gridOpts.url="../order/get_temp_order_detail.action";
+		//gridOpts.queryParams=$('#search_bill_pars').serializeObject();
+		//console.log(gridOpts.queryParams);
+		$("#order_detail_table").datagrid("load");
+
+		sum_total();
+
+		/*
+
 		$.getJSON("get_temp_order_detail.action", {}, function(data) {
 			var field=data.msg;
 
@@ -365,11 +314,12 @@
 			
 
 		});
+		*/
 
 	}
 	function sum_total(){
 	//根据商品和快递计算总价
-		$.getJSON("get_amount.action", {
+		$.getJSON("../order/get_amount.action", {
 			logistics_com:$('#logistics_com').combobox("getValue"),
 			vehicle:$('#vehicle').combobox('getValue')
 			}, function(data) {
@@ -487,9 +437,80 @@ function tell_check(){
 
 	
 }
+$.parser.onComplete = function(){
+	
+	load_ready();
+};	
+
+	function load_ready(){
 
 
-	$(document).ready(function() {
+
+
+		
+		$('#order_detail_table')
+		.datagrid(
+				{
+					//border:false,  
+					fitColumns : true,
+					singleSelect : true,
+					title : '订单明细',
+					rownumbers : true,
+					columns : [ [
+							{
+								field : 'bank_name',
+								title : '商品编码'
+							},
+							{
+								field : 'goods_name',
+								title : '商品名称'
+							},
+							{
+								field : 'price',
+								title : '价格'
+							},
+							{
+								field : 'unit',
+								title : '单位'
+							},
+							{
+								field : 'num',
+								title : '数量'
+							},
+							{
+								field : 'total1',
+								title : '小计'
+							},
+							{
+								field : 'memo',
+								title : '可用仓库'
+							},
+
+							{
+								field : 'opt',
+								title : '操作',
+								width : '100px',
+								align : 'center',
+								formatter : function(
+										value, rec) {
+									var btn = '<a class="del_detail" onclick="del_detail(\''
+											+ rec.detail_uuid
+											+ '\')" href="javascript:void(0)">删除</a>';
+									return btn;
+								}
+							} ] ],
+					onLoadSuccess : function(data) {
+						$('.del_detail').linkbutton({
+							text : '删除',
+							plain : true,
+							iconCls : 'icon-cancel'
+						});
+
+						$('#order_detail_table').datagrid(
+								'fixRowHeight')
+
+					}
+				});
 
 
 		region_ready();
@@ -504,15 +525,7 @@ function tell_check(){
 		
 		$("#detail_num").val("0"); 
 
-		/*
-		$('#originalID').blur(function() {
-			//原始订单号与订单来源
-			$('#originalID').val(trim($('#originalID').val()));
-			originalId_orderFrom();
-			check_orderno_exist('original_id', $('#originalID').val());
-
-		});
-		*/
+		
 		
 		$("input",$("#original_no").next("span")).blur(function(){  
 			original_no_check();
@@ -540,7 +553,7 @@ function tell_check(){
 		//初始化对话框
 
 		
-		$("#one_click_change_amount").dialog('close');
+		
 		//初始化清单
 		show_table_order_detail();
 
@@ -598,7 +611,7 @@ $("input",$("#user_name").next("span")).blur(function(){
 
 		});
 
-	});
+	}
 
 	function replaceOrderFromTip(userName, userCardId) {
 
@@ -606,46 +619,49 @@ $("input",$("#user_name").next("span")).blur(function(){
 		document.getElementById("userCardId").value = userCardId;
 		document.getElementById("userCardId").readonly = "readonly";
 	}
-
+function random_original_no(){
+	var Num=""; 
+	for(var i=0;i<10;i++) 
+	{ 
+		Num+=Math.floor(Math.random()*10); 
+	}
+	$('#original_no').textbox('setValue', Num);
+}
 
 </script>
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
-
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 
 
-</head>
+<div class="easyui-layout" data-options="fit:true" style="display:table;">
+<div style="display:table-cell;text-align:center;">
+<div 
+		style="background:white;display:inline-block;vertical-align: middle;box-shadow:5px 2px 6px #000;padding: 10px; margin: 10px;border:1px solid Gray">
+	<h1 align='center'>新建订单</h1>
+	
+		
+		
+	
 
-<body width="100%">
-
-
-
-	<div>
-		<span style="float: left;"><h2>新建订单</h2></span><span
-			style="float: right;"> <a href="javascript:void(0)"
+	<form id="new_order_form">
+		<table border="1" width="100%" class="box">
+		<tr>
+			<td colspan='4' align="right"> <a href="javascript:void(0)"
 			class="easyui-linkbutton" onclick="javascript:push_order()"
 			iconCls="icon-ok">提交订单</a> <a href="javascript:void(0)"
 			class="easyui-linkbutton" onclick="javascript:clear_order_detail()"
-			iconCls="icon-clear">清空订单</a>
-		</span>
-	</div>
-
-	<div>
-		<table border="1" width="100%" class="box">
+			iconCls="icon-clear">清空订单</a></td>
+		</tr>
 
 
 			<tr>
-				<td align="right" width="15%">电商平台原始订单号</td>
-				<td width="35%"><input id="original_no" style="width: 200px;"
-					class="easyui-textbox" required="true" /></td>
+				<td align="left" width="15%">电商平台订单号</td>
+				<td width="35%"><input id="original_no" name='original_no'style="width: 200px;"
+					class="easyui-textbox" required="true" /><a href="javascript:void(0)"
+			class="easyui-linkbutton" onclick="javascript:random_original_no()"
+			iconCls="icon-ok">随机生成</a></td>
 
 
-				<td align="right" width="15%">订单来源</td>
-				<td width="35%"><s:select label="订单来源" id="order_from"
+				<td align="left" width="15%">订单来源</td>
+				<td width="35%"><s:select label="订单来源" id="order_from" name="order_from"
 						list="ofus" listKey="type_code" listValue="type_name"
 						cssClass="easyui-combobox" /><a href="javascript:void(0)"
 					class="easyui-linkbutton"
@@ -653,8 +669,8 @@ $("input",$("#user_name").next("span")).blur(function(){
 					iconCls="qyd">默认</a></td>
 			</tr>
 			<tr>
-				<td align="right" width="15%">下单时间</td>
-				<td width="35%"><input id="order_dat" /></td>
+				<td align="left" width="15%">下单时间</td>
+				<td width="35%"><input id="order_dat" name="order_dat"/></td>
 
 
 
@@ -662,55 +678,55 @@ $("input",$("#user_name").next("span")).blur(function(){
 
 
 
-				<td align="right">姓名</td>
-				<td><input id="user_name" class="easyui-textbox"
+				<td align="left">姓名</td>
+				<td><input id="user_name" class="easyui-textbox" name="user_name"
 					required="true" data-options="prompt:'请输入收件人姓名',iconCls:'icon-man'"
-					style="width: 200px;" /></span></td>
+					style="width: 200px;" /></td>
 			</tr>
 			<tr>
-				<td align="right">主要联系电话（手机）</td>
-				<td><input name="tell" class="easyui-textbox" required="true"
+				<td align="left">主要联系电话（手机）</td>
+				<td><input name="tell" class="easyui-textbox" required="true" name="tell"
 					id="tell" style="width: 200px;" /></td>
 				<td align="right">第二联系电话（座机）</td>
-				<td><input name="tell2" class="easyui-textbox" id="tell2"
+				<td><input name="tell2" class="easyui-textbox" id="tell2" name="tell2"
 					style="width: 200px;" /></td>
 			</tr>
 			<tr>
-				<td align="right">单位</td>
-				<td><input name="user_com" class="easyui-textbox" id="user_com"
+				<td align="left">收件人单位</td>
+				<td><input name="user_com" class="easyui-textbox" id="user_com" name="user_com"
 					style="width: 200px;" /></td>
 
 
 
-				<td align="right">地址(省市)</td>
+				<td align="left">地址(省市)</td>
 				<td><jsp:include page="common/region.jsp" flush="true" /></td>
 			</tr>
 
 			<tr>
 				<td align="right">详细地址（街道小区）</td>
 				<td colspan='3'><input  class="easyui-textbox"
-					required="true" multiline="true" id="user_addr"
+					required="true" multiline="true" id="user_addr" name="user_addr"
 					style="width: 100%; height: 30px" /></span></td>
 			</tr>
 
 			<tr>
 				<td colspan="2">订单金额（元）：<input
-					class="easyui-numberbox" id="original_amount" readonly="readonly"
+					class="easyui-numberbox" id="original_amount" readonly="readonly" name="original_amount"
 					style="width: 50px;" />优惠及运费（元）：（-）优惠金额<input type="text"
-					id="discount" class="easyui-numberbox" style="width: 50px;"
+					id="discount" class="easyui-numberbox" style="width: 50px;" name="discount"
 					readonly="readonly" />（-）卡支付<input 
-					class="easyui-numberbox" id="card_pay" class="easyui-numberbox"
+					class="easyui-numberbox" id="card_pay" class="easyui-numberbox" name="card_pay"
 					style="width: 50px;" readonly="readonly" />（+）运费<input 
-					id="ship_fee" class="easyui-numberbox" style="width: 50px;"
+					id="ship_fee" class="easyui-numberbox" style="width: 50px;" name="ship_fee"
 					readonly="readonly" />=实付（元）<input 
-					class="easyui-numberbox" id="actual_amount" readonly="readonly"
+					class="easyui-numberbox" id="actual_amount" readonly="readonly" name="actual_amount"
 					style="width: 50px;" /></td>
 				<td>默认快递：</td>
 				<td><jsp:include page="common/logistics.jsp" flush="true" /></td>
 			</tr>
 			<tr>
 				<td >备注</td><td colspan='3'><input
-					class="easyui-textbox" id="memo"  data-options="multiline:true"
+					class="easyui-textbox" id="memo"  data-options="multiline:true" name="memo"
 					style="width: 100%;height:50px" /></td>
 			</tr>
 
@@ -720,30 +736,15 @@ $("input",$("#user_name").next("span")).blur(function(){
 
 
 		</table>
-	</div>
-	<div style="width: 100%;">
-		<table id="order_detail_table" title="清单" class="easyui-datagrid"
-			style="width: 100%;" iconCls="qyd" fitColumns="true"
-			rownumbers="true" showFooter="true">
-
-			<thead>
-				<tr>
-
-					<th field="goods_id" width="20%">商品编码</th>
-					<th field="goods_name" width="25%">商品名称</th>
-					<th field="price" width="10%" align="right">价格</th>
-					<th field="unit" width="5%" align="right">单位</th>
-					<th field="num" width="5%" align="right">数量</th>
-					<th field="total1" width="10%">小计</th>
-					<th field="memo" width="10%">可用仓库</th>
-
-				</tr>
-			</thead>
+	</form>
+	
+		<table id="order_detail_table" width="100%">
 
 		</table>
 		<div></div>
 
-	</div>
+	
+	<!-- 添加订单明细 -->
 	<div>
 		<jsp:include page="common/select_goods.jsp" flush="true" />
 		<div style="float: right">
@@ -757,38 +758,9 @@ $("input",$("#user_name").next("span")).blur(function(){
 
 
 
-	<div id="one_click_change_amount" class="easyui-dialog" title="一键改价"
-		iconCls="qyd" style="width: 600px; height: 400px; padding: 10px;"
-		buttons="#one_click_change_amount-buttons">
-
-
-
-		<div>
-			订单原价是<input type="text" id="amount_before" readonly="readonly" />元
-		</div>
-		<div>
-			需要更改为<input type="text" id="amount_end" class="easyui-numberbox" />元
-		</div>
-
-
-
-
 
 	</div>
-	<div id="one_click_change_amount-buttons">
-		<table cellpadding="0" cellspacing="0" style="width: 100%">
-			<tr>
-
-				<td style="text-align: right"><a href="#"
-					class="easyui-linkbutton" iconCls="icon-ok"
-					onclick="javascript:change_amount()">确定</a> <a href="#"
-					class="easyui-linkbutton" iconCls="icon-cancel"
-					onclick="javascript:$('#one_click_change_amount').dialog('close')">取消</a></td>
-			</tr>
-		</table>
 	</div>
-
+</div>
 	<jsp:include page="common/orders.jsp" flush="true" />
 
-</body>
-</html>

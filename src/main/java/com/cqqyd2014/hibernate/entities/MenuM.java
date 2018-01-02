@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-16 20:52:26 by Hibernate Tools 5.2.3.Final
+// Generated 2017-12-31 21:46:23 by Hibernate Tools 5.2.3.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -18,6 +18,7 @@ public class MenuM implements java.io.Serializable {
 	private MenuMId id;
 	private String menuName;
 	private String desc;
+	private String orderId;
 
 	public MenuM() {
 	}
@@ -26,10 +27,11 @@ public class MenuM implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public MenuM(MenuMId id, String menuName, String desc) {
+	public MenuM(MenuMId id, String menuName, String desc, String orderId) {
 		this.id = id;
 		this.menuName = menuName;
 		this.desc = desc;
+		this.orderId = orderId;
 	}
 
 	@EmbeddedId
@@ -61,6 +63,15 @@ public class MenuM implements java.io.Serializable {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	@Column(name = "order_id", length = 4)
+	public String getOrderId() {
+		return this.orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 }

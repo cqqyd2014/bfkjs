@@ -81,7 +81,7 @@ sm.setAuth_success(true);
 				
 				
 				sm.setSuccess(false);
-				sm.setBody(ex.getMessageString());
+				sm.setBody(ex.getMessage());
 			}
 
 			finally {

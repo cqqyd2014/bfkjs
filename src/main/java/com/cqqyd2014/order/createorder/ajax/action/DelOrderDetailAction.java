@@ -1,13 +1,12 @@
 package com.cqqyd2014.order.createorder.ajax.action;
-import java.util.Map;
 
+import java.util.Map;
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -16,12 +15,10 @@ import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
-
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
 @Namespace("/order")
-
-public class DelOrderDetailAjaxAction extends UserLoginedAction {
+public class DelOrderDetailAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -31,59 +28,47 @@ public class DelOrderDetailAjaxAction extends UserLoginedAction {
 	public void setMsg(Map<String, Object> msg) {
 		this.msg = msg;
 	}
-String goods_id;
-	
 
-	
+	String detail_uuid;
 
-	public String getGoods_id() {
-		return goods_id;
-	}
+	@Action(value = "del_order_detail", results = {
+			@Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
 
-	public void setGoods_id(String goods_id) {
-		this.goods_id = goods_id;
-	}
-	@Action(value = "del_order_detail", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
-			
-			@InterceptorRef("defaultStack"),
-			@InterceptorRef("authorityInterceptor") })
-@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
-@Override
-public String execute() {
-// TODO Auto-generated method stub
-super.execute();
-sm.setAuth_success(true);
-		
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+					@InterceptorRef("defaultStack"), @InterceptorRef("authorityInterceptor") })
+	@Authority(module = "get_goods_info", privilege = "[00010001]", error_url = "authority_ajax_error")
+	@Override
+	public String execute() {
+		// TODO Auto-generated method stub
+		super.execute();
+		sm.setAuth_success(true);
+
+		session = HibernateSessionFactory.getSession();
+		tx = session.beginTransaction();
 		try {
-			//com.cqqyd2014.hibernate.dao.OrderMainDAO omdao=new com.cqqyd2014.hibernate.dao.OrderMainDAO();
-			
-			
+			// com.cqqyd2014.hibernate.dao.OrderMainDAO omdao=new
+			// com.cqqyd2014.hibernate.dao.OrderMainDAO();
+
 			@SuppressWarnings("unchecked")
 			java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 					.get("temp_order_detail");
 			if (odis == null) {
-				odis = new java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>();
+				throw new com.cqqyd2014.util.exception.AjaxSuccessMessageException("不能获取用户Session中的订单明细对象");
 
 			}
-			
+
 			for (int i = 0; i < odis.size(); i++) {
 				com.cqqyd2014.order.model.OrderDetail odi = odis.get(i);
-				if (odi.getGoods_id().equals(goods_id)) {
+				if (odi.getDetail_id().equals(detail_uuid)) {
 					odis.remove(i);
 				}
 
 			}
 
-			
-
 			session_http.put("temp_order_detail", odis);
 			sm.setSuccess(true);
-			
-			
+
 			tx.commit();
-			
+
 		}
 
 		catch (HibernateException e) {
@@ -96,18 +81,25 @@ sm.setAuth_success(true);
 			e.printStackTrace();
 			sm.setSuccess(false);
 
+		} catch (com.cqqyd2014.util.exception.AjaxSuccessMessageException e) {
+			sm.setSuccess(false);
+			sm.setBody(e.getMessage());
 		}
-		
-		
+
 		finally {
 			HibernateSessionFactory.closeSession();
 		}
 
-		msg=sm.toMap();
+		msg = sm.toMap();
 		return SUCCESS;
 	}
 
+	public String getDetail_uuid() {
+		return detail_uuid;
+	}
+
+	public void setDetail_uuid(String detail_uuid) {
+		this.detail_uuid = detail_uuid;
+	}
 
 }
-
-

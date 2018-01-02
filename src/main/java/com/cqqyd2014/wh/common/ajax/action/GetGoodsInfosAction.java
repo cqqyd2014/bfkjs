@@ -7,23 +7,16 @@ import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 
-
-
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
 @Namespace("/wh")
-
-
-public class GetGoodsInfoAjaxAction extends UserLoginedAction {
+public class GetGoodsInfosAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -37,15 +30,7 @@ public class GetGoodsInfoAjaxAction extends UserLoginedAction {
 	String goods_id;
 
 
-	boolean fuzzy;
 
-	public boolean isFuzzy() {
-		return fuzzy;
-	}
-
-	public void setFuzzy(boolean fuzzy) {
-		this.fuzzy = fuzzy;
-	}
 
 	public String getGoods_id() {
 		return goods_id;
@@ -54,7 +39,16 @@ public class GetGoodsInfoAjaxAction extends UserLoginedAction {
 	public void setGoods_id(String goods_id) {
 		this.goods_id = goods_id;
 	}
+	boolean fuzzy;
 
+
+	public boolean isFuzzy() {
+		return fuzzy;
+	}
+
+	public void setFuzzy(boolean fuzzy) {
+		this.fuzzy = fuzzy;
+	}
 
 	@Action(value = "get_goods_info", results = {
 			@Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
@@ -71,26 +65,25 @@ public class GetGoodsInfoAjaxAction extends UserLoginedAction {
 		java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> ups = new java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice>();
 		session = HibernateSessionFactory.getSession();
 		
-		
+		com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vudao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
 		try {
 			java.util.Date now=new java.util.Date();
+			
 
 			if (fuzzy){
-				java.util.ArrayList<com.cqqyd2014.hibernate.entities.VUserPriceAvailable> gis = com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfosLike(session, goods_id, com_id, user_id, now);
 				
-				
-				ups = com.cqqyd2014.usergroup.logic.UserPriceLogic.getArrayListModelFromArrayListView(gis, now);
+				ups = vudao.getGoodsInfosLike(session, goods_id, com_id, user_id, now);
 
 				
 				sm.setO(ups);
-				
 			}
 			else{
-				com.cqqyd2014.usergroup.model.UserPrice up=com.cqqyd2014.usergroup.logic.UserPriceLogic.getModelFromView(com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfos(session, goods_id, com_id, user_id, now), now);
+com.cqqyd2014.usergroup.model.UserPrice up=vudao.getGoodsInfo(session, goods_id, com_id, user_id, now);
 				
 				ups.add(up);
 				sm.setO(ups);
 			}
+			
 			sm.setSuccess(true);
 			
 

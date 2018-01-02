@@ -52,9 +52,9 @@ public class MenuDDAO {
 				com.cqqyd2014.hibernate.entities.VUserMenuD o=list.get(i);
 				md.setM_id(o.getId().getMenuId());
 				md.setM_d_id(o.getId().getMenuDId());
-				md.setM_d_name(o.getId().getMenuDName());
+				md.setD_name(o.getId().getMenuDName());
 				md.setM_d_js_method(o.getId().getMenuDJsMethod());
-				md.setM_d_js_url(o.getId().getMenuDJsUrl());
+				md.setMenu_d_js_url(o.getId().getMenuDJsUrl());
 				mds.add(md);
 				
 			}

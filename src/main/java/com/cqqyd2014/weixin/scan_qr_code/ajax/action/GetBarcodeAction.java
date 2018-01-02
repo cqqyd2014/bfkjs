@@ -121,7 +121,7 @@ public class GetBarcodeAction   extends ActionSupport {
 				
 				
 				sm.setSuccess(false);
-				sm.setBody(ex.getMessageString());
+				sm.setBody(ex.getMessage());
 			}
 
 			finally {

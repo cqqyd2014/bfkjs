@@ -6,6 +6,7 @@
 <script language='javascript' type='text/javascript'>
 
 	function orders_ready() {
+		easyui_ajax_div_clean('orders_div');
 		 dialog_init('orders_div');
 		 
 		 
@@ -31,10 +32,20 @@
 
 	</script>
 
-<div id="orders_div" class="easyui-dialog" title="类似订单"
+<div id="orders_div" class="easyui-dialog" title="疑似重复录入订单"
 	style="width: 600px; height: 400px; padding: 10px"
 	data-options="	iconCls: 'qyd',	buttons: '#orders_div_buttons'">
-	<table id="view_orders_table" class="easyui-datagrid"
+	
+	
+	<div class="easyui-layout" fit="true">
+    <div data-options="region:'north',title:''" style="height:100px;">
+  <h3>疑似重复录入订单</h3>  
+    <p>近期有“姓名”、“电话”、“地址”类型订单请注意是否重复录入！</p>
+    </div>
+    
+    <div data-options="region:'center',title:''" fit="true">
+    
+    <table id="view_orders_table" class="easyui-datagrid"
 					style="width: 100%;" rownumbers="true" fitColumns="true">
 					<thead>
 						<tr>
@@ -59,6 +70,9 @@
 					</thead>
 
 				</table>
+    </div>
+</div>
+	
 
 
 

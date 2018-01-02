@@ -87,7 +87,7 @@ public class SetUnEffectiveGoodsAjax extends ActionSupport implements SessionAwa
 				tx.rollback();// 撤销事务
 				sm.setSuccess(false);
 				sm.setSound("error");
-				sm.setBody(e.getMessageString());
+				sm.setBody(e.getMessage());
 
 			}
 		}

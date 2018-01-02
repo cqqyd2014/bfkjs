@@ -1,10 +1,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<jsp:include page="../common/include_easyui2.jsp" flush="true" />
+
+
 
 <script language='javascript' type='text/javascript'>
 	function exit() {
@@ -27,13 +25,6 @@
 	}
 </script>
 
-<title>框架头部文件</title>
-
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-<meta http-equiv="description" content="This is my page">
 
 
 <script type="text/javascript">
@@ -67,26 +58,44 @@
 	}
 </script>
 
-</head>
+	<div
+		style="display: table; background-color: #996699; color: white; padding: 0px; border: 0px; width: 100%; height: 60px;">
 
-<body  style="padding: 0px;margin:0px">
-<div class="easyui-layout" style="padding: 0px;width: 100%; height: 100%;background-color:#996699;color:white;margin-top:0px;margin-bottom:0px;" >
+		<div
+			style="float: left; display: table-cell; padding: 5px;  height: 50px;border: 0px;">
 
-<table width="100%"  style="color:white;" >
+			<img alt="" src="../img/logo-800-400.jpg"
+				style="height: 40px; vertical-align: middle; margin: 0px;line-height:50px;border: 0px;" />
 
-<tr>
-	<td rowspan="2" width="40%" align="left" ><h1>MIS 2017V3.0</h1>
-	</td>
-	<td width="60%" align="right">
-	当前时间：<span id="current_time"><s:property value="#request.chineseDate"/></span>登录用户：<s:property value="#request.user_name" />
-		
-		
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:exit()">退出</a>
-	</td>
-</tr>
 
-</table>
+
+			<p
+				style="border: 0px;font-weight:bold;line-height:50px;font-size: 20px; vertical-align: middle; display: inline-block; margin: 0px;"><s:property value="#application.app_name"/>
+				</p>
 
 </div>
-</body>
-</html>
+
+		<div
+			style="display: table-cell; float: right; padding: 5px; height: 50px;border: 0px;">
+
+
+			
+		
+			<p style="border: 0px;line-height:50px;vertical-align: middle; padding: 0px;display: inline-block;margin: 0px ;">
+				最后刷新时间：
+				<s:property value="#request.chinese_date" />
+				登录用户：
+				<s:property value="#request.user_name" />
+			</p>
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				style="border: 0px;line-height:50px;vertical-align: middle; padding: 0px;margin: 0px ; "
+				onclick="javascript:exit()">退出</a>
+		</div>
+
+
+
+
+
+
+	</div>
+</div>

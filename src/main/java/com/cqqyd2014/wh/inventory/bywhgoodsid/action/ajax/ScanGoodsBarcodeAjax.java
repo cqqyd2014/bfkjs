@@ -107,7 +107,7 @@ public class ScanGoodsBarcodeAjax extends ActionSupport implements SessionAware 
 		}
 			catch (com.cqqyd2014.util.exception.AjaxSuccessMessageException e){
 				sm.setSuccess(false);
-				sm.setBody(e.getMessageString());
+				sm.setBody(e.getMessage());
 			}
 			catch(Exception e){
 				System.out.println(e.toString());

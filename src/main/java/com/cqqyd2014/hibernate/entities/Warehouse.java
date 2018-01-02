@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-16 20:52:26 by Hibernate Tools 5.2.3.Final
+// Generated 2017-12-31 21:46:23 by Hibernate Tools 5.2.3.Final
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -20,6 +20,7 @@ public class Warehouse implements java.io.Serializable {
 	private Integer priority;
 	private String ccmcShort;
 	private Boolean effective;
+	private Boolean working;
 
 	public Warehouse() {
 	}
@@ -28,12 +29,14 @@ public class Warehouse implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Warehouse(WarehouseId id, String whName, Integer priority, String ccmcShort, Boolean effective) {
+	public Warehouse(WarehouseId id, String whName, Integer priority, String ccmcShort, Boolean effective,
+			Boolean working) {
 		this.id = id;
 		this.whName = whName;
 		this.priority = priority;
 		this.ccmcShort = ccmcShort;
 		this.effective = effective;
+		this.working = working;
 	}
 
 	@EmbeddedId
@@ -83,6 +86,15 @@ public class Warehouse implements java.io.Serializable {
 
 	public void setEffective(Boolean effective) {
 		this.effective = effective;
+	}
+
+	@Column(name = "working")
+	public Boolean getWorking() {
+		return this.working;
+	}
+
+	public void setWorking(Boolean working) {
+		this.working = working;
 	}
 
 }

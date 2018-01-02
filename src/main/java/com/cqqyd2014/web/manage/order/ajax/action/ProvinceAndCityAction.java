@@ -11,7 +11,7 @@ import com.cqqyd2014.annotation.Authority;
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
 @Namespace("/web/manage/order")
-public class ProvinceAndCityAction extends com.cqqyd2014.order.createorder.ajax.action.ProvinceAndCityAjaxAction {
+public class ProvinceAndCityAction extends com.cqqyd2014.system.region.ajax.action.GetRegionAction {
 
 	@Action(value = "province_and_city", results = { @Result(type = "json", params = { "root", "msg" }) }, interceptorRefs = {
 			

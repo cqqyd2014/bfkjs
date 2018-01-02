@@ -12,8 +12,11 @@
 	href="../js/jquery-easyui-<s:property value='#application.easyui_version' />/themes/default/easyui.css" >
 <link rel="stylesheet" type="text/css"
 	href="../js/jquery-easyui-<s:property value='#application.easyui_version' />/themes/icon.css" >
+<script type="text/javascript"
+	src="../js/jquery-easyui-<s:property value='#application.easyui_version' />/locale/easyui-lang-zh_CN.js"></script>
 
 
-
+<script type="text/javascript" src="../js/fakeLoader.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../js/fakeLoader.css" />
 <link rel="stylesheet" type="text/css" href="../js/qyd.css" />
 <script type="text/javascript" src="../js/qyd.js"></script>

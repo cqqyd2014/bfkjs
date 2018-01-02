@@ -36,5 +36,12 @@ public class MenuM {
 	public void setMenu_d(java.util.ArrayList<MenuD> menu_d) {
 		this.menu_d = menu_d;
 	} 
+	java.util.ArrayList<MenuD> mds;
+	public java.util.ArrayList<MenuD> getMds() {
+		return mds;
+	}
+	public void setMds(java.util.ArrayList<MenuD> mds) {
+		this.mds = mds;
+	}
 }
 

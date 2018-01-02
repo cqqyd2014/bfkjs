@@ -18,16 +18,11 @@ function qyd_mobile(){
 </script>
 
 </head>
-<body>
-	<table style='width: 100%'>
-		<tr>
-		<td><a style='width: 100%' href="#" class="easyui-linkbutton" iconCls="qyd"
-			onclick="javascript:qyd_pc()">勤驿达MIS V3.0（PC）</a></td>
-		</tr>
-		<tr>
-		<td><a style='width: 100%' href="#" class="easyui-linkbutton" iconCls="qyd"
-			onclick="javascript:qyd_mobile()">勤驿达MIS V3.0（Phone）</a></td>
-		</tr>
-	</table>
+<body class="easyui-layout">
+<div data-options="region:'center',title:''" style="padding:5px;" fit="true">
+	<a style='width: 100%' href="#" class="easyui-linkbutton" iconCls="qyd"
+			onclick="javascript:qyd_pc()">勤驿达MIS V3.0（PC）</a><a style='width: 100%' href="#" class="easyui-linkbutton" iconCls="qyd"
+			onclick="javascript:qyd_mobile()">勤驿达MIS V3.0（Phone）</a>
+	</div>
 </body>
 </html>

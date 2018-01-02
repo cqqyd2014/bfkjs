@@ -1,59 +1,96 @@
 package com.cqqyd2014.hibernate.dao;
 
-import org.hibernate.Query;
+
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-public class RegionDAO {
+import com.cqqyd2014.common.hibernate.GetModelFromEntityViewDAO;
+import com.cqqyd2014.system.model.Region;
 
-	public com.cqqyd2014.hibernate.entities.Region getCity(Session session,java.math.BigDecimal id){
+public final class RegionDAO extends GetModelFromEntityViewDAO{
+	
+	
+	public java.math.BigDecimal getMaxRegionId(Session session){
+		String hql="select max(regionId) from Region";
+		@SuppressWarnings("rawtypes")
+		Query q=session.createQuery(hql);
+		return  (java.math.BigDecimal)(q.uniqueResult());
+	}
+
+	public com.cqqyd2014.system.model.Region getRegion(Session session,java.math.BigDecimal id){
 		String hql="from Region where regionId=:id";
+		@SuppressWarnings("rawtypes")
 		Query q=session.createQuery(hql);
 		q.setParameter("id", id);
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> citys=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
-		if (citys.size()==0){
+		@SuppressWarnings("unchecked")
+		java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> regions=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
+		if (regions.size()==0){
 			return null;
 		}
 		else{
-			return citys.get(0);
+			com.cqqyd2014.hibernate.entities.Region h=regions.get(0);
+			com.cqqyd2014.system.model.Region m=(com.cqqyd2014.system.model.Region)getModelFromViewEntity(h);
+			return m;
 		}
 	}
 	
-	//得到下级行政单位，主要是“区一级”
-	public  java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> getSubCity(Session session,String pid){
+	//得到下级行政单位
+	@SuppressWarnings("unchecked")
+	public  java.util.ArrayList<com.cqqyd2014.system.model.Region> getSubRegion(Session session,java.math.BigDecimal pid){
 		String hql="from Region where parentId=:pid";
+		@SuppressWarnings("rawtypes")
 		Query q = session.createQuery(hql);
-		q.setParameter("pid",new java.math.BigDecimal(pid));
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> rs=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
-		if (rs.size()==0){
-			//该地址为‘市’
-			com.cqqyd2014.hibernate.entities.Region r=getCity(session,new java.math.BigDecimal(pid));
-			if (r.getParentId().intValue()!=1){
-				//确定为“市级别”，生成默认区
-				com.cqqyd2014.hibernate.entities.Region district=new com.cqqyd2014.hibernate.entities.Region();
-				district.setRegionName("市辖区");
-				district.setRegionCode("1000000");
-				district.setRegionId(new java.math.BigDecimal("9999999"));
-				java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> districts=new  java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>();
-				districts.add(district);
+		q.setParameter("pid",pid);
+
+		java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> regions=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
+		if (regions.size()==0){
+			//如果该地址没有下级单位，需要增加一个默认选项“市辖区”，不会有“省下面没有市的情况，所以不会有”省辖区“
+			com.cqqyd2014.system.model.Region new_region=new com.cqqyd2014.system.model.Region();
+			new_region.setParent_id(pid);
+			new_region.setRegion_name("市辖区");
+			//得到最大的region_id
+			new_region.setRegion_id(getMaxRegionId(session).add(new java.math.BigDecimal("1")));
+			save(session,new_region);
+			
+				java.util.ArrayList<com.cqqyd2014.system.model.Region> districts=new  java.util.ArrayList<com.cqqyd2014.system.model.Region>();
+				districts.add(new_region);
 				return districts;
 				
-			}
+			
 			
 		}
-		return rs;
-	}
-	public  String getNameById(Session session,String id){
-		String hql="from Region where regionId=:id";
-		Query q = session.createQuery(hql);
-		q.setParameter("id",new java.math.BigDecimal(id));
-		java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region> rs=(java.util.ArrayList<com.cqqyd2014.hibernate.entities.Region>)q.list();
-		if (rs.size()>0){
-			String regionName=rs.get(0).getRegionName();
-			return regionName;
-		}
 		else{
-			return "";
+			return (java.util.ArrayList<com.cqqyd2014.system.model.Region>)getArrayListModelFromArrayListViewEntity(regions);
 		}
+		
+	}
+
+
+	
+
+	@Override
+	public <T> void save(Session session, T t) {
+		// TODO Auto-generated method stub
+		com.cqqyd2014.system.model.Region m=(com.cqqyd2014.system.model.Region)t;
+		com.cqqyd2014.hibernate.entities.Region h=new com.cqqyd2014.hibernate.entities.Region();
+		h.setParentId(m.getParent_id());
+		h.setRegionId(m.getRegion_id());
+		h.setRegionName(m.getRegion_name());
+		session.save(h);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T, S> T getModelFromViewEntity(S s) {
+		// TODO Auto-generated method stub
+		com.cqqyd2014.system.model.Region m=new com.cqqyd2014.system.model.Region();
+		com.cqqyd2014.hibernate.entities.Region h=(com.cqqyd2014.hibernate.entities.Region)s;
+		m.setRegion_id(h.getRegionId());
+		m.setRegion_name(h.getRegionName());
+		m.setParent_id(h.getParentId());
+		
+		return (T)m;
 	}
 	
 	

@@ -347,7 +347,7 @@ tx.commit();
 
 			}
 			sm.setSuccess(false);
-			sm.setBody(e.getMessageString());
+			sm.setBody(e.getMessage());
 		}
 		finally {
 			HibernateSessionFactory.closeSession();

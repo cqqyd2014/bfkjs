@@ -2,24 +2,19 @@ package com.cqqyd2014.order.createorder.ajax.action;
 
 import java.util.Map;
 
-
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 
-
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
-
-
-
 
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
 @Namespace("/order")
-public class GetTempOrderDetailAjaxAction extends UserLoginedAction {
+public class GetTempOrderDetailAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -48,10 +43,9 @@ public class GetTempOrderDetailAjaxAction extends UserLoginedAction {
 			session_http.put("temp_order_detail", odis);
 		}
 		
-		com.cqqyd2014.util.AjaxSuccessMessage sm=new com.cqqyd2014.util.AjaxSuccessMessage();
-		sm.setSuccess(true);
-		sm.setO(odis);
-		msg=sm.toMap();
+		msg=new java.util.HashMap<>();
+		msg.put("total", String.valueOf(odis.size()));
+		msg.put("rows", odis);
 		return SUCCESS;
 		
 	}

@@ -94,7 +94,7 @@ public class SetUnEffectiveBarcodeAjax extends ActionSupport implements SessionA
 				tx.rollback();// 撤销事务
 				sm.setSuccess(false);
 				sm.setSound("error");
-				sm.setBody(e.getMessageString());
+				sm.setBody(e.getMessage());
 
 			}
 		}

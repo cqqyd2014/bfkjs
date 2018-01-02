@@ -6,18 +6,99 @@
 <script language='javascript' type='text/javascript'>
 
 
+	function get_goods_info(fuzzy){
+		$.getJSON("../wh/get_goods_info.action", {
+			goods_id:$("#goods_id").textbox('getValue'),
+			fuzzy:true
+		}, function(result) {
+
+			var field2=result.msg;
+			ajax_authority(field2);
+
+				if (field2.success) {
+
+					 $('#yue').numberbox('enable', true);
+					 
+					 $('#c_price').numberbox('enable', true);
+					var o = field2.o;
+					var len=o.length;
+					if (len>0) {
+						if (len == 1) {
+
+							var field=o[0];
+								//填充商品名称等
+								$("#goods_name").textbox('setValue',field.goods_name);
+								$("#unit").textbox('setValue',field.unit);
+								$("#goods_id").textbox('setValue',field.goods_id);
+								$("#yue").numberbox('setValue', field.yue);
+								$("#c_price")
+										.numberbox('setValue', field.price);
+								$("#goods_id").css("color", "black");
+								$('#search_msg').html('<font color="red"></font>');
+								 $("#c_count").numberbox('setValue', '1');
+							
+						} else {
+							$("#goods_name").textbox('setValue',"");
+							$("#unit").textbox('setValue',"");
+							$("#c_price").numberbox('setValue', '0');
+							$("#goods_id").css("color", "red");
+							$("#yue").numberbox('setValue', "0");
+							$('#search_msg').html('');
+							 $("#c_count").numberbox('setValue', '0');
+							 select_goods_init($("#goods_id").textbox('getValue'),function(rowData){
+								 $("#goods_id").textbox('setValue',rowData.goods_id);
+									
+								 get_goods_info(false);
+								 })
+							 
+						}
+					} else {
+						$("#goods_name").textbox('setValue',"");
+						$("#unit").textbox('setValue',"");
+						$("#c_price").numberbox('setValue', '0');
+						$("#goods_id").css("color", "red");
+						$("#yue").numberbox('setValue', "0");
+						$('#search_msg').html('<font color="red">没有复合条件的产品</font>');
+						 $("#c_count").numberbox('setValue', '0');
+					}
+
+					$('#yue').numberbox('disable', true);
+					 
+					 $('#c_price').numberbox('disable', true);
+					 
+					 
+
+				} else {
+					$.messager.alert("操作提示", "获取单价错误！原因：" + field2.body,
+							"error");
+
+				}
+
+			
+
+		});
+
+
+		}
+
+
 
 
 
 	function select_goods_ready() {
+		easyui_ajax_div_clean('find_goods_div');
 
         //失去焦点事件绑定
-		$("input",$("#goods_id").next("span")).blur(function(){  
-			getGoodsPrice(true);
+		$("input",$("#goods_id").next("span")).blur(function(){
+
+			get_goods_info(true);
+			
+			
+				
 		}) 
             
        
-		 dialog_init_mid('find_goods_div');
+		 dialog_init('find_goods_div');
 		 $('#goods_name').textbox('textbox').attr('readonly',true);
 		 
 		 $('#yue').numberbox('disable', true);
@@ -64,90 +145,30 @@
 	}
 	function DclickPrice(rowData) {
 		//alert(rowData.goods_id);
-		$("#goods_id").textbox('setValue',rowData.goods_id);
-		getGoodsPrice(false);
+		/*
+		
+		*/
+		select_goods_dclick_call_back(rowData.goods_id);
 		$('#find_goods_div').dialog('close');
 
 	}
+	var select_goods_dclick_call_back;
 
-	//模糊/精确查询goods_id
-	function getGoodsPrice(fuzzy) {
+
+	function select_goods_init(goods_id,dclick_call_back){
+
+		var gridOpts = $('#table_goods_price').datagrid('options');   
+		gridOpts.url="../wh/get_goods_info.action";
+		gridOpts.queryParams=$('#get_goods_info_form').serializeObject();
+		//console.log(gridOpts.queryParams);
+		$("#table_goods_price").datagrid("load");
+
+		dialog_init('find_goods_div');
+		 
 		
+		 $('#find_goods_div').dialog('open');
+		}
 
-		$.getJSON("<s:property value='#application.context_path'/>/wh/get_goods_info.action", {
-			goods_id:$("#goods_id").textbox('getValue'),
-			fuzzy:fuzzy
-		}, function(result) {
-
-			var field2=result.msg;
-			ajax_authority(field2);
-
-				if (field2.success) {
-
-					 $('#yue').numberbox('enable', true);
-					 
-					 $('#c_price').numberbox('enable', true);
-					var o = field2.o;
-					var len=o.length;
-					if (len>0) {
-						if (len == 1) {
-
-							var field=o[0];
-								//填充商品名称等
-								$("#goods_name").textbox('setValue',field.goods_name);
-								$("#unit").textbox('setValue',field.unit);
-								$("#goods_id").textbox('setValue',field.goods_id);
-								$("#yue").numberbox('setValue', field.yue);
-								$("#c_price")
-										.numberbox('setValue', field.price);
-								$("#goods_id").css("color", "black");
-								$('#search_msg').html('<font color="red"></font>');
-								 $("#c_count").numberbox('setValue', '1');
-							
-						} else {
-							$("#goods_name").textbox('setValue',"");
-							$("#unit").textbox('setValue',"");
-							$("#c_price").numberbox('setValue', '0');
-							$("#goods_id").css("color", "red");
-							$("#yue").numberbox('setValue', "0");
-							$('#search_msg').html('');
-							 $("#c_count").numberbox('setValue', '0');
-							 dialog_init_mid('find_goods_div');
-							 
-							 $("#table_goods_price").datagrid('loadData', {
-									total : o.length,
-									rows : o
-								});
-							 $('#find_goods_div').dialog('open');
-							 
-						}
-					} else {
-						$("#goods_name").textbox('setValue',"");
-						$("#unit").textbox('setValue',"");
-						$("#c_price").numberbox('setValue', '0');
-						$("#goods_id").css("color", "red");
-						$("#yue").numberbox('setValue', "0");
-						$('#search_msg').html('<font color="red">没有复合条件的产品</font>');
-						 $("#c_count").numberbox('setValue', '0');
-					}
-
-					$('#yue').numberbox('disable', true);
-					 
-					 $('#c_price').numberbox('disable', true);
-					 
-					 
-
-				} else {
-					$.messager.alert("操作提示", "获取单价错误！原因：" + field2.body,
-							"error");
-
-				}
-
-			
-
-		});
-
-	}
 
 
 
@@ -156,37 +177,40 @@
 
 <div id="find_goods_div" class="easyui-dialog" title="商品" iconCls="qyd"
 	style="width: 600px; height: 400px; padding: 10px;"
-	toolbar="#findGoods-toolbar" buttons="#findGoods-buttons">
-
-	<table id="table_goods_price" title="商品" class="easyui-datagrid"
+	 buttons="#findGoods-buttons">
+	 
+	<div class="easyui-layout" fit="true">
+    <div data-options="region:'north',title:''" style="height:100px;">
+  <h3>选择商品</h3>  
+    <p>双击需要选择的商品</p>
+    </div>
+    
+    <div data-options="region:'center',title:''" fit="true">
+    <form id="get_goods_info_form">
+    <input id="goods_id" name="goods_id"/>
+    <input id="fuzzy" name="fuzzy" value="true"/>
+    </form>
+    
+    <table id="table_goods_price" title="商品" class="easyui-datagrid"
 		style="width: 100%; height: 100%;" idField="itemid" fitColumns="true"
 		iconCls="qyd">
 
-		<thead>
-			<tr>
-
-				<th field="itemid" width="100px">商品编码</th>
-				<th field="goods_id" width="100px">商品图片</th>
-				<th field="productid" width="100px">商品名称</th>
-				<th field="listprice" width="100px" align="right">价格</th>
-				<th field="unitcost" width="100px" align="right">单位</th>
-				<th field="status" width="100px" align="center">库存数量</th>
-			</tr>
-		</thead>
+		
 
 	</table>
+    </div>
+</div>
+	 
+	 
+	 
+	 
+
+	
 
 
 
 </div>
-<div id="findGoods-toolbar">
-	<table cellpadding="0" cellspacing="0" style="width: 100%">
-		<tr>
 
-			<td style="text-align: right">选中需要发货的商品，双击</td>
-		</tr>
-	</table>
-</div>
 <div id="findGoods-buttons" style="text-align: right">
 
 

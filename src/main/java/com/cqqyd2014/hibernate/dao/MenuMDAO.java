@@ -18,7 +18,7 @@ public class MenuMDAO {
 			java.util.ArrayList<com.cqqyd2014.system.model.MenuM> mms=com.cqqyd2014.system.logic.MenuMLogic.getArrayListModelFromArrayListView(list);
 			com.cqqyd2014.hibernate.dao.MenuDDAO mddao=new com.cqqyd2014.hibernate.dao.MenuDDAO();
 			for (int i=0;i<mms.size();i++){
-				mms.get(i).setMenu_d(com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromView1(mddao.getMenuDByMId(session, com_id, mms.get(i).getM_id(),user_id)));
+				mms.get(i).setMenu_d(com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromArrayListView(mddao.getMenuDByMId(session, com_id, mms.get(i).getM_id(),user_id)));
 
 			}
 			return mms;

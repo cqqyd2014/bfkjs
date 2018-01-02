@@ -28,16 +28,26 @@ import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
 public class PushOrderAjaxAction extends UserLoginedAction {
 	
 	public String original_no;
-	public String OrderFrom;
-	public String logistics;
+	public String order_from;
+	public String logistics_com;
 	public String vehicle;
 
-	public String getLogistics() {
-		return logistics;
+
+
+	public String getLogistics_com() {
+		return logistics_com;
 	}
 
-	public void setLogistics(String logistics) {
-		this.logistics = logistics;
+	public void setLogistics_com(String logistics_com) {
+		this.logistics_com = logistics_com;
+	}
+
+	public String getUser_addr() {
+		return user_addr;
+	}
+
+	public void setUser_addr(String user_addr) {
+		this.user_addr = user_addr;
 	}
 
 	public String getVehicle() {
@@ -51,12 +61,12 @@ public class PushOrderAjaxAction extends UserLoginedAction {
 	public String tell2;
 	public String user_com;
 	public String order_dat;
-	public String userName;
+	public String user_name;
 	public String tell;
-	public String province;
-	public String city;
-	public String district;
-	public String userAddr;
+	public java.math.BigDecimal province;
+	public java.math.BigDecimal city;
+	public java.math.BigDecimal district;
+	public String user_addr;
 	public java.math.BigDecimal original_amount;
 	public java.math.BigDecimal discount;
 	public java.math.BigDecimal card_pay;
@@ -87,21 +97,30 @@ sm.setAuth_success(true);
 		@SuppressWarnings("unchecked")
 		java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail> odis = (java.util.ArrayList<com.cqqyd2014.order.model.OrderDetail>) session_http
 				.get("temp_order_detail");
-		Session session = HibernateSessionFactory.getSession();
-		Transaction tx = session.beginTransaction();
+		session = HibernateSessionFactory.getSession();
+		tx = session.beginTransaction();
 		try {
 		
 		com.cqqyd2014.order.model.Order order=new com.cqqyd2014.order.model.Order();
-		order.setCity(city);
+		
 		order.setTell(tell);
 		order.setDetails(odis);
-		order.setDistrict(district);
+		
 		order.setOrder_dat(com.cqqyd2014.util.DateUtil.FullStringToJDate(order_dat));
-		order.setOrder_type_code(OrderFrom);
+		order.setOrder_type_code(order_from);
 		order.setOriginal_id(original_no);
-		order.setProvince(province);
-		order.setUser_addr(userAddr);
-		order.setUser_name(userName);
+		
+		//province_id得到省名称
+		com.cqqyd2014.hibernate.dao.RegionDAO rdao=new com.cqqyd2014.hibernate.dao.RegionDAO();
+		com.cqqyd2014.system.model.Region province_region=rdao.getRegion(session, province);
+		
+		order.setProvince(province_region.getRegion_name());
+		com.cqqyd2014.system.model.Region city_region=rdao.getRegion(session, city);
+		order.setCity(city_region.getRegion_name());
+		com.cqqyd2014.system.model.Region district_region=rdao.getRegion(session, district);
+		order.setDistrict(district_region.getRegion_name());
+		order.setUser_addr(user_addr);
+		order.setUser_name(user_name);
 		
 		
 		order.setCard_pay(card_pay);
@@ -119,7 +138,7 @@ sm.setAuth_success(true);
 		order.setPaid(false);
 		order.setPaid_money(new java.math.BigDecimal(0));
 		order.setPaid_time(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
-		order.setLogistics(logistics);
+		order.setLogistics(logistics_com);
 		order.setVehicle(vehicle);
 		order.setPackage_user_assign_time(com.cqqyd2014.util.DateUtil.ShortStringToJDate("1900-1-1"));
 		order.setPackage_userid("");
@@ -210,7 +229,7 @@ sm.setAuth_success(true);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			sm.setSuccess(false);
-			sm.setBody(e.getMessageString());
+			sm.setBody(e.getMessage());
 		}
 		
 
@@ -250,12 +269,14 @@ sm.setAuth_success(true);
 		this.original_no = original_no;
 	}
 
-	public String getOrderFrom() {
-		return OrderFrom;
+
+
+	public String getOrder_from() {
+		return order_from;
 	}
 
-	public void setOrderFrom(String orderFrom) {
-		OrderFrom = orderFrom;
+	public void setOrder_from(String order_from) {
+		this.order_from = order_from;
 	}
 
 	public String getTell2() {
@@ -282,13 +303,6 @@ sm.setAuth_success(true);
 		this.order_dat = order_dat;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
 
 	public String getTell() {
 		return tell;
@@ -298,37 +312,40 @@ sm.setAuth_success(true);
 		this.tell = tell;
 	}
 
-	public String getProvince() {
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
+	public java.math.BigDecimal getProvince() {
 		return province;
 	}
 
-	public void setProvince(String province) {
+	public void setProvince(java.math.BigDecimal province) {
 		this.province = province;
 	}
 
-	public String getCity() {
+	public java.math.BigDecimal getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(java.math.BigDecimal city) {
 		this.city = city;
 	}
 
-	public String getDistrict() {
+	public java.math.BigDecimal getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(String district) {
+	public void setDistrict(java.math.BigDecimal district) {
 		this.district = district;
 	}
 
-	public String getUserAddr() {
-		return userAddr;
-	}
 
-	public void setUserAddr(String userAddr) {
-		this.userAddr = userAddr;
-	}
 
 	public java.math.BigDecimal getOriginal_amount() {
 		return original_amount;

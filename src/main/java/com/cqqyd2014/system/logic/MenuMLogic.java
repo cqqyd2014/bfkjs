@@ -8,7 +8,7 @@ public class MenuMLogic {
 		mm.setM_id(vumm.getId().getMenuId());
 		mm.setM_name(vumm.getId().getMenuName());
 		mm.setUserid(vumm.getId().getUserId());
-		mm.setMenu_d(com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromView1(vumds));
+		mm.setMenu_d(com.cqqyd2014.system.logic.MenuDLogic.getArrayListModelFromArrayListView(vumds));
 		return mm;
 	}
 	public static com.cqqyd2014.system.model.MenuM getModelFromView(com.cqqyd2014.hibernate.entities.VUserMenuM vumm){

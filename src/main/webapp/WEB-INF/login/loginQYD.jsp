@@ -12,11 +12,12 @@
 <script language='javascript' type='text/javascript'>
 
 function login(){
-
+ajax_start();
 	
 
-	$.getJSON("../login/login.action", {"user_name":$("#user_name").textbox('getValue'),"password":$("#password").passwordbox('getValue')
-	}, function(result) {
+	$.getJSON("../login/login.action", 
+		$('#login_form').serializeObject()
+	, function(result) {
 		
 		$.each(result, function(i, field) {
 			
@@ -37,10 +38,11 @@ function login(){
 		
 	});
 	
+	
 }
 
 $(document).ready(function() {
-	//$("#login_dialog").panel("move",{top:$(document).scrollTop() + ($(window).height()-250) * 0.5});  
+	
 	dialog_init_mid('login_dialog');
 	$('#login_dialog').dialog('open');
 	//移动焦点
@@ -64,14 +66,15 @@ function root(){
 
 </head>
 
-<body style="width: 98%; height: 98%;">
+<body class="easyui-layout">
+<div id="fakeLoader"></div>
 
-
+<div data-options="region:'center',title:''" style="padding:5px;" fit="true">
 
 	<div id="login_dialog" style="width: 450px; height: 220px;"
 		class="easyui-dialog" title="登录系统" iconCls="qyd"
 		data-options="	iconCls: 'qyd',	buttons: '#login_buttons'">
-
+<form id="login_form">
 		<table style="width: 100%">
 			<tr>
 				<td width="30%">公司名称：</td>
@@ -83,15 +86,15 @@ function root(){
 			</tr>
 			<tr>
 				<td>用户名:</td>
-				<td><input id="user_name" class="easyui-textbox" style="" /></td>
+				<td><input name="user_name" id="user_name" class="easyui-textbox" style="" /></td>
 			</tr>
 			<tr>
 				<td>密码：</td>
-				<td><input id="password" class="easyui-passwordbox" style="" />
+				<td><input name="password" id="password" class="easyui-passwordbox" style="" />
 				</td>
 			</tr>
 		</table>
-
+</form>
 
 
 
@@ -107,7 +110,7 @@ function root(){
 	</div>
 
 
-
+</div>
 
 	<script type="text/javascript">
 /**

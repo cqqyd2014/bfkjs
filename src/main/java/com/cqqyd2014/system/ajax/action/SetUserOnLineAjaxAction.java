@@ -51,10 +51,10 @@ sm.setAuth_success(true);
 			
 			
 			//String result = "";
-			Session session = HibernateSessionFactory.getSession();
+			session = HibernateSessionFactory.getSession();
 			//com.cqqyd2014.hibernate.entities.SysUser b = null;
 			
-			Transaction tx = session.beginTransaction();
+			tx = session.beginTransaction();
 			try {
 				
 
@@ -85,7 +85,7 @@ sm.setAuth_success(true);
 
 				}
 				sm.setSuccess(false);
-				sm.setBody(e.getMessageString());
+				sm.setBody(e.getMessage());
 			}
 			finally {
 				HibernateSessionFactory.closeSession();

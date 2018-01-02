@@ -337,7 +337,7 @@ sm.setAuth_success(true);
 
 catch (AjaxSuccessMessageException e) {
 	sm.setSuccess(false);
-	sm.setBody(e.getMessageString());
+	sm.setBody(e.getMessage());
 	sm.setSound("error");
 			
 			if (null != tx) {

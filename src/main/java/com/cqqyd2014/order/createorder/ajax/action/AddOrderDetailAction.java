@@ -1,31 +1,25 @@
 package com.cqqyd2014.order.createorder.ajax.action;
 
-
 import java.math.RoundingMode;
 import java.util.Map;
-
 
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.InterceptorRef;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import com.cqqyd2014.annotation.Authority;
 import com.cqqyd2014.common.action.UserLoginedAction;
 import com.cqqyd2014.hibernate.HibernateSessionFactory;
 import com.cqqyd2014.hibernate.dao.VInventoryByGoodsIdAvailableDAO;
 
-
-
 @SuppressWarnings("serial")
 @ParentPackage("bfkjs-json-default")
 @Namespace("/order")
-public class AddOrderDetailAjaxAction extends UserLoginedAction {
+public class AddOrderDetailAction extends UserLoginedAction {
 	private Map<String, Object> msg;
 
 	public Map<String, Object> getMsg() {
@@ -147,9 +141,10 @@ sm.setAuth_success(true);
 			od.setOrder_no("");
 			java.util.Date now=new java.util.Date();
 			//得到客户价格
-			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO.getGoodsInfos(session, goods_id, com_id, user_id,now);
+			com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO vupdao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
+			com.cqqyd2014.usergroup.model.UserPrice vupa=vupdao.getGoodsInfo(session, goods_id, com_id, user_id,now);
 			
-			od.setPrice(vupa.getId().getUserPrice());
+			od.setPrice(vupa.getPrice());
 			//得到财务入账价格
 			com.cqqyd2014.hibernate.entities.FinanceGoodsPrice fgp=com.cqqyd2014.hibernate.dao.FinanceGoodsPriceDAO.getEntityByGoodsIdDate(session, com_id, goods_id, now);
 			if (fgp == null) {
@@ -212,7 +207,7 @@ sm.setAuth_success(true);
 
 			}
 			sm.setSuccess(false);
-			sm.setBody(e.getMessageString());
+			sm.setBody(e.getMessage());
 			
 			System.out.println(e.getMessage());
 			e.printStackTrace();

@@ -102,7 +102,7 @@ sm.setAuth_success(true);
 
 		}catch (com.cqqyd2014.util.exception.AjaxSuccessMessageException e){
 			sm.setSuccess(false);
-			sm.setBody(e.getMessageString());
+			sm.setBody(e.getMessage());
 		} finally {
 			HibernateSessionFactory.closeSession();
 		}

@@ -2,15 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <div>
-	快递公司<select class="easyui-combobox" id="logistics_com"
-		style="width: 90px">
+	快递公司<input class="easyui-combobox" id="logistics_com" name="logistics_com"
+		style="width: 90px"/>
 
-	</select> <a href="javascript:void(0)" class="easyui-linkbutton"
+	 <a href="javascript:void(0)" class="easyui-linkbutton"
 		onclick="javascript:set_default('default_logistics_com',$('#logistics_com').combobox('getValue'))"
-		iconCls="qyd">默认</a>运输方式<select class="easyui-combobox"
-		style="width: 60px;" id="vehicle">
+		iconCls="qyd">默认</a>运输方式
+		<input class="easyui-combobox"
+		style="width: 60px;" id="vehicle" name="vehicle"/>
 
-	</select><a href="javascript:void(0)" class="easyui-linkbutton"
+	<a href="javascript:void(0)" class="easyui-linkbutton"
 		onclick="javascript:set_default('default_logistics_vehicle',$('#vehicle').combobox('getValue'))"
 		iconCls="qyd">默认</a>
 		<span id="not_air" ></span>
@@ -76,7 +77,7 @@
 
 		$
 				.getJSON(
-						"<s:property value='#application.context_path'/>/logistics/get_logistics.action",
+						"../logistics/get_logistics.action",
 						{
 
 						},
@@ -116,7 +117,7 @@
 
 		
 		$.getJSON(
-						"<s:property value='#application.context_path'/>/logistics/get_vehicle.action",
+						"../logistics/get_vehicle.action",
 						{
 							"logistics_code" : $('#logistics_com').combobox(
 									'getValue'),
