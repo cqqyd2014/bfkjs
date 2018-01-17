@@ -13,7 +13,7 @@
 		<repository>
 			<id>nexus</id>
 			<name>maven-public</name>
-			<url>http://192.168.1.49:8082/repository/maven-public/</url>
+			<url>http://cqqyd2014.wicp.net:8082/repository/maven-public/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -27,16 +27,35 @@
 		<snapshotRepository>
 			<id>nexus</id>
 			<name>3dr_part_cqqyd2014-snapshots</name>
-			<url>http://192.168.1.49:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
+			<url>http://cqqyd2014.wicp.net:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
 		</snapshotRepository>
 		<site>
             <id>nexus</id>
             <name>Nexus Sites</name>
-            <url>dav:http://192.168.1.49:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
+            <url>dav:http://cqqyd2014.wicp.net:8082/repository/3dr_part_cqqyd2014-snapshots/</url>
         </site>
 
 	</distributionManagement>
 	<dependencies>
+	<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjrt</artifactId>
+    <version>1.8.13</version>
+</dependency>
+	<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.8.13</version>
+</dependency>
+	<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjtools -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjtools</artifactId>
+    <version>1.8.13</version>
+</dependency>
+	
 		<dependency>
 			<groupId>xml-apis</groupId>
 			<artifactId>xml-apis</artifactId>
