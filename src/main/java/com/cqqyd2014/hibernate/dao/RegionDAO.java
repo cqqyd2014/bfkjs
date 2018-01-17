@@ -7,9 +7,14 @@ import org.hibernate.query.Query;
 import com.cqqyd2014.common.hibernate.GetModelFromEntityViewDAO;
 import com.cqqyd2014.system.model.Region;
 
-public final class RegionDAO extends GetModelFromEntityViewDAO{
+public final class RegionDAO extends GetModelFromEntityViewDAO<com.cqqyd2014.system.model.Region>{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2218217635390381821L;
+
 	public java.math.BigDecimal getMaxRegionId(Session session){
 		String hql="select max(regionId) from Region";
 		@SuppressWarnings("rawtypes")

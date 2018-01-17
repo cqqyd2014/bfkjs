@@ -8,9 +8,13 @@ import com.cqqyd2014.common.hibernate.GetModelFromEntityViewDAO;
 
 
 
-public final class VUserPriceAvailableDAO  extends GetModelFromEntityViewDAO{
+public final class VUserPriceAvailableDAO  extends GetModelFromEntityViewDAO<com.cqqyd2014.usergroup.model.UserPrice>{
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2793227388790083245L;
 	//模糊查询
 	@SuppressWarnings("unchecked")
 	public java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPrice> getGoodsInfosLike(Session session,String goods_id,String com_id,String user_id,java.util.Date date){
