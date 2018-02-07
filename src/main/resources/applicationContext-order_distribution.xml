@@ -7,6 +7,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd">
 <context:annotation-config></context:annotation-config>
+<!-- 
 <context:component-scan base-package="com.cqqyd2014.system.schedler"/>
 
 <bean id="taskJobOrderAssign" class="com.cqqyd2014.system.schedler.TaskJobOrderAssign"> </bean>
@@ -17,5 +18,8 @@
         <task:scheduled ref="taskJobOrderAssign" method="order_assign" cron="59 * * * * ?"/>
         
     </task:scheduled-tasks>
+
+ -->
+
 
 </beans>

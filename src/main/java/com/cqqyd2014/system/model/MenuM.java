@@ -1,6 +1,20 @@
 package com.cqqyd2014.system.model;
 
 public class MenuM {
+	String order_id;
+	public String getOrder_id() {
+		return order_id;
+	}
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
+	String com_id;
+	public String getCom_id() {
+		return com_id;
+	}
+	public void setCom_id(String com_id) {
+		this.com_id = com_id;
+	}
 	String userid;
 	public String getUserid() {
 		return userid;

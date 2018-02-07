@@ -2,22 +2,30 @@ package com.cqqyd2014.login.ajax.action;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 
-import org.apache.struts2.ServletActionContext;
+
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import com.cqqyd2014.hibernate.HibernateSessionFactory;
-import com.cqqyd2014.util.exception.AjaxSuccessMessageException;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+
+
+import com.cqqyd2014.service.inter.SysUserService;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
+
+
+@Controller("LoginAjaxAction")
+@Scope("prototype")
 @ParentPackage("json-default")
 @Namespace("/login")
 @Results({ @Result(name = ActionSupport.SUCCESS, type = "json"),
@@ -27,6 +35,16 @@ public class LoginAjaxAction extends ActionSupport {
 	private Map<String, Object> msg;
 	String user_name;
 	String password;
+	@Resource(name="sysUserService")
+	SysUserService sysUserService;
+	
+	public SysUserService getSysUserService() {
+		return sysUserService;
+	}
+	
+	public void setSysUserService(SysUserService sysUserService) {
+		this.sysUserService = sysUserService;
+	}
 
 	public String getUser_name() {
 		return user_name;
@@ -48,13 +66,11 @@ public class LoginAjaxAction extends ActionSupport {
 	public String login() {
 		com.cqqyd2014.util.AjaxSuccessMessage sm = new com.cqqyd2014.util.AjaxSuccessMessage();
 		
-		Session session = HibernateSessionFactory.getSession();
-		com.cqqyd2014.hibernate.entities.SysUser b = null;
 		Map<String,Object> session_http = ActionContext.getContext().getSession();
 
 		
 		String com_id = (String) session_http.get("com_code");
-		Transaction tx = session.beginTransaction();
+		
 		try {
 
 			if (user_name.trim().length() == 0 || user_name == null) {
@@ -66,77 +82,34 @@ public class LoginAjaxAction extends ActionSupport {
 				throw new com.cqqyd2014.util.exception.AjaxSuccessMessageException("密码为空");
 			}
 
-			com.cqqyd2014.hibernate.dao.SysUserDAO sudao = new com.cqqyd2014.hibernate.dao.SysUserDAO();
-			b = sudao.getEntiyByLogin(session, user_name,  com_id);
-			if (b==null) {
-				throw new com.cqqyd2014.util.exception.AjaxSuccessMessageException("用户不存在");
-			}
-			if (!b.getPwd().equals(com.cqqyd2014.util.StringUtil.md5(password))) {
-				throw new com.cqqyd2014.util.exception.AjaxSuccessMessageException("密码错误");
-			}
+			sysUserService.checkLoginName(user_name, password, com_id);
 			
-				// System.out.println("设置信息");
-				session_http.put("user_name", b.getName());
-				session_http.put("user_login", b.getUserLogin());
-				session_http.put("user_id", b.getId());
-				//设置用户参数
-				java.util.ArrayList<com.cqqyd2014.usergroup.model.UserPar> ups=com.cqqyd2014.usergroup.logic.UserParLogic.getArrayListModelEntityFromArrayListEntity(com.cqqyd2014.hibernate.dao.UserParDAO.getArrayListEntityByUserId(session, com_id, b.getId()));
-				for (int i=0,len=ups.size();i<len;i++){
-					com.cqqyd2014.usergroup.model.UserPar up=ups.get(i);
-					session_http.put(up.getParam(),up.getValue());
-				}
-				
-				//设置权限
-				com.cqqyd2014.hibernate.dao.MenuDDAO mddao=new com.cqqyd2014.hibernate.dao.MenuDDAO();
-				java.util.ArrayList<com.cqqyd2014.system.model.MenuD> menuds=mddao.getMenuDAll(session, com_id,b.getId());
-				java.util.ArrayList<String> menu_array=new java.util.ArrayList<String>();
-				for (int i=0;i<menuds.size();i++) {
-					menu_array.add(menuds.get(i).getM_id()+menuds.get(i).getM_d_id());
-				}
-				
-				
-				session_http.put("menu_array", menu_array);
-				sudao.setOnline(session, b.getId(), com_id);
-
-				HttpServletRequest request = ServletActionContext.getRequest();
-				String ip = com.cqqyd2014.util.IPUtil.getIpAddr(request);
-				com.cqqyd2014.hibernate.dao.SysLogDAO sldao = new com.cqqyd2014.hibernate.dao.SysLogDAO();
-				sldao.saveLog(session, b.getId(), "登录系统,来自IP：" + ip, "1", com_id);
-				sldao = null;
-				sm.setSuccess(true);
-				sm.setAuth_success(true);
-
 			
-			tx.commit();
+			
+				
+			sm.setSuccess(true);
+		
 
 		}
 
-		catch (HibernateException e) {
+		catch (com.cqqyd2014.util.exception.ServcieException se) {
 
-			if (null != tx) {
-				tx.rollback();// 撤销事务
-
-			}
-
+			
 			sm.setSuccess(false);
-			sm.setBody(e.toString());
+			sm.setBody(se.getMessage());
 
 		} 
 		
-		catch (AjaxSuccessMessageException e) {
+catch (com.cqqyd2014.util.exception.AjaxSuccessMessageException se) {
 
-			if (null != tx) {
-				tx.rollback();// 撤销事务
-
-			}
-
+			
 			sm.setSuccess(false);
-			sm.setBody(e.getMessage());
+			sm.setBody(se.toString());
 
 		} 
 		
 		finally {
-			HibernateSessionFactory.closeSession();
+			
 		}
 		msg=sm.toMap();
 		return SUCCESS;

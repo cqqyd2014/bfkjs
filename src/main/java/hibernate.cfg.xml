@@ -55,6 +55,7 @@
         <mapping class="com.cqqyd2014.hibernate.entities.SfCityCode"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VInventoryByGoodsId"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VDeliverSeq"/>
+        <mapping class="com.cqqyd2014.hibernate.entities.VMenuD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VOrderFrom"/>
         <mapping class="com.cqqyd2014.hibernate.entities.ContractD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VOrderMainGoodsBarcode"/>
@@ -62,6 +63,7 @@
         <mapping class="com.cqqyd2014.hibernate.entities.VDeliverD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.BigEvent"/>
         <mapping class="com.cqqyd2014.hibernate.entities.SfAccount"/>
+        <mapping class="com.cqqyd2014.hibernate.entities.VMenuM"/>
         <mapping class="com.cqqyd2014.hibernate.entities.WarehouseStorageDetail"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VDeliverM"/>
         <mapping class="com.cqqyd2014.hibernate.entities.WxUser"/>
@@ -76,6 +78,7 @@
         <mapping class="com.cqqyd2014.hibernate.entities.VGoodsAvgPriceInDefaulPrepac"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VGoodsMove"/>
         <mapping class="com.cqqyd2014.hibernate.entities.MoveGoodsWarehouseM"/>
+        <mapping class="com.cqqyd2014.hibernate.entities.VUserPar"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VIntoWhContractDByContractGoods"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VPrepackageD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.COrderDetail"/>
@@ -110,6 +113,7 @@
         <mapping class="com.cqqyd2014.hibernate.entities.SupplyInfo"/>
         <mapping class="com.cqqyd2014.hibernate.entities.SysRoleMenuD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.VWeixinScanQrLog"/>
+        <mapping class="com.cqqyd2014.hibernate.entities.VSysUser"/>
         <mapping class="com.cqqyd2014.hibernate.entities.ComParCode"/>
         <mapping class="com.cqqyd2014.hibernate.entities.MenuD"/>
         <mapping class="com.cqqyd2014.hibernate.entities.SfResponseOrderBack"/>

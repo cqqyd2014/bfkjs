@@ -1,11 +1,13 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-31 21:46:23 by Hibernate Tools 5.2.3.Final
+// Generated 2018-1-24 14:27:47 by Hibernate Tools 5.2.3.Final
 
 import java.math.BigDecimal;
 import java.util.Date;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,13 +19,12 @@ import javax.persistence.TemporalType;
 @Table(name = "sys_user", schema = "public")
 public class SysUser implements java.io.Serializable {
 
-	private String id;
+	private SysUserId id;
 	private String name;
 	private Date createTime;
 	private String pwd;
 	private String userLogin;
 	private String tel;
-	private String comId;
 	private Boolean effective;
 	private Boolean online;
 	private Date lastOnlineTime;
@@ -34,25 +35,26 @@ public class SysUser implements java.io.Serializable {
 	private BigDecimal quotaSubtract;
 	private BigDecimal quotaFreez;
 	private String email;
+	private Date lastModifyDat;
+	private String lastModifyUuid;
 
 	public SysUser() {
 	}
 
-	public SysUser(String id) {
+	public SysUser(SysUserId id) {
 		this.id = id;
 	}
 
-	public SysUser(String id, String name, Date createTime, String pwd, String userLogin, String tel, String comId,
+	public SysUser(SysUserId id, String name, Date createTime, String pwd, String userLogin, String tel,
 			Boolean effective, Boolean online, Date lastOnlineTime, BigDecimal pickupWeighting,
 			BigDecimal sendWeighting, BigDecimal quotaCurrent, BigDecimal quotaAdd, BigDecimal quotaSubtract,
-			BigDecimal quotaFreez, String email) {
+			BigDecimal quotaFreez, String email, Date lastModifyDat, String lastModifyUuid) {
 		this.id = id;
 		this.name = name;
 		this.createTime = createTime;
 		this.pwd = pwd;
 		this.userLogin = userLogin;
 		this.tel = tel;
-		this.comId = comId;
 		this.effective = effective;
 		this.online = online;
 		this.lastOnlineTime = lastOnlineTime;
@@ -63,16 +65,20 @@ public class SysUser implements java.io.Serializable {
 		this.quotaSubtract = quotaSubtract;
 		this.quotaFreez = quotaFreez;
 		this.email = email;
+		this.lastModifyDat = lastModifyDat;
+		this.lastModifyUuid = lastModifyUuid;
 	}
 
-	@Id
+	@EmbeddedId
 
-	@Column(name = "id", unique = true, nullable = false, length = 36)
-	public String getId() {
+	@AttributeOverrides({
+			@AttributeOverride(name = "comId", column = @Column(name = "com_id", nullable = false, length = 45)),
+			@AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false, length = 36)) })
+	public SysUserId getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
+	public void setId(SysUserId id) {
 		this.id = id;
 	}
 
@@ -120,15 +126,6 @@ public class SysUser implements java.io.Serializable {
 
 	public void setTel(String tel) {
 		this.tel = tel;
-	}
-
-	@Column(name = "com_id", length = 45)
-	public String getComId() {
-		return this.comId;
-	}
-
-	public void setComId(String comId) {
-		this.comId = comId;
 	}
 
 	@Column(name = "effective")
@@ -220,6 +217,25 @@ public class SysUser implements java.io.Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "last_modify_dat", length = 35)
+	public Date getLastModifyDat() {
+		return this.lastModifyDat;
+	}
+
+	public void setLastModifyDat(Date lastModifyDat) {
+		this.lastModifyDat = lastModifyDat;
+	}
+
+	@Column(name = "last_modify_uuid", length = 36)
+	public String getLastModifyUuid() {
+		return this.lastModifyUuid;
+	}
+
+	public void setLastModifyUuid(String lastModifyUuid) {
+		this.lastModifyUuid = lastModifyUuid;
 	}
 
 }

@@ -165,9 +165,9 @@ public class TwoFileToOrders {
 		//all_detail_map
 		com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO gidao=new com.cqqyd2014.hibernate.dao.VUserPriceAvailableDAO();
 		for (Entry<String, BigDecimal> entry : all_detail_map.entrySet()) {
-			com.cqqyd2014.hibernate.entities.VUserPriceAvailable vupa=gidao.getGoodsInfos(session, entry.getKey(), com_id, user_id, new java.util.Date());
-			if (vupa.getId().getSumAvailable().compareTo(entry.getValue())==-1){
-				throw new Exception("商品"+entry.getKey()+"数量不够，这批订单需要"+entry.getValue()+"存货现有"+vupa.getId().getSumAvailable());
+			com.cqqyd2014.usergroup.model.UserPrice vupa=gidao.getGoodsInfo(session, entry.getKey(), com_id, user_id, new java.util.Date());
+			if (vupa.getYue().compareTo(entry.getValue())==-1){
+				throw new Exception("商品"+entry.getKey()+"数量不够，这批订单需要"+entry.getValue()+"存货现有"+vupa.getYue());
 			}
 		  
 		}

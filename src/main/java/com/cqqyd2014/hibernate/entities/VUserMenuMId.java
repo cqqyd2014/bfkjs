@@ -1,5 +1,5 @@
 package com.cqqyd2014.hibernate.entities;
-// Generated 2017-12-31 21:46:23 by Hibernate Tools 5.2.3.Final
+// Generated 2018-1-24 14:27:47 by Hibernate Tools 5.2.3.Final
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -10,6 +10,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class VUserMenuMId implements java.io.Serializable {
 
+	private String comId;
 	private String orderId;
 	private String menuId;
 	private String menuName;
@@ -19,12 +20,22 @@ public class VUserMenuMId implements java.io.Serializable {
 	public VUserMenuMId() {
 	}
 
-	public VUserMenuMId(String orderId, String menuId, String menuName, String desc, String userId) {
+	public VUserMenuMId(String comId, String orderId, String menuId, String menuName, String desc, String userId) {
+		this.comId = comId;
 		this.orderId = orderId;
 		this.menuId = menuId;
 		this.menuName = menuName;
 		this.desc = desc;
 		this.userId = userId;
+	}
+
+	@Column(name = "com_id", length = 4)
+	public String getComId() {
+		return this.comId;
+	}
+
+	public void setComId(String comId) {
+		this.comId = comId;
 	}
 
 	@Column(name = "order_id", length = 4)
@@ -81,8 +92,10 @@ public class VUserMenuMId implements java.io.Serializable {
 			return false;
 		VUserMenuMId castOther = (VUserMenuMId) other;
 
-		return ((this.getOrderId() == castOther.getOrderId()) || (this.getOrderId() != null
-				&& castOther.getOrderId() != null && this.getOrderId().equals(castOther.getOrderId())))
+		return ((this.getComId() == castOther.getComId()) || (this.getComId() != null && castOther.getComId() != null
+				&& this.getComId().equals(castOther.getComId())))
+				&& ((this.getOrderId() == castOther.getOrderId()) || (this.getOrderId() != null
+						&& castOther.getOrderId() != null && this.getOrderId().equals(castOther.getOrderId())))
 				&& ((this.getMenuId() == castOther.getMenuId()) || (this.getMenuId() != null
 						&& castOther.getMenuId() != null && this.getMenuId().equals(castOther.getMenuId())))
 				&& ((this.getMenuName() == castOther.getMenuName()) || (this.getMenuName() != null
@@ -96,6 +109,7 @@ public class VUserMenuMId implements java.io.Serializable {
 	public int hashCode() {
 		int result = 17;
 
+		result = 37 * result + (getComId() == null ? 0 : this.getComId().hashCode());
 		result = 37 * result + (getOrderId() == null ? 0 : this.getOrderId().hashCode());
 		result = 37 * result + (getMenuId() == null ? 0 : this.getMenuId().hashCode());
 		result = 37 * result + (getMenuName() == null ? 0 : this.getMenuName().hashCode());
